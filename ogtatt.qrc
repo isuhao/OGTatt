@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="level">graphics/level.png</file>
+        <file alias="frode">graphics/people/frode.png</file>
+        <file alias="coach_satanic">graphics/vehicles/coach_satanic.png</file>
+        <file alias="car_kangoo">graphics/vehicles/car_kangoo.png</file>
+    </qresource>
+</RCC>
