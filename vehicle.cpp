@@ -6,5 +6,5 @@ Vehicle::Vehicle():
     SetName(QString("Vehicle"));
 }
 
-void    Vehicle::SetDriver(const Person * const driver) noexcept   {m_driver = driver;}
+void    Vehicle::SetDriver(Person * const driver) noexcept   {m_driver = driver;}
 Person* Vehicle::GetDriver() const noexcept                    {return m_driver;}

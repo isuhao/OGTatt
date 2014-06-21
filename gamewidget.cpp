@@ -11,7 +11,7 @@
 #include "gamewidget.h"
 
 GameWidget::GameWidget(QGLWidget *parent) :
-    QWidget(parent),
+    QGLWidget(parent),
     m_composit(800,600),
     m_level(QString("://level")),
     m_ticks(0),
