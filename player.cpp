@@ -6,4 +6,4 @@ Player::Player(int number):
     SetName(QString("Player"));
 }
 
-int Player::GetNumber() {return m_number;}
+int Player::GetNumber() const noexcept {return m_number;}

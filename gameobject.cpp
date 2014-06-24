@@ -10,18 +10,19 @@ GameObject::GameObject():
     m_forwardspeed(0.0),
     m_sidespeed(0.0),
     m_zspeed(0.0),
-    m_rot(0,0),
+    m_rot(0.0),
     m_rotspeed(0.0)
 {
+
 }
 void GameObject::SetName(QString name) noexcept {m_name = name;}
 QString GameObject::GetName() const noexcept    {return m_name;}
 
-void    GameObject::SetX(const double x)            {m_x = x;}
+void    GameObject::SetX(const double x) noexcept {m_x = x;}
 double  GameObject::GetX() const noexcept           {return m_x;}
-void    GameObject::SetY(const double y)            {m_y = y;}
+void    GameObject::SetY(const double y) noexcept   {m_y = y;}
 double  GameObject::GetY() const noexcept           {return m_y;}
-void    GameObject::SetZ(const double z)            {m_z = z;}
+void    GameObject::SetZ(const double z) noexcept   {m_z = z;}
 double  GameObject::GetZ() const noexcept           {return m_z;}
 
 void    GameObject::SetForwardSpeed(const double forwardspeed) noexcept {m_forwardspeed = forwardspeed;}

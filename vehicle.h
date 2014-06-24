@@ -11,7 +11,7 @@ public:
 private:
     Person* m_driver;
 public:
-    void    SetDriver(const Person * const driver) noexcept;
+    void    SetDriver(Person * const driver) noexcept;
     Person* GetDriver() const noexcept;
 };
 
