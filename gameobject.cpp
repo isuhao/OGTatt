@@ -3,9 +3,11 @@
 
 GameObject::GameObject():
     m_name(QString("GameObject")),
+    m_sprites(),
+    m_frame(0),
     m_pi(3.141592653),
-    m_x(0.0),
-    m_y(0.0),
+    m_x(100.0),
+    m_y(100.0),
     m_z(0.0),
     m_forwardspeed(0.0),
     m_sidespeed(0.0),
@@ -15,8 +17,10 @@ GameObject::GameObject():
 {
 
 }
-void GameObject::SetName(QString name) noexcept {m_name = name;}
-QString GameObject::GetName() const noexcept    {return m_name;}
+void GameObject::SetName(QString name) noexcept                 {m_name = name;}
+QString GameObject::GetName() const noexcept                    {return m_name;}
+void    GameObject::AddSprite(const QPixmap &sprite) noexcept    {m_sprites.push_back(sprite);}
+QPixmap GameObject::GetSprite(int const frame) const noexcept   {return m_sprites[frame];}
 
 void    GameObject::SetX(const double x) noexcept {m_x = x;}
 double  GameObject::GetX() const noexcept           {return m_x;}
@@ -39,9 +43,24 @@ double  GameObject::GetRotSpeed() const noexcept                {return m_rotspe
 
 void    GameObject::Move() noexcept {
     m_rot += m_rotspeed;
-    if (m_rot > 2*m_pi) m_rot -= 2*m_pi;
-    if (m_rot <   0.0) m_rot += 2*m_pi;
-    m_x += cos(m_rot)*m_forwardspeed;
-    m_y += sin(m_rot)*m_forwardspeed;
+    if (m_rot > 360) m_rot -= 360;
+    if (m_rot <   0) m_rot += 360;
+    double rotrad = 2*m_pi*(-m_rot/360.0);
+    m_x -= sin(rotrad)*m_forwardspeed;
+    m_y -= cos(rotrad)*m_forwardspeed;
     m_z += m_zspeed;
+}
+
+void GameObject::Draw(QPainter * const painter) noexcept
+{
+    double scale = 0.5 + (m_z/10.0);
+    QTransform matrix;
+    matrix.rotate(GetRot());
+    QPixmap sprite_o = GetSprite(m_frame);
+    QPixmap sprite_t = sprite_o.transformed(matrix);
+    const int width  = scale * sprite_t.width();
+    const int height = scale * sprite_t.height();
+    const int dx = scale * (sprite_o.width()-sprite_t.width())/2;
+    const int dy = scale * (sprite_o.height()-sprite_t.height())/2;
+    painter->drawPixmap( GetX()+dx, GetY()+dy, width, height, sprite_t);
 }

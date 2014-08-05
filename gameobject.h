@@ -2,14 +2,16 @@
 #define GAMEOBJECT_H
 
 #include <QWidget>
+#include <QPainter>
 
-class GameObject
+class GameObject: public QObject
 {
 public:
     GameObject();
 private:
     QString m_name;
-
+    std::vector<QPixmap> m_sprites;
+    int m_frame;
     double m_pi;
     double m_x;
     double m_y;
@@ -25,7 +27,8 @@ private:
 public:
     void SetName(QString name) noexcept;
     QString GetName() const noexcept;
-
+    void    AddSprite(const QPixmap &sprite) noexcept;
+    QPixmap GetSprite(int const frame) const noexcept;
 
     void SetX(const double x) noexcept;
     double GetX() const noexcept;
@@ -47,6 +50,7 @@ public:
     double GetRotSpeed() const noexcept;
 
     void Move() noexcept;
+    void Draw(QPainter * const painter) noexcept;
 };
 
 #endif // GAMEOBJECT_H

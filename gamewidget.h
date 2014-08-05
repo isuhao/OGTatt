@@ -1,6 +1,7 @@
 #ifndef GAMEWIDGET_H
 #define GAMEWIDGET_H
 
+#include <player.h>
 #include <QGLWidget>
 #include <QSvgRenderer>
 
@@ -13,21 +14,24 @@ class GameWidget : public QGLWidget
     Q_OBJECT
 
 public:
-    explicit GameWidget(QGLWidget *parent = 0);
+    GameWidget(const QGLFormat& format, QWidget *parent = 0);
 
+protected:
+    //virtual void initializeGL();
+    //virtual void resizeGL(int w, int h);
+    //virtual void paintGL();
+    virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyReleaseEvent(QKeyEvent *e);
 private:
     QSvgRenderer m_svgrend;
     QPixmap m_composit;
     QPixmap m_level;
     int m_ticks;
 
-    int m_player_x;
-    int m_player_y;
-    int m_player_size;
+    Player m_frode;
 
     void paintEvent(QPaintEvent * e);
-    void keyPressEvent(QKeyEvent *e);
-    void keyReleaseEvent(QKeyEvent *e);
+
 private slots:
     void OnTimer();
 

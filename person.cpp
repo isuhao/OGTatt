@@ -1,7 +1,7 @@
 #include "person.h"
 
 Person::Person():
-    m_walkspeed(1.0),
+    m_walkspeed(2.0),
     m_alive(true)
 {
     SetName(QString("Person"));
