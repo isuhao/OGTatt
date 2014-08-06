@@ -2,7 +2,8 @@
 #define VEHICLE_H
 
 #include <gameobject.h>
-#include <person.h>
+
+class Person;
 
 class Vehicle : public GameObject
 {
@@ -13,6 +14,8 @@ private:
 public:
     void    SetDriver(Person * const driver) noexcept;
     Person* GetDriver() const noexcept;
+    void    ClearDriver() noexcept;
+    void    KeyAction(bool const keys[n_keys]) noexcept;
 };
 
 #endif // VEHICLE_H

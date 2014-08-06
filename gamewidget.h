@@ -2,6 +2,7 @@
 #define GAMEWIDGET_H
 
 #include <player.h>
+#include <vehicle.h>
 #include <QGLWidget>
 #include <QSvgRenderer>
 
@@ -29,6 +30,7 @@ private:
     int m_ticks;
 
     Player m_frode;
+    Vehicle m_kangoo;
 
     void paintEvent(QPaintEvent * e);
 
