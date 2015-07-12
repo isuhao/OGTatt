@@ -1,4 +1,4 @@
-OG Tatt
+#:four_leaf_clover: OG Tatt
 ======
 
-An open source online top-down gangwar game.
+Original Gangster Tattoo is an open source online top-down gangwar game being developed using the Urho3D game engine.
