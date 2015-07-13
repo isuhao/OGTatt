@@ -1,0 +1,19 @@
+Top-down urban shoot-em-up set in a world inspired by the Illuminatus Trilogy. The main city is called Groenstatt
+
+Vehicles
+ Land
+  Cars
+ Water
+  Boats
+
+Weapons
+ Pistol: Böller
+ SMG: Mitrailleur
+ Mini-gun: Herzstark
+
+ Explosive Drones: Freedom Delivery System
+
+Controls:
+ Enter: Enter/Leave nearest vehicle on the most convenient side
+ ]: Enter/Leave nearest vehicle on the right side
+ [: Enter/Leave nearest vehicle on the left side
