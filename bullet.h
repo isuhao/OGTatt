@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef BULLET_H
+#define BULLET_H
+
+#include <Urho3D/Urho3D.h>
+#include <Urho3D/Physics/PhysicsEvents.h>
+
+#include "hitfx.h"
 
 #include "sceneobject.h"
 
@@ -25,6 +31,8 @@ class Node;
 class Scene;
 class Sprite;
 }
+
+using namespace Urho3D;
 
 class Bullet : public SceneObject
 {
@@ -46,3 +54,5 @@ private:
     void HitCheck(float timeStep);
     void Disable();
 };
+
+#endif

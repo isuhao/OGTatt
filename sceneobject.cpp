@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -15,18 +15,6 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Resource/XMLFile.h>
-#include <Urho3D/Math/MathDefs.h>
 
 #include "sceneobject.h"
 

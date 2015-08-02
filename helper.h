@@ -16,39 +16,29 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef HEMP_H
-#define HEMP_H
+#ifndef OGTATT_HELPER_H
+#define OGTATT_HELPER_H
 
 #include <Urho3D/Urho3D.h>
-#include "mastercontrol.h"
+#include <Urho3D/Math/Vector3.h>
+#include <Urho3D/Container/HashBase.h>
 
-namespace Urho3D {
-class Drawable;
-class Node;
-class Scene;
-class Sprite;
+namespace OGTatt {
+
+template <class T>
+T Cycle(T x, T min, T max){
+    return (x < min) ?
+                x + (max - min) * abs(ceil((min - x) / (max - min)))
+              : (x > max) ?
+                x - (max - min) * abs(ceil((x - max) / (max - min)))
+                  : x;
 }
 
-using namespace Urho3D;
+float Distance(const Urho3D::Vector3 from, const Urho3D::Vector3 to);
+unsigned IntVector2ToHash(Urho3D::IntVector2 vec);
+Urho3D::Vector3 Scale(const Urho3D::Vector3 lhs, const Urho3D::Vector3 rhs);
 
-class Hemp : public Object
-{
-    OBJECT(Hemp);
-public:
-    Hemp(Context *context, MasterControl* masterControl, Urho3D::Node *parent, Vector3 pos);
-    Hemp(Context* context, MasterControl* masterControl): Hemp(context, masterControl, masterControl->world.scene, Vector3::ZERO){}
-    virtual void Start();
-    virtual void Stop();
-private:
-    void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    MasterControl* masterControl_;
-    Node* rootNode_;
-    StaticModel* fropModel_;
-    Vector3 scale_;
+}
 
-    double growthStart_;
 
-    double age_ = 0.0;
-};
-
-#endif // HEMP_H
+#endif // OGTATT_HELPER_H

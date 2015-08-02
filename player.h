@@ -16,7 +16,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Graphics/AnimatedModel.h>
@@ -54,14 +55,14 @@ public:
     void AddScore(int points);
     Vector3 GetLinearVelocity() {return rigidBody_->GetLinearVelocity();}
 private:
-    double health_ = 1;
-    double initialHealth_ = 1;
+    float health_ = 1.0f;
+    float initialHealth_ = 1.0f;
     int firstHitBy_ = 0;
     int lastHitBy_ = 0;
     int score_ = 0;
 
-    const double shotInterval_ = 0.1;
-    double sinceLastShot_ = 0.0;
+    const float shotInterval_ = 0.1f;
+    float sinceLastShot_ = 0.0f;
 
     AnimatedModel* model_;
     AnimationController* animCtrl_;
@@ -74,3 +75,5 @@ private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
     void PlaySample(Sound *sample);
 };
+
+#endif // PLAYER_H

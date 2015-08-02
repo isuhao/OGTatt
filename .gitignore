@@ -19,3 +19,9 @@
 *.exe
 *.out
 *.app
+
+# Urho3D
+/Urho3D
+/Data
+/CoreData
+OGTatt

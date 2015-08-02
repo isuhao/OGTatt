@@ -1,14 +1,15 @@
-LIBS += /home/frode/Sync/Source/Urho3D/lib/libUrho3D.a \
+LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
     -lpthread \
-    -lSDL \
     -ldl \
     -lGL
 
 DEFINES += URHO3D_COMPILE_QT
 
+QMAKE_CXXFLAGS += -std=c++11
+
 INCLUDEPATH += \
-    /home/frode/Sync/Source/Urho3D/include \
-    /home/frode/Sync/Source/Urho3D/include/Urho3D/ThirdParty
+    ../OGTatt/Urho3D/include \
+    ../OGTatt/Urho3D/include/Urho3D/ThirdParty \
 
 TEMPLATE = app
 CONFIG += console

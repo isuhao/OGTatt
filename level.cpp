@@ -1,20 +1,32 @@
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Container/Vector.h>
-#include <Urho3D/Math/Vector2.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Physics/RigidBody.h>
+/* OG Tatt
+// Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
 #include "level.h"
 #include "tile.h"
 #include "wallcollider.h"
 #include "ogtattcam.h"
 
-//Todo:
-//- boxObject->SetOccluder(true); ???
+namespace Urho3D {
+template <> unsigned MakeHash(const IntVector2& value)
+  {
+    return OGTatt::IntVector2ToHash(value);
+  }
+}
 
 Level::Level(Context *context, Vector3 position, MasterControl* masterControl):
 Object(context)
@@ -37,7 +49,7 @@ Object(context)
     while (addedTiles < worldSize){
         //Pick a random exsisting tile from a list.
         Vector<IntVector2> coordsVector = tileMap_.Keys();
-        IntVector2 randomTileCoords = coordsVector[Random((int)coordsVector.Length())];
+        IntVector2 randomTileCoords = coordsVector[Random((int)coordsVector.Size())];
 
         //Create a vector of numbers 1 to 4
         /*Vector<int> directions;
@@ -163,7 +175,7 @@ void Level::AddMissingColliders()
 void Level::FixFringe()
 {
     Vector<SharedPtr<Tile> > tiles = tileMap_.Values();
-    for (int tile = 0; tile < tiles.Length(); tile++)
+    for (int tile = 0; tile < tiles.Size(); tile++)
     {
         tiles[tile]->FixFringe();
     }

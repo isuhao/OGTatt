@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,8 +16,10 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef PICKUP_H
+#define PICKUP_H
 
+#include <Urho3D/Urho3D.h>
 #include <Urho3D/Graphics/StaticModel.h>
 #include <Urho3D/Audio/Sound.h>
 #include <Urho3D/Audio/SoundSource.h>
@@ -30,6 +32,8 @@ class Node;
 class Scene;
 class Sprite;
 }
+
+using namespace Urho3D;
 
 class Pickup : public SceneObject
 {
@@ -49,3 +53,5 @@ protected:
 private:
 
 };
+
+#endif //PICKUP_H

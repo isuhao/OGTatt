@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,12 +16,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef MUZZLE_H
+#define MUZZLE_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
+
+#include <Urho3D/Graphics/ParticleEffect.h>
+#include <Urho3D/Graphics/ParticleEmitter.h>
 
 #include "effect.h"
 
@@ -44,3 +45,5 @@ private:
     SharedPtr<Light> light_;
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
 };
+
+#endif // MUZZLE_H

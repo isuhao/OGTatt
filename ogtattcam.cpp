@@ -1,17 +1,20 @@
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Graphics/Camera.h>
-#include <Urho3D/Graphics/Viewport.h>
-#include <Urho3D/Graphics/RenderPath.h>
-#include <Urho3D/Graphics/Light.h>
-#include <Urho3D/Graphics/Zone.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Resource/XMLFile.h>
-#include <Urho3D/Math/MathDefs.h>
-#include <Urho3D/Input/Input.h>
+/* OG Tatt
+// Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
 #include "ogtattcam.h"
 #include "player.h"
@@ -20,6 +23,7 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
     Object(context),
     yaw_(0.0f),
     pitch_(88.0f),
+    roll_{0.0f},
     smoothTargetPosition_{Vector3::ZERO},
     smoothTargetVelocity_{Vector3::ZERO}
 {
@@ -124,14 +128,14 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     //Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
     Vector3 camForward = rootNode_->GetDirection();
-    camForward = Vector3::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
+    camForward = OGTatt::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
 
     Vector3 camForce = Vector3::ZERO;
-    Vector3 centerForce = Vector3::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
-    if (input->GetKeyDown('T')) camForce += Vector3::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
-    if (input->GetKeyDown('G')) camForce += Vector3::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
-    if (input->GetKeyDown('H')) camForce += Vector3::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
-    if (input->GetKeyDown('F')) camForce += Vector3::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
+    Vector3 centerForce = OGTatt::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
+    if (input->GetKeyDown('T')) camForce += OGTatt::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
+    if (input->GetKeyDown('G')) camForce += OGTatt::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
+    if (input->GetKeyDown('H')) camForce += OGTatt::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
+    if (input->GetKeyDown('F')) camForce += OGTatt::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
     if (input->GetKeyDown('Y')) camForce += Vector3::UP;
     if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
 
@@ -155,7 +159,7 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //Prevent camera from going too low
     if (rootNode_->GetPosition().y_ < 1.5f)
     {
-        rootNode_->SetPosition(rootNode_->GetPosition().x_, 1.5f, rootNode_->GetPosition().z_);
+        rootNode_->SetPosition(Vector3(rootNode_->GetPosition().x_, 1.5f, rootNode_->GetPosition().z_));
         rigidBody_->SetLinearVelocity(Vector3(rigidBody_->GetLinearVelocity().x_, 0.0f, rigidBody_->GetLinearVelocity().z_));
     }
 
@@ -171,6 +175,6 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
 }
 
-void OGTattCam::Lock(SharedPtr<Level> platform)
+void OGTattCam::Lock(SharedPtr<Node> node)
 {
 }

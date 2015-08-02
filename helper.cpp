@@ -16,39 +16,16 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef HEMP_H
-#define HEMP_H
+#include "helper.h"
 
-#include <Urho3D/Urho3D.h>
-#include "mastercontrol.h"
-
-namespace Urho3D {
-class Drawable;
-class Node;
-class Scene;
-class Sprite;
+float OGTatt::Distance(const Urho3D::Vector3 from, const Urho3D::Vector3 to){
+    return (to - from).Length();
 }
 
-using namespace Urho3D;
+unsigned OGTatt::IntVector2ToHash(Urho3D::IntVector2 vec) {
+    return (Urho3D::MakeHash(vec.x_) & 0xffff) | (Urho3D::MakeHash(vec.y_) << 16);
+}
 
-class Hemp : public Object
-{
-    OBJECT(Hemp);
-public:
-    Hemp(Context *context, MasterControl* masterControl, Urho3D::Node *parent, Vector3 pos);
-    Hemp(Context* context, MasterControl* masterControl): Hemp(context, masterControl, masterControl->world.scene, Vector3::ZERO){}
-    virtual void Start();
-    virtual void Stop();
-private:
-    void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    MasterControl* masterControl_;
-    Node* rootNode_;
-    StaticModel* fropModel_;
-    Vector3 scale_;
-
-    double growthStart_;
-
-    double age_ = 0.0;
-};
-
-#endif // HEMP_H
+Urho3D::Vector3 OGTatt::Scale(const Urho3D::Vector3 lhs, const Urho3D::Vector3 rhs) {
+    return Urho3D::Vector3(lhs.x_ * rhs.x_, lhs.y_ * rhs.y_, lhs.z_ * rhs.z_);
+}

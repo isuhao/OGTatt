@@ -16,7 +16,20 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef SCENEOBJECT_H
+#define SCENEOBJECT_H
+
+#include <Urho3D/Urho3D.h>
+#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
+#include <Urho3D/Physics/CollisionShape.h>
+#include <Urho3D/Scene/Scene.h>
+#include <Urho3D/Graphics/Model.h>
+#include <Urho3D/Graphics/StaticModel.h>
+#include <Urho3D/Graphics/Material.h>
+#include <Urho3D/Resource/ResourceCache.h>
+#include <Urho3D/Resource/XMLFile.h>
+#include <Urho3D/Math/MathDefs.h>
 
 #include "mastercontrol.h"
 
@@ -43,3 +56,5 @@ protected:
     void Set(Vector3 position);
     float randomizer_;
 };
+
+#endif // SCENEOBJECT_H

@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,12 +16,12 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef HITFX_H
+#define HITFX_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
+#include <Urho3D/Graphics/ParticleEmitter.h>
+#include <Urho3D/Graphics/ParticleEffect.h>
 
 #include "effect.h"
 
@@ -44,3 +44,5 @@ private:
     SharedPtr<Sound> sample_;
     SharedPtr<SoundSource> sampleSource_;
 };
+
+#endif // HITFX_H

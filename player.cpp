@@ -54,7 +54,9 @@ Player::Player(Context *context, MasterControl *masterControl):
     model_->SetCastShadows(true);
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();
-    //animCtrl_->PlayExclusive("Resources/Animations/KO.ani")
+    animCtrl_->PlayExclusive("Resources/Models/Idle.ani", 0, true, 1.0f);
+    animCtrl_->SetSpeed("Resources/Models/Idle.ani", 1.0f);
+    animCtrl_->SetStartBone("Resources/Models/Idle.ani", "MasterBone");
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetFriction(0.0f);
@@ -95,7 +97,7 @@ void Player::AddScore(int points)
 
 void Player::PlaySample(Sound* sample)
 {
-    for (int i = 0; i < sampleSources_.Length(); i++){
+    for (int i = 0; i < sampleSources_.Size(); i++){
         if (!sampleSources_[i]->IsPlaying()){
             sampleSources_[i]->Play(sample_);
             break;
@@ -115,8 +117,8 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //Orientation vectors
     Vector3 camRight = masterControl_->world.camera->rootNode_->GetRight();
     Vector3 camForward = masterControl_->world.camera->rootNode_->GetDirection();
-    camRight = Vector3::Scale(camRight, Vector3::ONE - Vector3::UP).Normalized();
-    camForward = Vector3::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
+    camRight = OGTatt::Scale(camRight, Vector3::ONE - Vector3::UP).Normalized();
+    camForward = OGTatt::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
     //Movement values
     Vector3 move = Vector3::ZERO;
     Vector3 moveJoy = Vector3::ZERO;
@@ -127,8 +129,6 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     Vector3 fire = Vector3::ZERO;
     Vector3 fireJoy = Vector3::ZERO;
     Vector3 fireKey = Vector3::ZERO;
-
-
 
     //Read input
     JoystickState* joystickState = input->GetJoystickByIndex(0);
@@ -151,7 +151,6 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     moveJoy.Length() > moveKey.Length() ? move = moveJoy : move = moveKey;
     fireJoy.Length() > fireKey.Length() ? fire = fireJoy : fire = fireKey;
 
-
     //Restrict move vector length
     if (move.Length() > 1.0f) move.Normalize();
     //Deadzone
@@ -161,18 +160,26 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     //Apply movement
     Vector3 force = move * thrust * timeStep;
-    //if (rigidBody_->GetLinearVelocity().Length() < maxSpeed || (rigidBody_->GetLinearVelocity().Normalized() + force.Normalized()).Length() < 1.0) {
         rigidBody_->ApplyForce(force);
-    //}
 
     //Update rotation according to direction of the player's movement.
-        Vector3 velocity = rigidBody_->GetLinearVelocity() + 2.0f*fire;
+        Vector3 velocity = rigidBody_->GetLinearVelocity();
+        Vector3 lookDirection = velocity + 2.0f*fire;
         Quaternion rotation = rootNode_->GetWorldRotation();
         Quaternion aimRotation = rotation;
-        aimRotation.FromLookRotation(velocity);
+        aimRotation.FromLookRotation(lookDirection);
         rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
-    //Shooting
+        if (velocity.Length() > 0.1f){
+            animCtrl_->PlayExclusive("Resources/Models/Walk.ani", 0, true, 1.0f);
+            animCtrl_->SetSpeed("Resources/Models/Walk.ani", velocity.Length()*2.3f);
+            animCtrl_->SetStartBone("Resources/Models/Walk.ani", "MasterBone");
+        }
+        else {
+            animCtrl_->PlayExclusive("Resources/Models/Idle.ani", 0, true, 1.0f);
+            animCtrl_->SetStartBone("Resources/Models/Idle.ani", "MasterBone");
+        }
+        //Shooting
     sinceLastShot_ += timeStep;
 
     if (fire.Length() > 0.1f) fire.Normalize();

@@ -16,45 +16,14 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Engine/Engine.h>
-#include <Urho3D/Engine/Console.h>
-#include <Urho3D/Graphics/Graphics.h>
-#include <Urho3D/Graphics/DebugRenderer.h>
-#include <Urho3D/Engine/DebugHud.h>
-#include <Urho3D/DebugNew.h>
-#include <Urho3D/UI/Text.h>
-#include <Urho3D/UI/Font.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Physics/PhysicsWorld.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Light.h>
-#include <Urho3D/Graphics/Camera.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Graphics/RenderPath.h>
-#include <Urho3D/IO/FileSystem.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Resource/XMLFile.h>
-#include <Urho3D/Resource/Resource.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
-
-#include <Urho3D/IO/Log.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Graphics/Octree.h>
-#include <Urho3D/Graphics/OctreeQuery.h>
-
-#include "mastercontrol.h"
 #include "inputmaster.h"
-
 #include "ogtattcam.h"
 #include "level.h"
 #include "player.h"
 #include "vehicle.h"
 #include "pedestrian.h"
+
+#include "mastercontrol.h"
 
 DEFINE_APPLICATION_MAIN(MasterControl);
 
@@ -257,12 +226,12 @@ void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
 void MasterControl::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 {
     using namespace Update;
-    double timeStep = eventData[P_TIMESTEP].GetFloat();
-    world.voidNode->SetPosition(Vector3::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
+    float timeStep = eventData[P_TIMESTEP].GetFloat();
+    world.voidNode->SetPosition(OGTatt::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
     UpdateCursor(timeStep);
 }
 
-void MasterControl::UpdateCursor(double timeStep)
+void MasterControl::UpdateCursor(float timeStep)
 {
     /*world.cursor.sceneCursor->Rotate(Quaternion(0.0f,100.0f*timeStep,0.0f));
     world.cursor.sceneCursor->SetScale((world.cursor.sceneCursor->GetWorldPosition() - world.camera->GetWorldPosition()).Length()*0.05f);
@@ -318,20 +287,10 @@ void MasterControl::CreateSineLookupTable()
     }
 }
 
-double MasterControl::Sine(double x) {
-    return sine_[(int)round(sine_.Length() * Cycle(x/M_PI, 0.0, 1.0))%sine_.Length()];
-}
 float MasterControl::Sine(float x) {
-    return sine_[(int)round(sine_.Length() * Cycle(x/M_PI, 0.0, 1.0))%sine_.Length()];
+    return sine_[(int)round(sine_.Size() * OGTatt::Cycle(x/M_PI, 0.0f, 1.0f))%sine_.Size()];
 }
 
-
-double MasterControl::Sine(double freq, double min, double max, double shift)
-{
-    double phase = freq * (world.scene->GetElapsedTime() + shift);
-    double add = 0.5*(min+max);
-    return Sine(phase) * 0.5 * (max - min) + add;
-}
 float MasterControl::Sine(float freq, float min, float max, float shift)
 {
     float phase = freq * world.scene->GetElapsedTime() + shift;
@@ -343,40 +302,3 @@ void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eve
 {
     //world.scene->GetComponent<PhysicsWorld>()->DrawDebugGeometry(true);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

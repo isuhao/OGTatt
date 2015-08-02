@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,12 +16,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef EFFECT_H
+#define EFFECT_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Graphics/ParticleEmitter.h>
-
 
 #include "sceneobject.h"
 
@@ -42,6 +41,8 @@ public:
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 protected:
     SharedPtr<ParticleEmitter> particleEmitter_;
-    double age_ = 0.0;
-    double emitTime_ = 0.1;
+    float age_ = 0.0f;
+    float emitTime_ = 0.1f;
 };
+
+#endif

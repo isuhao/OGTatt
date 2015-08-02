@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,12 +16,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#pragma once
+#ifndef EXPLOSION_H
+#define EXPLOSION_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
+#include <Urho3D/Graphics/ParticleEmitter.h>
+#include <Urho3D/Graphics/ParticleEffect.h>
+#include <Urho3D/Math/Sphere.h>
 
 #include "effect.h"
 
@@ -39,7 +40,7 @@ class Explosion : public Effect
     friend class Enemy;
     OBJECT(Explosion);
 public:
-    Explosion(Context* context, MasterControl* masterControl, Vector3 position, double size, Color color = Color::WHITE);
+    Explosion(Context* context, MasterControl* masterControl, Vector3 position, float size, Color color = Color::WHITE);
 
     void UpdateExplosion(StringHash eventType, VariantMap &eventData);
 protected:
@@ -51,3 +52,5 @@ private:
     float initialMass_;
     float initialBrightness_;
 };
+
+#endif
