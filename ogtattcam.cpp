@@ -82,10 +82,10 @@ void OGTattCam::SetupViewport()
     effectRenderPath = viewport_->GetRenderPath()->Clone();
     effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
     effectRenderPath->SetEnabled("FXAA3", true);
-    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
-    effectRenderPath->SetShaderParameter("BloomThreshold", 0.5f);
-    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.75f, 1.0f));
-    effectRenderPath->SetEnabled("Bloom", true);
+    /*effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
+    effectRenderPath->SetShaderParameter("BloomThreshold", 0.75f);
+    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.75f, 0.5f));
+    effectRenderPath->SetEnabled("Bloom", true);*/
 
     viewport_->SetRenderPath(effectRenderPath);
     renderer->SetViewport(0, viewport);

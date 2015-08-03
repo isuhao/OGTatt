@@ -32,7 +32,7 @@ Hemp::Hemp(Context *context, MasterControl *masterControl, Node *parent, Vector3
     fropModel_ = rootNode_->CreateComponent<StaticModel>();
     fropModel_->SetModel(masterControl_->cache_->GetResource<Model>("Resources/Models/Frop.mdl"));
     fropModel_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/frop.xml"));
-    fropModel_->SetCastShadows(true);
+    fropModel_->SetCastShadows(false);
 
     SubscribeToEvent(E_UPDATE, HANDLER(Hemp, HandleUpdate));
 }

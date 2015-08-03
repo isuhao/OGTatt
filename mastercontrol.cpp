@@ -39,7 +39,7 @@ void MasterControl::Setup()
     //Set custom window title and icon.
     engineParameters_["WindowTitle"] = "OG Tatt";
     engineParameters_["LogName"] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
-    engineParameters_["FullScreen"] = true;
+    engineParameters_["FullScreen"] = false;
     engineParameters_["Headless"] = false;
     engineParameters_["WindowWidth"] = 960;
     engineParameters_["WindowHeight"] = 540;
@@ -52,7 +52,6 @@ void MasterControl::Start()
     renderer_ = GetSubsystem<Renderer>();
 
     LoadResources();
-
 
     CreateSineLookupTable();
 
@@ -214,7 +213,7 @@ void MasterControl::CreateScene()
 
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
-    for (int p = 0; p < 10; p++) new Pedestrian(context_, this, (p*0.1f)*Vector3::FORWARD);
+    for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-10.0f, 10.0f), 0.0f, Random(-10.0f, 10.0f)));
     new Vehicle(context_, this, Vector3::RIGHT);
 }
 

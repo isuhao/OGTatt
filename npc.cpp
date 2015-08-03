@@ -27,11 +27,16 @@ NPC::NPC(Context *context, MasterControl *masterControl, Vector3 pos):
     rootNode_->SetPosition(pos);
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
+    rigidBody_->SetMass(1.0f);
+    rigidBody_->SetFriction(0.0f);
+    rigidBody_->SetRestitution(0.0f);
+    rigidBody_->SetMass(1.0f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
-    rigidBody_->SetLinearDamping(0.9f);
+    rigidBody_->SetLinearDamping(0.95f);
     rigidBody_->SetAngularFactor(Vector3::UP);
-    rigidBody_->SetAngularDamping(0.9f);
-    rigidBody_->SetLinearRestThreshold(0.023f);
+    rigidBody_->SetAngularDamping(0.5f);
+    rigidBody_->SetLinearRestThreshold(0.01f);
+    rigidBody_->SetAngularRestThreshold(0.1f);
 
     collisionShape_ = rootNode_->CreateComponent<CollisionShape>();
     collisionShape_->SetCylinder(0.4f, 0.5f);

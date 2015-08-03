@@ -54,9 +54,9 @@ Player::Player(Context *context, MasterControl *masterControl):
     model_->SetCastShadows(true);
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();
-    animCtrl_->PlayExclusive("Resources/Models/Idle.ani", 0, true, 1.0f);
-    animCtrl_->SetSpeed("Resources/Models/Idle.ani", 1.0f);
-    animCtrl_->SetStartBone("Resources/Models/Idle.ani", "MasterBone");
+    animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);
+    animCtrl_->SetSpeed("Resources/Models/IdleRelax.ani", 1.0f);
+    animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetFriction(0.0f);
@@ -156,7 +156,7 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //Deadzone
     else if (move.Length() < 0.01f) move *= 0.0f;
     //Run
-    move = move  * (1.0f + 0.666f*input->GetKeyDown(KEY_SHIFT));
+    move = move * (1.0f + 0.666f*input->GetKeyDown(KEY_SHIFT));
 
     //Apply movement
     Vector3 force = move * thrust * timeStep;
@@ -170,15 +170,17 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
         aimRotation.FromLookRotation(lookDirection);
         rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
+        //Update animation
         if (velocity.Length() > 0.1f){
-            animCtrl_->PlayExclusive("Resources/Models/Walk.ani", 0, true, 1.0f);
-            animCtrl_->SetSpeed("Resources/Models/Walk.ani", velocity.Length()*2.3f);
-            animCtrl_->SetStartBone("Resources/Models/Walk.ani", "MasterBone");
+            animCtrl_->PlayExclusive("Resources/Models/WalkRelax.ani", 0, true, 0.15f);
+            animCtrl_->SetSpeed("Resources/Models/WalkRelax.ani", velocity.Length()*2.3f);
+            animCtrl_->SetStartBone("Resources/Models/WalkRelax.ani", "MasterBone");
         }
         else {
-            animCtrl_->PlayExclusive("Resources/Models/Idle.ani", 0, true, 1.0f);
-            animCtrl_->SetStartBone("Resources/Models/Idle.ani", "MasterBone");
+            animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.15f);
+            animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
         }
+
         //Shooting
     sinceLastShot_ += timeStep;
 

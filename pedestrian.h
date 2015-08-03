@@ -47,6 +47,11 @@ protected:
     bool male_;
 private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
+
+    float sinceLastTurn_;
+    float turnInterval_;
+    Vector3 direction_;
+    float walkSpeed_;
 };
 
 #endif //PEDESTRIAN_H

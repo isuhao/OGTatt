@@ -63,8 +63,8 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     particleNode->SetPosition(Vector3(0.35, 0.5f, 0.9f));
     ParticleEmitter* flameEmitter = particleNode->CreateComponent<ParticleEmitter>();
     flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
-
-    Destroy();
+    flameEmitter->SetEmitting(false);
+    //Destroy();
 }
 
 void Vehicle::Hit(double damage)
