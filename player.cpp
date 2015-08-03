@@ -46,9 +46,9 @@ Player::Player(Context *context, MasterControl *masterControl):
     model_ = rootNode_->CreateComponent<AnimatedModel>();
     model_->SetModel(masterControl_->resources.models.characters.male);
 
-    model_->SetMaterial(1, masterControl_->resources.materials.hair);
-    model_->SetMaterial(2, masterControl_->resources.materials.skin);
-    model_->SetMaterial(0, masterControl_->resources.materials.pants);
+    model_->SetMaterial(1, masterControl_->GetRandomCloth());
+    model_->SetMaterial(2, masterControl_->GetRandomSkin());
+    model_->SetMaterial(0, masterControl_->GetRandomCloth());
     model_->SetMaterial(3, masterControl_->resources.materials.metal);
 
     model_->SetCastShadows(true);
@@ -195,7 +195,7 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
             Bullet* bullet = new Bullet(context_, masterControl_);
             bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * 0.5f);
             bullet->rootNode_->LookAt(rootNode_->GetPosition() + fire);
-            bullet->rigidBody_->ApplyForce(fire*1500.0f);
+            bullet->rigidBody_->ApplyForce(fire*256.0f);
             Muzzle* muzzle = new Muzzle(context_, masterControl_, rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
             muzzle->rootNode_->LookAt(rootNode_->GetPosition() + fire);
             PlaySample(sample_);

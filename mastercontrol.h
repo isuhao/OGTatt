@@ -116,12 +116,12 @@ typedef struct Resources
         } tileParts;
     } models;
     struct {
+        Vector<SharedPtr<Material> > skin;
+        Vector<SharedPtr<Material> > cloth;
         SharedPtr<Material> darkness;
-        SharedPtr<Material> cloth;
-        SharedPtr<Material> skin;
         SharedPtr<Material> metal;
         SharedPtr<Material> leather;
-        SharedPtr<Material> floor;
+        SharedPtr<Material> sidewalk;
         SharedPtr<Material> wall;
         SharedPtr<Material> hair;
         SharedPtr<Material> pants;
@@ -176,7 +176,8 @@ public:
     ///Physics
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
-
+    SharedPtr<Material> GetRandomSkin() { return resources.materials.skin[Random((int)resources.materials.skin.Size())]; }
+    SharedPtr<Material> GetRandomCloth() { return resources.materials.cloth[Random((int)resources.materials.cloth.Size())]; }
 private:
     SharedPtr<UI> ui_;
     SharedPtr<Renderer> renderer_;

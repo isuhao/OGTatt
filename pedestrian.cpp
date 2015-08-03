@@ -23,7 +23,7 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
-    walkSpeed_{Random(3.0f, 5.0f)}
+    walkSpeed_{Random(4.2f, 5.0f)}
 {
     male_ = (Random(1.0f)>0.5f) ? true : false;
     rootNode_->SetName("Pedestrian");
@@ -34,16 +34,16 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     bodyModel_ = modelNode_->CreateComponent<AnimatedModel>();
     if (male_){
         bodyModel_->SetModel(masterControl_->resources.models.characters.male);
-        bodyModel_->SetMaterial(1, masterControl_->resources.materials.cloth);
-        bodyModel_->SetMaterial(2, masterControl_->resources.materials.skin);
-        bodyModel_->SetMaterial(0, masterControl_->resources.materials.pants);
+        bodyModel_->SetMaterial(1, masterControl_->GetRandomCloth());
+        bodyModel_->SetMaterial(2, masterControl_->GetRandomSkin());
+        bodyModel_->SetMaterial(0, masterControl_->GetRandomCloth());
         bodyModel_->SetMaterial(3, masterControl_->resources.materials.metal);
     }
     else{
         bodyModel_->SetModel(masterControl_->resources.models.characters.female);
-        bodyModel_->SetMaterial(2, masterControl_->resources.materials.cloth);
-        bodyModel_->SetMaterial(1, masterControl_->resources.materials.skin);
-        bodyModel_->SetMaterial(0, masterControl_->resources.materials.pants);
+        bodyModel_->SetMaterial(2, masterControl_->GetRandomCloth());
+        bodyModel_->SetMaterial(1, masterControl_->GetRandomSkin());
+        bodyModel_->SetMaterial(0, masterControl_->GetRandomCloth());
         bodyModel_->SetMaterial(3, masterControl_->resources.materials.metal);
     }
     bodyModel_->SetCastShadows(true);

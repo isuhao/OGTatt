@@ -30,7 +30,7 @@ Bullet::Bullet(Context *context, MasterControl *masterControl):
     model_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Bullet.xml"));
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
-    rigidBody_->SetMass(0.5f);
+    rigidBody_->SetMass(0.23f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
     rigidBody_->SetFriction(0.0f);
 

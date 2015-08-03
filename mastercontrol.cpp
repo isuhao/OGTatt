@@ -129,7 +129,7 @@ void MasterControl::CreateUI()
 
     //Construct new Text object, set string to display and font to use
     Text* instructionText = ui->GetRoot()->CreateChild<Text>();
-    instructionText->SetText("OGTatt");
+    instructionText->SetText("OG Tatt");
     instructionText->SetFont(cache->GetResource<Font>("Resources/Fonts/infinite.ttf"), 23);
     instructionText->SetColor(Color(0.666f, 1.0f, 0.23f, 0.42f));
     //The text has multiple rows. Center them in relation to each other
@@ -157,12 +157,23 @@ void MasterControl::LoadResources()
     resources.models.tileParts.blockTween = cache_->GetResource<Model>("Resources/Models/Block_tween.mdl");
     resources.models.tileParts.blockTweenCorner = cache_->GetResource<Model>("Resources/Models/Block_tweencorner.mdl");
 
-    resources.materials.cloth = cache_->GetResource<Material>("Resources/Materials/Cloth.xml");
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_0.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_1.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_2.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_3.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_4.xml")));
+
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothWhite.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothBlack.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothRed.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothYellow.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothGreen.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothBlue.xml")));
+
     resources.materials.darkness = cache_->GetResource<Material>("Resources/Materials/Darkness.xml");
-    resources.materials.floor = cache_->GetResource<Material>("Resources/Materials/Floor.xml");
+    resources.materials.sidewalk = cache_->GetResource<Material>("Resources/Materials/Sidewalk.xml");
     resources.materials.metal = cache_->GetResource<Material>("Resources/Materials/Metal.xml");
     resources.materials.leather = cache_->GetResource<Material>("Resources/Materials/Leather.xml");
-    resources.materials.skin = cache_->GetResource<Material>("Resources/Materials/Skin.xml");
     resources.materials.wall = cache_->GetResource<Material>("Resources/Materials/Wall.xml");
     resources.materials.hair = cache_->GetResource<Material>("Resources/Materials/Hair.xml");
     resources.materials.pants = cache_->GetResource<Material>("Resources/Materials/Pants.xml");
@@ -213,7 +224,7 @@ void MasterControl::CreateScene()
 
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
-    for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-10.0f, 10.0f), 0.0f, Random(-10.0f, 10.0f)));
+    for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
     new Vehicle(context_, this, Vector3::RIGHT);
 }
 

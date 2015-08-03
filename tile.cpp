@@ -71,11 +71,11 @@ Object(context)
         StaticModel* model = elements_[i]->CreateComponent<StaticModel>();
         switch (i){
         case TE_CENTER:    model->SetModel(masterControl_->resources.models.tileParts.blockCenter);
-            model->SetMaterial(masterControl_->resources.materials.floor);
+            model->SetMaterial(masterControl_->resources.materials.sidewalk);
             break;
         case TE_NORTH:case TE_EAST:case TE_SOUTH:case TE_WEST:
             model->SetModel(masterControl_->resources.models.tileParts.blockTween);
-            model->SetMaterial(0, masterControl_->resources.materials.floor);
+            model->SetMaterial(0, masterControl_->resources.materials.sidewalk);
             break;
         case TE_NORTHEAST:case TE_SOUTHEAST:case TE_SOUTHWEST:case TE_NORTHWEST:
             model->SetModel(masterControl_->resources.models.tileParts.blockOutCorner);
@@ -153,13 +153,13 @@ void Tile::FixFringe()
                     case TT_ENGINE : if (dungeon_->GetNeighbourType(coords_, (TileElement)element) == TT_ENGINE) model->SetModel(SharedPtr<Model>()); break;
                     default :
                         model->SetModel(masterControl_->resources.models.tileParts.blockTween);
-                        model->SetMaterial(0, masterControl_->resources.materials.floor);
+                        model->SetMaterial(0, masterControl_->resources.materials.sidewalk);
                         break;
                     }
                 }
                 else if (element == 4) {
                     model->SetModel(masterControl_->resources.models.tileParts.blockTween);
-                    model->SetMaterial(0, masterControl_->resources.materials.floor);
+                    model->SetMaterial(0, masterControl_->resources.materials.sidewalk);
                 }
                 else model->SetModel(SharedPtr<Model>());
             }
@@ -188,7 +188,7 @@ void Tile::FixFringe()
                 break;
             case CT_FILL:
                 model->SetModel(masterControl_->resources.models.tileParts.blockFillCorner);
-                model->SetMaterial(0, masterControl_->resources.materials.floor);
+                model->SetMaterial(0, masterControl_->resources.materials.sidewalk);
                 break;
             default: break;
             }
