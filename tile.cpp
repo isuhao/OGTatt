@@ -122,7 +122,7 @@ TileType Tile::GetBuilding()
 //Fix this tile's element models and materials according to
 void Tile::FixFringe()
 {
-    for (int element = 1; element < TE_LENGTH; element++)
+    for (int element = 1; element != TE_LENGTH; element++)
     {
         StaticModel* model = elements_[element]->GetComponent<StaticModel>();
         //Fix sides

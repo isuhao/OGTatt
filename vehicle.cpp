@@ -50,7 +50,7 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     rigidBody_->SetAngularRestThreshold(0.1f);
 
     CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
-    collisionShape->SetBox(Vector3(1.16f, 0.6f, 2.0f));
+    collisionShape->SetBox(Vector3(1.16f, 0.6f, 2.1f), Vector3::BACK*0.05f);
 
     Node* particleNode = rootNode_->CreateChild("Fire");
     particleNode->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
