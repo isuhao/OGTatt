@@ -1,13 +1,13 @@
-#:four_leaf_clover: OG Tatt.
+#:four_leaf_clover: OG Tatt.: Respect is Everything
 ###Summary
 Original Gangster Tattoo is a free and open source online top-down gangwar game being developed using the Urho3D game engine.
 
 ###Installation
 ####Linux
 
-1. Either run CloneMakeUrho3D.sh; This script will clone the Urho3D game engine into your heXon folder, compile it and create symlinks to the Data and CoreData folders.
-Or, if you already have Urho3D compiled on your system place three symlinks in the heXon folder pointing to the root folder of the Urho3D game engine and both it's Data and CoreData folders.
-2. Now you can compile OG Tatt using qmake. Either open heXon.pro using QtCreator and run it or run `qmake OGTatt.pro` and then `make` from within the OGTatt folder.
+1. Either run CloneMakeUrho3D.sh; This script will clone the Urho3D game engine into your OGTatt folder, compile it and create symlinks to the Data and CoreData folders.
+Or, if you already have Urho3D compiled on your system place three symlinks in the OGTatt folder pointing to the root folder of the Urho3D game engine and both it's Data and CoreData folders.
+2. Now you can compile OG Tatt using qmake. Either open OGTatt.pro using QtCreator and run it or run `qmake OGTatt.pro` and then `make` from within the OGTatt folder.
 
 ####Windows and Mac
 
