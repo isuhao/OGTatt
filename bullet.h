@@ -20,10 +20,8 @@
 #define BULLET_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Physics/PhysicsEvents.h>
 
 #include "hitfx.h"
-
 #include "sceneobject.h"
 
 namespace Urho3D {

@@ -20,6 +20,7 @@
 #define WALLCOLLIDER_H
 
 #include <Urho3D/Urho3D.h>
+
 #include "sceneobject.h"
 #include "mastercontrol.h"
 #include "level.h"

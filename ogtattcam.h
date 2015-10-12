@@ -20,6 +20,7 @@
 #define OGTATTCAM_H
 
 #include <Urho3D/Urho3D.h>
+
 #include "mastercontrol.h"
 #include "level.h"
 

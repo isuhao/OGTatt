@@ -20,10 +20,6 @@
 #define PICKUP_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
 
 #include "sceneobject.h"
 

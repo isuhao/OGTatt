@@ -40,9 +40,9 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
 
     Zone* zone = rootNode_->CreateComponent<Zone>();
     zone->SetBoundingBox(BoundingBox(Vector3(-100.0f, -50.0f, -100.0f), Vector3(100.0f, 50.0f, 100.0f)));
-    zone->SetAmbientColor(Color(0.23f, 0.23f, 1.0f, 0.42f));
+    zone->SetAmbientColor(Color(0.23f, 0.23f, 0.52f));
     zone->SetFogColor(Color(0.42f, 0.3f, 0.23f, 1.0f));
-    zone->SetFogStart(10.0f);
+    zone->SetFogStart(23.0f);
     zone->SetFogEnd(viewRange);
 
     //Set an initial position for the camera scene node above the origin
@@ -79,16 +79,16 @@ void OGTattCam::SetupViewport()
     viewport_ = viewport;
 
     //Add anti-asliasing and bloom
-    effectRenderPath = viewport_->GetRenderPath()->Clone();
-    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
-    effectRenderPath->SetEnabled("FXAA3", true);
-    /*effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
-    effectRenderPath->SetShaderParameter("BloomThreshold", 0.75f);
-    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.75f, 0.5f));
-    effectRenderPath->SetEnabled("Bloom", true);*/
+//    effectRenderPath = viewport_->GetRenderPath()->Clone();
+//    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
+//    effectRenderPath->SetEnabled("FXAA3", true);
+//    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
+//    effectRenderPath->SetShaderParameter("BloomThreshold", 0.666f);
+//    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.85f, 1.0f));
+//    effectRenderPath->SetEnabled("Bloom", true);
 
-    viewport_->SetRenderPath(effectRenderPath);
-    renderer->SetViewport(0, viewport);
+//    viewport_->SetRenderPath(effectRenderPath);
+    renderer->SetViewport(0, viewport_);
 }
 
 Vector3 OGTattCam::GetWorldPosition()
@@ -128,14 +128,14 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     //Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
     Vector3 camForward = rootNode_->GetDirection();
-    camForward = OGTatt::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
+    camForward = LucKey::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
 
     Vector3 camForce = Vector3::ZERO;
-    Vector3 centerForce = OGTatt::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
-    if (input->GetKeyDown('T')) camForce += OGTatt::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
-    if (input->GetKeyDown('G')) camForce += OGTatt::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
-    if (input->GetKeyDown('H')) camForce += OGTatt::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
-    if (input->GetKeyDown('F')) camForce += OGTatt::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
+    Vector3 centerForce = LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
+    if (input->GetKeyDown('T')) camForce += LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
+    if (input->GetKeyDown('G')) camForce += LucKey::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
+    if (input->GetKeyDown('H')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
+    if (input->GetKeyDown('F')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
     if (input->GetKeyDown('Y')) camForce += Vector3::UP;
     if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
 

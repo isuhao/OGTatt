@@ -20,6 +20,7 @@
 #define HEMP_H
 
 #include <Urho3D/Urho3D.h>
+
 #include "mastercontrol.h"
 
 namespace Urho3D {

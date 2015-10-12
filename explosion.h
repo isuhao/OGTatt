@@ -20,9 +20,6 @@
 #define EXPLOSION_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
-#include <Urho3D/Graphics/ParticleEffect.h>
-#include <Urho3D/Math/Sphere.h>
 
 #include "effect.h"
 

@@ -20,7 +20,6 @@
 #define EFFECT_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
 
 #include "sceneobject.h"
 

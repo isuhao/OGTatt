@@ -20,8 +20,6 @@
 #define PEDESTRIAN_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Graphics/AnimatedModel.h>
-#include <Urho3D/Graphics/AnimationController.h>
 
 #include "mastercontrol.h"
 #include "npc.h"
@@ -45,6 +43,7 @@ protected:
     AnimatedModel* bodyModel_;
     AnimationController* animCtrl_;
     bool male_;
+    Vector<Color> colors_;
 private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
 

@@ -20,10 +20,9 @@
 #define TILE_H
 
 #include <Urho3D/Urho3D.h>
+
 #include "mastercontrol.h"
 #include "level.h"
-#include <Urho3D/Physics/RigidBody.h>
-#include <Urho3D/Core/CoreEvents.h>
 
 namespace Urho3D {
 class Drawable;

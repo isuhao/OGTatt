@@ -43,15 +43,36 @@ Player::Player(Context *context, MasterControl *masterControl):
 {
     rootNode_->SetName("Player");
 
-    model_ = rootNode_->CreateComponent<AnimatedModel>();
-    model_->SetModel(masterControl_->resources.models.characters.male);
+    bodyModel_ = rootNode_->CreateComponent<AnimatedModel>();
+    bodyModel_->SetCastShadows(true);
+    male_ = Random(2);
+    for (int c = 0; c < 5; c++)
+    {
+        switch (c){
+        case 0:{
+            colors_.Push(RandomSkinColor());
+        } break;
+        case 4:{
+            colors_.Push(RandomHairColor());
+        } break;
+        default: colors_.Push(RandomColor()); break;
+        }
+    }
+    if (male_){
+        bodyModel_->SetModel(masterControl_->resources.models.characters.male);}
+    else{
+        bodyModel_->SetModel(masterControl_->resources.models.characters.female);
+    }
 
-    model_->SetMaterial(1, masterControl_->GetRandomCloth());
-    model_->SetMaterial(2, masterControl_->GetRandomSkin());
-    model_->SetMaterial(0, masterControl_->GetRandomCloth());
-    model_->SetMaterial(3, masterControl_->resources.materials.metal);
+    for (unsigned m = 0; m < bodyModel_->GetNumGeometries(); m++){
+        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
+        Color diffColor = colors_[m];
+        bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
+        Color specColor = diffColor*(1.0f-0.1f*m);
+        specColor.a_ = 23.0f - 4.0f * m;
+        bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
+    }
 
-    model_->SetCastShadows(true);
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();
     animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);
@@ -117,8 +138,8 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //Orientation vectors
     Vector3 camRight = masterControl_->world.camera->rootNode_->GetRight();
     Vector3 camForward = masterControl_->world.camera->rootNode_->GetDirection();
-    camRight = OGTatt::Scale(camRight, Vector3::ONE - Vector3::UP).Normalized();
-    camForward = OGTatt::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
+    camRight = LucKey::Scale(camRight, Vector3::ONE - Vector3::UP).Normalized();
+    camForward = LucKey::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
     //Movement values
     Vector3 move = Vector3::ZERO;
     Vector3 moveJoy = Vector3::ZERO;
@@ -133,17 +154,17 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //Read input
     JoystickState* joystickState = input->GetJoystickByIndex(0);
     if (joystickState){
-    moveJoy = camRight * joystickState->GetAxisPosition(0) +
-            -camForward * joystickState->GetAxisPosition(1);
-    fireJoy = camRight * joystickState->GetAxisPosition(2) +
-            -camForward * joystickState->GetAxisPosition(3);
+        moveJoy = camRight * joystickState->GetAxisPosition(0) +
+                -camForward * joystickState->GetAxisPosition(1);
+        fireJoy = camRight * joystickState->GetAxisPosition(2) +
+                -camForward * joystickState->GetAxisPosition(3);
     }
     moveKey = -camRight * input->GetKeyDown(KEY_LEFT) +
-               camRight * input->GetKeyDown(KEY_RIGHT) +
+            camRight * input->GetKeyDown(KEY_RIGHT) +
             camForward * input->GetKeyDown(KEY_UP) +
             -camForward * input->GetKeyDown(KEY_DOWN);
     fireKey = -camRight * input->GetKeyDown(KEY_J) +
-               camRight * input->GetKeyDown(KEY_L) +
+            camRight * input->GetKeyDown(KEY_L) +
             camForward * input->GetKeyDown(KEY_I) +
             -camForward * input->GetKeyDown(KEY_K);
 
@@ -160,28 +181,28 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     //Apply movement
     Vector3 force = move * thrust * timeStep;
-        rigidBody_->ApplyForce(force);
+    rigidBody_->ApplyForce(force);
 
     //Update rotation according to direction of the player's movement.
-        Vector3 velocity = rigidBody_->GetLinearVelocity();
-        Vector3 lookDirection = velocity + 2.0f*fire;
-        Quaternion rotation = rootNode_->GetWorldRotation();
-        Quaternion aimRotation = rotation;
-        aimRotation.FromLookRotation(lookDirection);
-        rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
+    Vector3 velocity = rigidBody_->GetLinearVelocity();
+    Vector3 lookDirection = velocity + 2.0f*fire;
+    Quaternion rotation = rootNode_->GetWorldRotation();
+    Quaternion aimRotation = rotation;
+    aimRotation.FromLookRotation(lookDirection);
+    rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
-        //Update animation
-        if (velocity.Length() > 0.1f){
-            animCtrl_->PlayExclusive("Resources/Models/WalkRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetSpeed("Resources/Models/WalkRelax.ani", velocity.Length()*2.3f);
-            animCtrl_->SetStartBone("Resources/Models/WalkRelax.ani", "MasterBone");
-        }
-        else {
-            animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
-        }
+    //Update animation
+    if (velocity.Length() > 0.1f){
+        animCtrl_->PlayExclusive("Resources/Models/WalkRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetSpeed("Resources/Models/WalkRelax.ani", velocity.Length()*2.3f);
+        animCtrl_->SetStartBone("Resources/Models/WalkRelax.ani", "MasterBone");
+    }
+    else {
+        animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
+    }
 
-        //Shooting
+    //Shooting
     sinceLastShot_ += timeStep;
 
     if (fire.Length() > 0.1f) fire.Normalize();
@@ -195,7 +216,7 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
             Bullet* bullet = new Bullet(context_, masterControl_);
             bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * 0.5f);
             bullet->rootNode_->LookAt(rootNode_->GetPosition() + fire);
-            bullet->rigidBody_->ApplyForce(fire*256.0f);
+            bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),Random(-0.01f, 0.01f),Random(-0.01f, 0.01f)) + fire)*256.0f);
             Muzzle* muzzle = new Muzzle(context_, masterControl_, rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
             muzzle->rootNode_->LookAt(rootNode_->GetPosition() + fire);
             PlaySample(sample_);

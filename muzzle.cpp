@@ -29,7 +29,7 @@ Muzzle::Muzzle(Context *context, MasterControl *masterControl, Vector3 position)
     Node* lightNode_ = rootNode_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 0.0f, 0.2f));
     light_ = lightNode_->CreateComponent<Light>();
-    light_->SetRange(3.0f);
+    light_->SetRange(2.3f);
     light_->SetColor(Color(1.0f, 1.0f, 0.666f));
     light_->SetCastShadows(true);
 

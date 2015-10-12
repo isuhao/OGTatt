@@ -20,15 +20,6 @@
 #define VEHICLE_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Graphics/AnimatedModel.h>
-#include <Urho3D/Graphics/AnimationController.h>
-#include <Urho3D/UI/Text.h>
-#include <Urho3D/UI/Font.h>
-#include <Urho3D/Input/Input.h>
-#include <Urho3D/Input/InputEvents.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
 
 #include "sceneobject.h"
 
@@ -48,8 +39,9 @@ public:
     Vehicle(Context* context, MasterControl* masterControl, Vector3 position);
     void Hit(double damage);
 protected:
-    StaticModel* chassisModel_;
+    AnimatedModel* chassisModel_;
     SharedPtr<RigidBody> rigidBody_;
+    DecalSet* decal_;
 private:
     void Destroy();
 };

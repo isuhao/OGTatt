@@ -16,22 +16,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/UI/UI.h>
-#include <Urho3D/UI/Text.h>
-#include <Urho3D/UI/Font.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
-#include <Urho3D/Graphics/ParticleEffect.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
-
 #include "mastercontrol.h"
 #include "vehicle.h"
 #include "explosion.h"
@@ -41,30 +25,45 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
 {
     rootNode_->SetName("Vehicle");
     rootNode_->SetPosition(position);
-    chassisModel_ = rootNode_->CreateComponent<StaticModel>();
+    chassisModel_ = rootNode_->CreateComponent<AnimatedModel>();
     chassisModel_->SetModel(masterControl_->resources.models.vehicles.cookieJar);
     chassisModel_->SetCastShadows(true);
-    chassisModel_->SetMaterial(1, masterControl_->resources.materials.metal);
-    chassisModel_->SetMaterial(0, masterControl_->resources.materials.paint);
+    chassisModel_->SetMaterial(0, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Paint.xml"));
+    chassisModel_->GetMaterial(0)->SetShaderParameter("MatDiffColor", RandomColor());
+    chassisModel_->SetMaterial(1, masterControl_->resources.materials.glass);
+    chassisModel_->SetMaterial(2, masterControl_->resources.materials.darkness);
+    chassisModel_->SetMaterial(3, masterControl_->resources.materials.headlights);
+    chassisModel_->SetMaterial(4, masterControl_->resources.materials.taillights);
+
+    for (unsigned m = 0; m < chassisModel_->GetNumMorphs(); m++){
+        chassisModel_->SetMorphWeight(m, Random());
+    }
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetMass(25.0f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
     rigidBody_->SetAngularFactor(Vector3::UP);
+    rigidBody_->SetFriction(0.23f);
     rigidBody_->SetLinearDamping(0.9f);
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
 
     CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
-    collisionShape->SetBox(Vector3(1.0f, 0.6f, 2.0f));
+    collisionShape->SetBox(Vector3(1.16f, 0.6f, 2.0f));
 
     Node* particleNode = rootNode_->CreateChild("Fire");
-    particleNode->SetPosition(Vector3(0.35, 0.5f, 0.9f));
+    particleNode->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
     ParticleEmitter* flameEmitter = particleNode->CreateComponent<ParticleEmitter>();
     flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
-    flameEmitter->SetEmitting(false);
-    //Destroy();
+    flameEmitter->SetEmitting(Random(2));
+
+    decal_ = rootNode_->CreateComponent<DecalSet>();
+    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
+    Quaternion decalRotation = rootNode_->GetRotation();
+    decalRotation  = decalRotation * Quaternion(90.0f, rootNode_->GetRight());
+    decal_->AddDecal(chassisModel_, rootNode_->GetWorldPosition()-0.23f*rootNode_->GetDirection(), decalRotation, 0.666f, 1.0f, 2.3f, Vector2::ZERO, Vector2::ONE);
+    if (!Random(5)) Destroy();
 }
 
 void Vehicle::Hit(double damage)
@@ -77,4 +76,5 @@ void Vehicle::Destroy()
     for (int i = 0; i < chassisModel_->GetNumGeometries(); i++){
         chassisModel_->SetMaterial(i, masterControl_->resources.materials.darkness);
     }
+    decal_->SetEnabled(false);
 }

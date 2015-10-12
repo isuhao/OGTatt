@@ -25,28 +25,41 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
     walkSpeed_{Random(4.2f, 5.0f)}
 {
-    male_ = (Random(1.0f)>0.5f) ? true : false;
     rootNode_->SetName("Pedestrian");
     rootNode_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
 
     modelNode_ = rootNode_->CreateChild("ModelNode");
 
     bodyModel_ = modelNode_->CreateComponent<AnimatedModel>();
-    if (male_){
-        bodyModel_->SetModel(masterControl_->resources.models.characters.male);
-        bodyModel_->SetMaterial(1, masterControl_->GetRandomCloth());
-        bodyModel_->SetMaterial(2, masterControl_->GetRandomSkin());
-        bodyModel_->SetMaterial(0, masterControl_->GetRandomCloth());
-        bodyModel_->SetMaterial(3, masterControl_->resources.materials.metal);
+    bodyModel_->SetCastShadows(true);
+
+    male_ = Random(2);
+    for (int c = 0; c < 5; c++)
+    {
+        switch (c){
+        case 0:{
+            colors_.Push(RandomSkinColor());
+        } break;
+        case 4:{
+            colors_.Push(RandomHairColor());
+        } break;
+        default: colors_.Push(RandomColor()); break;
+        }
     }
+    if (male_){
+        bodyModel_->SetModel(masterControl_->resources.models.characters.male);}
     else{
         bodyModel_->SetModel(masterControl_->resources.models.characters.female);
-        bodyModel_->SetMaterial(2, masterControl_->GetRandomCloth());
-        bodyModel_->SetMaterial(1, masterControl_->GetRandomSkin());
-        bodyModel_->SetMaterial(0, masterControl_->GetRandomCloth());
-        bodyModel_->SetMaterial(3, masterControl_->resources.materials.metal);
     }
-    bodyModel_->SetCastShadows(true);
+
+    for (unsigned m = 0; m < bodyModel_->GetNumGeometries(); m++){
+        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
+        Color diffColor = colors_[m];
+        bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
+        Color specColor = diffColor*(1.0f-0.1f*m);
+        specColor.a_ = 23.0f - 4.0f * m;
+        bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
+    }
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();
     animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);

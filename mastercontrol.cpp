@@ -39,10 +39,10 @@ void MasterControl::Setup()
     //Set custom window title and icon.
     engineParameters_["WindowTitle"] = "OG Tatt";
     engineParameters_["LogName"] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
-    engineParameters_["FullScreen"] = false;
-    engineParameters_["Headless"] = false;
-    engineParameters_["WindowWidth"] = 960;
-    engineParameters_["WindowHeight"] = 540;
+//    engineParameters_["FullScreen"] = false;
+//    engineParameters_["Headless"] = false;
+//    engineParameters_["WindowWidth"] = 960;
+//    engineParameters_["WindowHeight"] = 540;
 }
 void MasterControl::Start()
 {
@@ -67,13 +67,14 @@ void MasterControl::Start()
     //Hook up to the frame update and render post-update events
     SubscribeToEvents();
 
-    Sound* music = cache_->GetResource<Sound>("Resources/Music/Pantera_Negra_-_Sumerian_Speech.ogg");
-    //Sound* music = cache_->GetResource<Sound>("Resources/Music/Grim_Shit_-_When_The_System_Collapses.ogg");
+    Sound* music = cache_->GetResource<Sound>("Resources/Music/Huilende Rappers - Loop als een Piraatje.ogg");
+//    Sound* music = cache_->GetResource<Sound>("Resources/Music/Grim_Shit_-_When_The_System_Collapses.ogg");
     music->SetLooped(true);
     Node* musicNode = world.scene->CreateChild("Music");
     SoundSource* musicSource = musicNode->CreateComponent<SoundSource>();
     musicSource->SetSoundType(SOUND_MUSIC);
-    //musicSource->Play(music);
+    musicSource->SetGain(0.23f);
+    musicSource->Play(music);
 }
 void MasterControl::Stop()
 {
@@ -178,6 +179,10 @@ void MasterControl::LoadResources()
     resources.materials.hair = cache_->GetResource<Material>("Resources/Materials/Hair.xml");
     resources.materials.pants = cache_->GetResource<Material>("Resources/Materials/Pants.xml");
     resources.materials.paint = cache_->GetResource<Material>("Resources/Materials/Paint.xml");
+    resources.materials.glass = cache_->GetResource<Material>("Resources/Materials/Glass.xml");
+    resources.materials.amber = cache_->GetResource<Material>("Resources/Materials/Amber.xml");
+    resources.materials.headlights = cache_->GetResource<Material>("Resources/Materials/HeadLights.xml");
+    resources.materials.taillights = cache_->GetResource<Material>("Resources/Materials/TailLights.xml");
 }
 
 void MasterControl::CreateScene()
@@ -207,17 +212,17 @@ void MasterControl::CreateScene()
 
     //Create a directional light.
     Node* lightNode = world.scene->CreateChild("DirectionalLight");
-    lightNode->SetDirection(Vector3(2.3f, -0.2f, -5.0f));
+    lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
     Light* light = lightNode->CreateComponent<Light>();
     light->SetLightType(LIGHT_DIRECTIONAL);
-    light->SetBrightness(0.23f);
+    light->SetBrightness(1.23f);
     light->SetColor(Color(1.0f, 0.9f, 0.666f));
     light->SetCastShadows(true);
-    light->SetShadowIntensity(0.9f);
+    light->SetShadowIntensity(0.42f);
     light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
 
     //Set cascade splits at 10, 50, 200 world unitys, fade shadows at 80% of maximum shadow distance
-    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
+//    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
 
     //Create camera
     world.camera = new OGTattCam(context_, this);
@@ -225,7 +230,7 @@ void MasterControl::CreateScene()
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
     for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
-    new Vehicle(context_, this, Vector3::RIGHT);
+    for (int v = 1; v <= 5; v++) new Vehicle(context_, this, 2.3f*Vector3::RIGHT*v);
 }
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
@@ -237,7 +242,7 @@ void MasterControl::HandleSceneUpdate(StringHash eventType, VariantMap &eventDat
 {
     using namespace Update;
     float timeStep = eventData[P_TIMESTEP].GetFloat();
-    world.voidNode->SetPosition(OGTatt::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
+    world.voidNode->SetPosition(LucKey::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
     UpdateCursor(timeStep);
 }
 
@@ -298,7 +303,7 @@ void MasterControl::CreateSineLookupTable()
 }
 
 float MasterControl::Sine(float x) {
-    return sine_[(int)round(sine_.Size() * OGTatt::Cycle(x/M_PI, 0.0f, 1.0f))%sine_.Size()];
+    return sine_[(int)round(sine_.Size() * LucKey::Cycle(x/M_PI, 0.0f, 1.0f))%sine_.Size()];
 }
 
 float MasterControl::Sine(float freq, float min, float max, float shift)

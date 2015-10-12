@@ -73,7 +73,7 @@ void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)
         if (masterControl_->PhysicsSphereCast(hitResults,rootNode_->GetPosition(), radius, M_MAX_UNSIGNED)){
             for (int i = 0; i < hitResults.Size(); i++){
                 if (!hitResults[i]->IsTrigger()){
-                    hitResults[i]->ApplyForce((hitResults[i]->GetNode()->GetWorldPosition() - rootNode_->GetWorldPosition()) * sqrt(radius-OGTatt::Distance(rootNode_->GetWorldPosition(), hitResults[i]->GetNode()->GetWorldPosition()))*timeStep*500.0f*rigidBody_->GetMass()
+                    hitResults[i]->ApplyForce((hitResults[i]->GetNode()->GetWorldPosition() - rootNode_->GetWorldPosition()) * sqrt(radius-LucKey::Distance(rootNode_->GetWorldPosition(), hitResults[i]->GetNode()->GetWorldPosition()))*timeStep*500.0f*rigidBody_->GetMass()
                                 );
                     //Deal damage
                     unsigned hitID = hitResults[i]->GetNode()->GetID();

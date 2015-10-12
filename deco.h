@@ -22,7 +22,6 @@
 #include <Urho3D/Urho3D.h>
 
 #include "tile.h"
-
 #include "sceneobject.h"
 
 namespace Urho3D {

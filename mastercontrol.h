@@ -20,48 +20,8 @@
 #define MASTERCONTROL_H
 
 #include <Urho3D/Urho3D.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
-#include <Urho3D/Container/HashMap.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Engine/Application.h>
-#include <Urho3D/Engine/Console.h>
-#include <Urho3D/Engine/DebugHud.h>
-#include <Urho3D/Engine/Engine.h>
-#include <Urho3D/Graphics/Camera.h>
-#include <Urho3D/Graphics/DebugRenderer.h>
-#include <Urho3D/Graphics/Graphics.h>
-#include <Urho3D/Graphics/Light.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/Octree.h>
-#include <Urho3D/Graphics/OctreeQuery.h>
-#include <Urho3D/Graphics/Renderer.h>
-#include <Urho3D/Graphics/RenderPath.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Viewport.h>
-#include <Urho3D/Graphics/Zone.h>
-#include <Urho3D/Input/Input.h>
-#include <Urho3D/IO/FileSystem.h>
-#include <Urho3D/IO/Log.h>
-#include <Urho3D/Math/MathDefs.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Physics/PhysicsWorld.h>
-#include <Urho3D/Physics/RigidBody.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Resource/Resource.h>
-#include <Urho3D/Resource/XMLFile.h>
-#include <Urho3D/Scene/LogicComponent.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/UI/Font.h>
-#include <Urho3D/UI/Text.h>
-#include <Urho3D/UI/UI.h>
 
-
-#include "helper.h"
-
-#include <Urho3D/DebugNew.h> // always (!) should be last
+#include "luckey.h"
 
 namespace Urho3D {
 class Drawable;
@@ -71,6 +31,7 @@ class Sprite;
 }
 
 using namespace Urho3D;
+using namespace LucKey;
 
 class OGTattCam;
 class InputMaster;
@@ -126,6 +87,21 @@ typedef struct Resources
         SharedPtr<Material> hair;
         SharedPtr<Material> pants;
         SharedPtr<Material> paint;
+        SharedPtr<Material> glass;
+        SharedPtr<Material> amber;
+        SharedPtr<Material> headlights;
+        SharedPtr<Material> taillights;
+        struct {
+            SharedPtr<Material> shroomies;
+            SharedPtr<Material> squaters;
+            SharedPtr<Material> pirates;
+            SharedPtr<Material> ninjas;
+            SharedPtr<Material> zionists;
+            SharedPtr<Material> rastafari;
+            SharedPtr<Material> illuminati;
+            SharedPtr<Material> discordians;
+            SharedPtr<Material> chaotes;
+        } decals;
     } materials;
 } Resources;
 
@@ -176,8 +152,6 @@ public:
     ///Physics
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
-    SharedPtr<Material> GetRandomSkin() { return resources.materials.skin[Random((int)resources.materials.skin.Size())]; }
-    SharedPtr<Material> GetRandomCloth() { return resources.materials.cloth[Random((int)resources.materials.cloth.Size())]; }
 private:
     SharedPtr<UI> ui_;
     SharedPtr<Renderer> renderer_;

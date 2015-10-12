@@ -16,17 +16,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
-#include <Urho3D/Graphics/ParticleEffect.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Input/Input.h>
-
 #include "tile.h"
 #include "hemp.h"
 #include "grass.h"
@@ -63,7 +52,7 @@ Object(context)
     }*/
 
     //Set up center and edge nodes.
-    for (int i = 0; i <= TE_LENGTH; i++){
+    for (int i = 0; i != TE_LENGTH; i++){
         elements_[i] = rootNode_->CreateChild("TilePart");
         int nthOfType = ((i-1)%4);
         if (i > 0) elements_[i]->Rotate(Quaternion(0.0f, 90.0f-nthOfType*90.0f, 0.0f));

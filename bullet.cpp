@@ -32,7 +32,6 @@ Bullet::Bullet(Context *context, MasterControl *masterControl):
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetMass(0.23f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
-    rigidBody_->SetFriction(0.0f);
 
     SubscribeToEvent(E_SCENEUPDATE, HANDLER(Bullet, HandleSceneUpdate));
     SubscribeToEvent(E_POSTRENDERUPDATE, HANDLER(Bullet, HandlePostRenderUpdate));
@@ -72,7 +71,7 @@ void Bullet::HitCheck(float timeStep) {
     if (!fading_) {
         PODVector<PhysicsRaycastResult> hitResults;
         Ray bulletRay(rootNode_->GetPosition(), rootNode_->GetDirection());
-        if (masterControl_->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.1f, M_MAX_UNSIGNED)){
+        if (masterControl_->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.23f, M_MAX_UNSIGNED)){
             for (int i = 0; i < hitResults.Size(); i++){
                 if (!hitResults[i].body_->IsTrigger() && hitResults[i].body_->GetNode()->GetNameHash() != N_PLAYER){
                     hitResults[i].body_->ApplyImpulse(rigidBody_->GetLinearVelocity()*0.023f - 0.23f*hitResults[i].normal_,
