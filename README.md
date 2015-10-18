@@ -9,11 +9,6 @@ Original Gangster Tattoo is a free and open source online top-down gangwar game 
 Or, if you already have Urho3D compiled on your system place three symlinks in the OGTatt folder pointing to the root folder of the Urho3D game engine and both it's Data and CoreData folders.
 2. Now you can compile OG Tatt using qmake. Either open OGTatt.pro using QtCreator and run it or run `qmake OGTatt.pro` and then `make` from within the OGTatt folder.
 
-####Windows and Mac
-
-1. Install Linux
-2. See `Installation -> Linux`
-
 ###Controls
 OG Tatt can be played with either a game controller or the mouse and keyboard.
 ####Controller
