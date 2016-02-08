@@ -143,6 +143,9 @@ void MasterControl::LoadResources()
 {
     resources.models.characters.male = cache_->GetResource<Model>("Resources/Models/Male.mdl");
     resources.models.characters.female = cache_->GetResource<Model>("Resources/Models/Female.mdl");
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mohawk.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Seagull.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mustain.mdl")));
 
     resources.models.doodads.firePit = cache_->GetResource<Model>("Resources/Models/FirePit.mdl");
     resources.models.doodads.streetLight = cache_->GetResource<Model>("Resources/Models/StreetLight.mdl");

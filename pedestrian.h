@@ -41,6 +41,7 @@ public:
 protected:
     Node* modelNode_;
     AnimatedModel* bodyModel_;
+    StaticModel* hairModel_;
     AnimationController* animCtrl_;
     bool male_;
     Vector<Color> colors_;
@@ -51,6 +52,7 @@ private:
     float turnInterval_;
     Vector3 direction_;
     float walkSpeed_;
+    int hairStyle_;
 };
 
 #endif //PEDESTRIAN_H

@@ -57,6 +57,7 @@ typedef struct Resources
         struct {
             SharedPtr<Model> male;
             SharedPtr<Model> female;
+            Vector< SharedPtr<Model> > hairStyles;
         } characters;
         struct {
             SharedPtr<Model> firePit;
