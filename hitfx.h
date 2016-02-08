@@ -34,7 +34,7 @@ using namespace Urho3D;
 
 class HitFX : public Effect
 {
-    OBJECT(HitFX);
+    URHO3D_OBJECT(HitFX, Effect);
 public:
     HitFX(Context* context, MasterControl* masterControl, Vector3 position);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);

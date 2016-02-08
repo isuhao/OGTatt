@@ -127,7 +127,7 @@ enum JoyStickButton {JB_SELECT, JB_LEFTSTICK, JB_RIGHTSTICK, JB_START, JB_DPAD_U
 class MasterControl : public Application
 {
     /// Enable type information.
-    OBJECT(MasterControl);
+    URHO3D_OBJECT(MasterControl, Application);
     friend class InputMaster;
     friend class OGTattCam;
 public:
@@ -153,6 +153,7 @@ public:
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
 private:
+    SoundSource* musicSource_;
     SharedPtr<UI> ui_;
     SharedPtr<Renderer> renderer_;
     SharedPtr<XMLFile> defaultStyle_;

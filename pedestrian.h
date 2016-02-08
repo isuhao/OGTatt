@@ -35,7 +35,7 @@ using namespace Urho3D;
 
 class Pedestrian : public NPC
 {
-    OBJECT(Pedestrian);
+    URHO3D_OBJECT(Pedestrian, NPC);
 public:
     Pedestrian(Context *context, MasterControl* masterControl, Vector3 pos);
 protected:

@@ -36,7 +36,7 @@ using namespace Urho3D;
 
 class FirePit : public Deco
 {
-    OBJECT(FirePit);
+    URHO3D_OBJECT(FirePit, Deco);
 public:
     FirePit(Context* context, MasterControl *masterControl, Tile *tile);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);

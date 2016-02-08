@@ -35,7 +35,7 @@ using namespace Urho3D;
 class Bullet : public SceneObject
 {
     friend class Player;
-    OBJECT(Bullet);
+    URHO3D_OBJECT(Bullet, SceneObject);
 public:
     Bullet(Context *context, MasterControl* masterControl);
 protected:

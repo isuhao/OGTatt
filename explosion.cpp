@@ -56,7 +56,7 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     sampleSource_->SetSoundType(SOUND_EFFECT);
     sampleSource_->Play(sample_);
 
-    SubscribeToEvent(E_POSTUPDATE, HANDLER(Explosion, UpdateExplosion));
+    SubscribeToEvent(E_POSTUPDATE, URHO3D_HANDLER(Explosion, UpdateExplosion));
 }
 
 void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)

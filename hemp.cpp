@@ -34,7 +34,7 @@ Hemp::Hemp(Context *context, MasterControl *masterControl, Node *parent, Vector3
     fropModel_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/frop.xml"));
     fropModel_->SetCastShadows(true);
 
-    SubscribeToEvent(E_UPDATE, HANDLER(Hemp, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));
 }
 
 void Hemp::Start()

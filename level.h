@@ -41,7 +41,7 @@ enum TileType {TT_SPACE, TT_EMPTY, TT_ENGINE};
 
 class Level : public Object
 {
-    OBJECT(Level);
+    URHO3D_OBJECT(Level, Object);
     friend class InputMaster;
 public:
     Level(Context *context, Vector3 position, MasterControl* masterControl);

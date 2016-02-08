@@ -33,7 +33,7 @@ Muzzle::Muzzle(Context *context, MasterControl *masterControl, Vector3 position)
     light_->SetColor(Color(1.0f, 1.0f, 0.666f));
     light_->SetCastShadows(true);
 
-    SubscribeToEvent(E_UPDATE, HANDLER(Muzzle, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Muzzle, HandleUpdate));
 }
 
 void Muzzle::HandleUpdate(StringHash eventType, VariantMap &eventData)

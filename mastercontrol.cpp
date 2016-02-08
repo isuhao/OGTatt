@@ -25,7 +25,7 @@
 
 #include "mastercontrol.h"
 
-DEFINE_APPLICATION_MAIN(MasterControl);
+URHO3D_DEFINE_APPLICATION_MAIN(MasterControl);
 
 MasterControl::MasterControl(Context *context):
     Application(context),
@@ -71,10 +71,10 @@ void MasterControl::Start()
 //    Sound* music = cache_->GetResource<Sound>("Resources/Music/Grim_Shit_-_When_The_System_Collapses.ogg");
     music->SetLooped(true);
     Node* musicNode = world.scene->CreateChild("Music");
-    SoundSource* musicSource = musicNode->CreateComponent<SoundSource>();
-    musicSource->SetSoundType(SOUND_MUSIC);
-    musicSource->SetGain(0.23f);
-    musicSource->Play(music);
+    musicSource_ = musicNode->CreateComponent<SoundSource>();
+    musicSource_->SetSoundType(SOUND_MUSIC);
+    musicSource_->SetGain(0.23f);
+    musicSource_->Play(music);
 }
 void MasterControl::Stop()
 {
@@ -84,11 +84,11 @@ void MasterControl::Stop()
 void MasterControl::SubscribeToEvents()
 {
     //Subscribe scene update event.
-    SubscribeToEvent(E_SCENEUPDATE, HANDLER(MasterControl, HandleSceneUpdate));
+    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(MasterControl, HandleSceneUpdate));
     //Subscribe HandleUpdate() function for processing update events
-    SubscribeToEvent(E_UPDATE, HANDLER(MasterControl, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(MasterControl, HandleUpdate));
     //Subscribe scene update event.
-    SubscribeToEvent(E_SCENEUPDATE, HANDLER(MasterControl, HandleSceneUpdate));
+    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(MasterControl, HandleSceneUpdate));
 }
 
 void MasterControl::SetWindowTitleAndIcon()

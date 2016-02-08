@@ -36,7 +36,7 @@ using namespace Urho3D;
 
 class StreetLight : public Deco
 {
-    OBJECT(StreetLight);
+    URHO3D_OBJECT(StreetLight, Deco);
 public:
     StreetLight(Context* context, MasterControl *masterControl, Tile *tile);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);

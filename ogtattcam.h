@@ -38,7 +38,7 @@ using namespace Urho3D;
 
 class OGTattCam : public Object
 {
-    OBJECT(OGTattCam);
+    URHO3D_OBJECT(OGTattCam, Object);
     friend class MasterControl;
     friend class InputMaster;
     friend class Player;

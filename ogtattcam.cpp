@@ -29,7 +29,7 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
 {
     float viewRange = 50.0f;
     masterControl_ = masterControl;
-    SubscribeToEvent(E_UPDATE, HANDLER(OGTattCam, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(OGTattCam, HandleUpdate));
 
     //Create the camera. Limit far clip distance to match the fog
     rootNode_ = masterControl_->world.scene->CreateChild("CamTrans");

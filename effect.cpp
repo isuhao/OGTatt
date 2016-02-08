@@ -32,7 +32,7 @@ Effect::Effect(Context *context, MasterControl *masterControl, Vector3 position,
     particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
 
     //Subscribe to update
-    SubscribeToEvent(E_SCENEUPDATE, HANDLER(Effect, HandleSceneUpdate));
+    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Effect, HandleSceneUpdate));
 }
 
 void Effect::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)

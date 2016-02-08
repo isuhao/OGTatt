@@ -66,7 +66,7 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     animCtrl_->SetSpeed("Resources/Models/IdleRelax.ani", 1.0f);
     animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
 
-    SubscribeToEvent(E_UPDATE, HANDLER(Pedestrian, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Pedestrian, HandleUpdate));
 }
 
 void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)

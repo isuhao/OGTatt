@@ -34,7 +34,7 @@ using namespace Urho3D;
 
 class Vehicle : public SceneObject
 {
-    OBJECT(Vehicle);
+    URHO3D_OBJECT(Vehicle, SceneObject);
 public:
     Vehicle(Context* context, MasterControl* masterControl, Vector3 position);
     void Hit(double damage);

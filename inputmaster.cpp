@@ -25,9 +25,9 @@ InputMaster::InputMaster(Context* context, MasterControl* masterControl) : Objec
     masterControl_ = masterControl;
     input_ = GetSubsystem<Input>();
     //Subscribe mouse down event
-    SubscribeToEvent(E_MOUSEBUTTONDOWN, HANDLER(InputMaster, HandleMouseDown));
+    SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(InputMaster, HandleMouseDown));
     //Subscribe key down event.
-    SubscribeToEvent(E_KEYDOWN, HANDLER(InputMaster, HandleKeyDown));
+    SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputMaster, HandleKeyDown));
 }
 
 void InputMaster::HandleMouseDown(StringHash eventType, VariantMap &eventData)
@@ -57,11 +57,12 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
     using namespace KeyDown;
     int key = eventData[P_KEY].GetInt();
 
+    switch (key){
     //Exit when ESC is pressed
-    if (key == KEY_ESC) masterControl_->Exit();
-
-    //Take screenshot
-    else if (key == KEY_9)
+    case KEY_ESC: masterControl_->Exit();
+        break;
+        //Take screenshot
+    case KEY_9:
     {
         Graphics* graphics = GetSubsystem<Graphics>();
         Image screenshot(context_);
@@ -71,6 +72,10 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
                 Time::GetTimeStamp().Replaced(':', '_').Replaced('.', '_').Replaced(' ', '_')+".png";
         //Log::Write(1, fileName);
         screenshot.SavePNG(fileName);
+    } break;
+        //Toggle music on M
+    case KEY_M: masterControl_->musicSource_->SetGain(masterControl_->musicSource_->GetGain()==0.0f ? 0.32f : 0.0f);
+        break;
     }
 }
 

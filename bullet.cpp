@@ -33,8 +33,8 @@ Bullet::Bullet(Context *context, MasterControl *masterControl):
     rigidBody_->SetMass(0.23f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
 
-    SubscribeToEvent(E_SCENEUPDATE, HANDLER(Bullet, HandleSceneUpdate));
-    SubscribeToEvent(E_POSTRENDERUPDATE, HANDLER(Bullet, HandlePostRenderUpdate));
+    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Bullet, HandleSceneUpdate));
+    SubscribeToEvent(E_POSTRENDERUPDATE, URHO3D_HANDLER(Bullet, HandlePostRenderUpdate));
 }
 
 void Bullet::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)

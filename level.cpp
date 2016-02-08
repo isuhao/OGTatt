@@ -32,7 +32,7 @@ Level::Level(Context *context, Vector3 position, MasterControl* masterControl):
 Object(context)
 {
     masterControl_ = masterControl;
-    SubscribeToEvent(E_UPDATE, HANDLER(Level, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Level, HandleUpdate));
     rootNode_ = masterControl_->world.scene->CreateChild("World");
 //    masterControl_->platformMap_[rootNode_->GetID()] = WeakPtr<Dungeon>(this);
 

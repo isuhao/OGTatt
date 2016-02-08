@@ -33,7 +33,7 @@ using namespace Urho3D;
 
 class Pickup : public SceneObject
 {
-    OBJECT(Pickup);
+    URHO3D_OBJECT(Pickup, SceneObject);
 public:
     Pickup(Context *context, MasterControl* masterControl);
 protected:

@@ -35,7 +35,7 @@ using namespace Urho3D;
 class Muzzle : public Effect
 {
     friend class Player;
-    OBJECT(Muzzle);
+    URHO3D_OBJECT(Muzzle, Effect);
 public:
     Muzzle(Context* context, MasterControl* masterControl, Vector3 position);
 private:

@@ -34,7 +34,7 @@ using namespace Urho3D;
 
 class Hemp : public Object
 {
-    OBJECT(Hemp);
+    URHO3D_OBJECT(Hemp, Object);
 public:
     Hemp(Context *context, MasterControl* masterControl, Urho3D::Node *parent, Vector3 pos);
     Hemp(Context* context, MasterControl* masterControl): Hemp(context, masterControl, masterControl->world.scene, Vector3::ZERO){}

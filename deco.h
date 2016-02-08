@@ -35,7 +35,7 @@ using namespace Urho3D;
 
 class Deco : public SceneObject
 {
-    OBJECT(Deco);
+    URHO3D_OBJECT(Deco, SceneObject);
 public:
     Deco(Context *context, MasterControl* masterControl, Tile *tile, String name);
 protected:

@@ -108,7 +108,7 @@ Player::Player(Context *context, MasterControl *masterControl):
     scoreText_->SetVerticalAlignment(VA_TOP);
     scoreText_->SetPosition(0, masterControl_->ui_->GetRoot()->GetHeight()/2.1);*/
 
-    SubscribeToEvent(E_UPDATE, HANDLER(Player, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Player, HandleUpdate));
 }
 
 void Player::AddScore(int points)
