@@ -163,9 +163,12 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
         rigidBody_->SetLinearVelocity(Vector3(rigidBody_->GetLinearVelocity().x_, 0.0f, rigidBody_->GetLinearVelocity().z_));
     }
 
-    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
-    smoothTargetVelocity_ = 0.1f * (9.0f * smoothTargetVelocity_ + targetVelocity);
-    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
+//    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
+    smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
+    rootNode_->SetPosition(Vector3(0.5f*(targetPosition.x_ + rootNode_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
+                                  rootNode_->GetPosition().y_,
+                                  0.5f*(targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_));
+//    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*
     Quaternion camRot = rootNode_->GetWorldRotation();
     Quaternion aimRotation = camRot;

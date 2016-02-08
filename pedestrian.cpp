@@ -23,7 +23,7 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
-    walkSpeed_{Random(4.2f, 5.0f)}
+    walkSpeed_{Random(2.0f, 3.0f)}
 {
     rootNode_->SetName("Pedestrian");
     rootNode_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
