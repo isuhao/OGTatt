@@ -215,10 +215,10 @@ void MasterControl::CreateScene()
     lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
     Light* light = lightNode->CreateComponent<Light>();
     light->SetLightType(LIGHT_DIRECTIONAL);
-    light->SetBrightness(1.23f);
+    light->SetBrightness(0.23f);
     light->SetColor(Color(1.0f, 0.9f, 0.666f));
     light->SetCastShadows(true);
-    light->SetShadowIntensity(0.42f);
+    light->SetShadowIntensity(0.8f);
     light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
 
     //Set cascade splits at 10, 50, 200 world unitys, fade shadows at 80% of maximum shadow distance

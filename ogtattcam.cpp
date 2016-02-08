@@ -40,7 +40,7 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
 
     Zone* zone = rootNode_->CreateComponent<Zone>();
     zone->SetBoundingBox(BoundingBox(Vector3(-100.0f, -50.0f, -100.0f), Vector3(100.0f, 50.0f, 100.0f)));
-    zone->SetAmbientColor(Color(0.23f, 0.23f, 0.52f));
+    zone->SetAmbientColor(Color(0.23f, 0.23f, 1.0f, 0.42f));
     zone->SetFogColor(Color(0.42f, 0.3f, 0.23f, 1.0f));
     zone->SetFogStart(23.0f);
     zone->SetFogEnd(viewRange);
@@ -76,19 +76,17 @@ void OGTattCam::SetupViewport()
 
     //Set up a viewport to the Renderer subsystem so that the 3D scene can be seen
     SharedPtr<Viewport> viewport(new Viewport(context_, masterControl_->world.scene, camera_));
-    viewport_ = viewport;
 
     //Add anti-asliasing and bloom
-//    effectRenderPath = viewport_->GetRenderPath()->Clone();
-//    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
-//    effectRenderPath->SetEnabled("FXAA3", true);
+    effectRenderPath = viewport->GetRenderPath();
+    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
+    effectRenderPath->SetEnabled("FXAA3", true);
 //    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/Bloom.xml"));
 //    effectRenderPath->SetShaderParameter("BloomThreshold", 0.666f);
-//    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.85f, 1.0f));
+//    effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.88f, 0.9f));
 //    effectRenderPath->SetEnabled("Bloom", true);
 
-//    viewport_->SetRenderPath(effectRenderPath);
-    renderer->SetViewport(0, viewport_);
+    renderer->SetViewport(0, viewport);
 }
 
 Vector3 OGTattCam::GetWorldPosition()

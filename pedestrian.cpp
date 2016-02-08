@@ -23,7 +23,7 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
-    walkSpeed_{Random(2.0f, 3.0f)}
+    walkSpeed_{Random(100.0f, 160.0f)}
 {
     rootNode_->SetName("Pedestrian");
     rootNode_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
@@ -101,7 +101,7 @@ void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)
             direction_ += Vector3(Random(-0.1f, 0.1f), 0.0f, Random(-0.1f, 0.1f));
         }
     }
-    if (direction_.Length() > 0.23f) rigidBody_->ApplyForce(direction_*walkSpeed_);
+    if (direction_.Length() > 0.23f) rigidBody_->ApplyForce(direction_*walkSpeed_*timeStep);
 
     //Update rotation according to movement direction.
         Vector3 velocity = rigidBody_->GetLinearVelocity();

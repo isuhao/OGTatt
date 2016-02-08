@@ -44,16 +44,17 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* t
     CollisionShape* collider = rootNode_->CreateComponent<CollisionShape>();
     collider->SetCylinder(0.1f, 2.0f);
 
-//    lightNode_ = rootNode_->CreateChild("LightNode");
-//    lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));
-//    light_ = lightNode_->CreateComponent<Light>();
-//    light_->SetBrightness(1.23f);
-//    light_->SetColor(Color(1.0f, 0.8f, 0.6f));
-//    light_->SetRange(5.0f);
-//    light_->SetCastShadows(true);
-//    light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
-//    light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));
-//    light_->SetShadowResolution(0.25f);
+    lightNode_ = rootNode_->CreateChild("LightNode");
+    lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));
+    light_ = lightNode_->CreateComponent<Light>();
+    light_->SetBrightness(1.8f);
+    light_->SetColor(Color(1.0f, 0.6f, 0.4f));
+    light_->SetRange(4.0f);
+    light_->SetCastShadows(true);
+    light_->SetShadowIntensity(0.42f);
+    light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
+    light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));
+    light_->SetShadowResolution(0.25f);
 
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(StreetLight, HandleSceneUpdate));
 }
