@@ -43,7 +43,7 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     rigidBody_->SetMass(25.0f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
     rigidBody_->SetAngularFactor(Vector3::UP);
-    rigidBody_->SetFriction(0.23f);
+    rigidBody_->SetFriction(0.42f);
     rigidBody_->SetLinearDamping(0.9f);
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);

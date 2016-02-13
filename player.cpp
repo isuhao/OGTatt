@@ -108,7 +108,7 @@ Player::Player(Context *context, MasterControl *masterControl):
     scoreText_->SetVerticalAlignment(VA_TOP);
     scoreText_->SetPosition(0, masterControl_->ui_->GetRoot()->GetHeight()/2.1);*/
 
-    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Player, HandleUpdate));
+    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Player, HandleSceneUpdate));
 }
 
 void Player::AddScore(int points)
@@ -126,12 +126,10 @@ void Player::PlaySample(Sound* sample)
     }
 }
 
-void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
+void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 {
-    using namespace Update;
-
     //Take the frame time step, which is stored as a double
-    double timeStep = eventData[P_TIMESTEP].GetFloat();
+    double timeStep = eventData[SceneUpdate::P_TIMESTEP].GetFloat();
 
     Input* input = GetSubsystem<Input>();
 
@@ -159,14 +157,20 @@ void Player::HandleUpdate(StringHash eventType, VariantMap &eventData)
         fireJoy = camRight * joystickState->GetAxisPosition(2) +
                 -camForward * joystickState->GetAxisPosition(3);
     }
-    moveKey = -camRight * input->GetKeyDown(KEY_LEFT) +
-            camRight * input->GetKeyDown(KEY_RIGHT) +
-            camForward * input->GetKeyDown(KEY_UP) +
-            -camForward * input->GetKeyDown(KEY_DOWN);
-    fireKey = -camRight * input->GetKeyDown(KEY_J) +
-            camRight * input->GetKeyDown(KEY_L) +
-            camForward * input->GetKeyDown(KEY_I) +
-            -camForward * input->GetKeyDown(KEY_K);
+    moveKey = -camRight * (input->GetKeyDown(KEY_LEFT) || input->GetKeyDown(KEY_A)) +
+            camRight * (input->GetKeyDown(KEY_RIGHT) || input->GetKeyDown(KEY_D)) +
+            camForward * (input->GetKeyDown(KEY_UP) || input->GetKeyDown(KEY_W)) +
+            -camForward * (input->GetKeyDown(KEY_DOWN) || input->GetKeyDown(KEY_S));
+
+    fireKey = -camRight * (input->GetKeyDown(KEY_J) || input->GetKeyDown(KEY_KP_4)) +
+            camRight * (input->GetKeyDown(KEY_L) || input->GetKeyDown(KEY_KP_6)) +
+            camForward * (input->GetKeyDown(KEY_I) || input->GetKeyDown(KEY_KP_8)) +
+            -camForward * (input->GetKeyDown(KEY_K) || input->GetKeyDown(KEY_KP_2) || input->GetKeyDown(KEY_KP_5)) +
+
+            Quaternion(45.0f, Vector3::UP)*-camRight * input->GetKeyDown(KEY_KP_7) +
+            Quaternion(45.0f, Vector3::UP)* camRight * input->GetKeyDown(KEY_KP_3) +
+            Quaternion(45.0f, Vector3::UP)* camForward * input->GetKeyDown(KEY_KP_9) +
+            Quaternion(45.0f, Vector3::UP)*-camForward * input->GetKeyDown(KEY_KP_1);
 
     //Pick most significant input
     moveJoy.Length() > moveKey.Length() ? move = moveJoy : move = moveKey;

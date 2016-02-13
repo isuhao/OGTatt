@@ -23,4 +23,4 @@ HEADERS += \
 *.h
 
 OTHER_FILES += \
-    Ideas.txt
+    Docs/Ideas.txt

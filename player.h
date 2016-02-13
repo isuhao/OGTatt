@@ -65,7 +65,7 @@ private:
     SharedPtr<Sound> sample_;
     Vector<SharedPtr<SoundSource> > sampleSources_;
 
-    void HandleUpdate(StringHash eventType, VariantMap &eventData);
+    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
     void PlaySample(Sound *sample);
 };
 

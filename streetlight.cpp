@@ -51,7 +51,7 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* t
     light_->SetColor(Color(1.0f, 0.6f, 0.4f));
     light_->SetRange(4.0f);
     light_->SetCastShadows(true);
-    light_->SetShadowIntensity(0.42f);
+//    light_->SetShadowIntensity(0.42f);
     light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
     light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));
     light_->SetShadowResolution(0.25f);

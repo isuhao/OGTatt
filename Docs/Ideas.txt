@@ -18,7 +18,7 @@ Vehicles
 Hand-to-Hand combat
  Disarm
  Counter
- Grab/Chokehold
+ Grab/Chokehold (PvP: buttonbash to break neck/free)
 
 Weapons
  Pistol: Little Elvis
