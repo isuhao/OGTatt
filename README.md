@@ -1,6 +1,6 @@
-# :four_leaf_clover: OG Tatt.: Respect is only the beginning
-
 ![Original Gangster Tattoo](https://raw.githubusercontent.com/LucKeyProductions/OGTatt/master/Vectors/OGTatt.png)
+
+# :four_leaf_clover: OG Tatt.: Respect is only the beginning
 
 ### Summary
 Original Gangster Tattoo is a free and open source online top-down gangwar game being developed using the Urho3D game engine.
