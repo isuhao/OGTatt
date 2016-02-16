@@ -206,18 +206,18 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#c6b998"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.7432365"
-     inkscape:cx="407.56064"
-     inkscape:cy="230.39474"
+     inkscape:zoom="1.349639"
+     inkscape:cx="438.95802"
+     inkscape:cy="234.55024"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     showborder="true"
+     showborder="false"
      inkscape:snap-global="false"
      inkscape:window-width="1920"
      inkscape:window-height="1032"
@@ -229,7 +229,8 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     units="cm" />
+     units="cm"
+     inkscape:showpageshadow="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
