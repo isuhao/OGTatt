@@ -17,10 +17,68 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-*.cpp
+    bike.cpp \
+    bullet.cpp \
+    car.cpp \
+    cookiejar.cpp \
+    deco.cpp \
+    effect.cpp \
+    explosion.cpp \
+    firepit.cpp \
+    grass.cpp \
+    hemp.cpp \
+    hitfx.cpp \
+    honti.cpp \
+    inputmaster.cpp \
+    level.cpp \
+    luckey.cpp \
+    mastercontrol.cpp \
+    muzzle.cpp \
+    npc.cpp \
+    objectpool.cpp \
+    ogtattcam.cpp \
+    pedestrian.cpp \
+    pickup.cpp \
+    player.cpp \
+    poolmaster.cpp \
+    poolobject.cpp \
+    sceneobject.cpp \
+    streetlight.cpp \
+    tile.cpp \
+    vehicle.cpp \
+    wallcollider.cpp
 
 HEADERS += \
-*.h
+    bike.h \
+    bullet.h \
+    car.h \
+    cookiejar.h \
+    deco.h \
+    effect.h \
+    explosion.h \
+    firepit.h \
+    grass.h \
+    hemp.h \
+    hitfx.h \
+    honti.h \
+    inputmaster.h \
+    level.h \
+    luckey.h \
+    mastercontrol.h \
+    muzzle.h \
+    npc.h \
+    objectpool.h \
+    ogtattcam.h \
+    pedestrian.h \
+    pickup.h \
+    player.h \
+    poolmaster.h \
+    poolobject.h \
+    sceneobject.h \
+    streetlight.h \
+    tile.h \
+    vehicle.h \
+    wallcollider.h
 
 OTHER_FILES += \
     Docs/Ideas.txt

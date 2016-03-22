@@ -1,5 +1,5 @@
 /* OG Tatt
-// Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
+// Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,11 +37,12 @@ class Vehicle : public SceneObject
     URHO3D_OBJECT(Vehicle, SceneObject);
 public:
     Vehicle(Context* context, MasterControl* masterControl, Vector3 position);
-    void Hit(double damage);
+    void Hit(float damage);
 protected:
     AnimatedModel* chassisModel_;
     SharedPtr<RigidBody> rigidBody_;
-    DecalSet* decal_;
+    CollisionShape* collisionShape_;
+    Node* particleNode_;
 private:
     void Destroy();
 };

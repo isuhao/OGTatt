@@ -1,5 +1,5 @@
 /* OG Tatt
-// Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
+// Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -64,7 +64,8 @@ typedef struct Resources
             SharedPtr<Model> streetLight;
         } doodads;
         struct {
-            SharedPtr<Model> cookieJar;
+            SharedPtr<Model> cookiejar;
+            SharedPtr<Model> honti;
         } vehicles;
         struct {
             SharedPtr<Model> blockCenter;

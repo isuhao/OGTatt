@@ -16,13 +16,12 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef PEDESTRIAN_H
-#define PEDESTRIAN_H
+#ifndef COOKIEJAR_H
+#define COOKIEJAR_H
 
 #include <Urho3D/Urho3D.h>
 
-#include "mastercontrol.h"
-#include "npc.h"
+#include "car.h"
 
 namespace Urho3D {
 class Drawable;
@@ -33,26 +32,11 @@ class Sprite;
 
 using namespace Urho3D;
 
-class Pedestrian : public NPC
+class Cookiejar : public Car
 {
-    URHO3D_OBJECT(Pedestrian, NPC);
+    URHO3D_OBJECT(Cookiejar, Car);
 public:
-    Pedestrian(Context *context, MasterControl* masterControl, Vector3 pos);
-protected:
-    Node* modelNode_;
-    AnimatedModel* bodyModel_;
-    StaticModel* hairModel_;
-    AnimationController* animCtrl_;
-    bool male_;
-    Vector<Color> colors_;
-private:
-    void HandleUpdate(StringHash eventType, VariantMap &eventData);
-
-    float sinceLastTurn_;
-    float turnInterval_;
-    Vector3 direction_;
-    float walkSpeed_;
-    int hairStyle_;
+    Cookiejar(Context *context, MasterControl *masterControl, Vector3 position);
 };
 
-#endif //PEDESTRIAN_H
+#endif // COOKIEJAR_H

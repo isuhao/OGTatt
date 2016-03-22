@@ -16,43 +16,14 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef PEDESTRIAN_H
-#define PEDESTRIAN_H
+#include "bike.h"
 
-#include <Urho3D/Urho3D.h>
-
-#include "mastercontrol.h"
-#include "npc.h"
-
-namespace Urho3D {
-class Drawable;
-class Node;
-class Scene;
-class Sprite;
+Bike::Bike(Context* context, MasterControl* masterControl, Vector3 position) : Vehicle(context, masterControl, position)
+{
+    rootNode_->SetName("Bike");
 }
 
-using namespace Urho3D;
 
-class Pedestrian : public NPC
-{
-    URHO3D_OBJECT(Pedestrian, NPC);
-public:
-    Pedestrian(Context *context, MasterControl* masterControl, Vector3 pos);
-protected:
-    Node* modelNode_;
-    AnimatedModel* bodyModel_;
-    StaticModel* hairModel_;
-    AnimationController* animCtrl_;
-    bool male_;
-    Vector<Color> colors_;
-private:
-    void HandleUpdate(StringHash eventType, VariantMap &eventData);
 
-    float sinceLastTurn_;
-    float turnInterval_;
-    Vector3 direction_;
-    float walkSpeed_;
-    int hairStyle_;
-};
 
-#endif //PEDESTRIAN_H
+

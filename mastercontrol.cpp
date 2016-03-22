@@ -1,5 +1,5 @@
 /* OG Tatt
-// Copyright (C) 2015 LucKey Productions (luckeyproductions.nl)
+// Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,7 +20,8 @@
 #include "ogtattcam.h"
 #include "level.h"
 #include "player.h"
-#include "vehicle.h"
+#include "cookiejar.h"
+#include "honti.h"
 #include "pedestrian.h"
 
 #include "mastercontrol.h"
@@ -150,7 +151,8 @@ void MasterControl::LoadResources()
 
     resources.models.doodads.streetLight = cache_->GetResource<Model>("Resources/Models/StreetLight.mdl");
 
-    resources.models.vehicles.cookieJar = cache_->GetResource<Model>("Resources/Models/CookieJar.mdl");
+    resources.models.vehicles.cookiejar = cache_->GetResource<Model>("Resources/Models/Cookiejar.mdl");
+    resources.models.vehicles.honti = cache_->GetResource<Model>("Resources/Models/Honti.mdl");
 
     resources.models.tileParts.blockCenter = cache_->GetResource<Model>("Resources/Models/Block_center.mdl");
     resources.models.tileParts.blockDoubleCorner = cache_->GetResource<Model>("Resources/Models/Block_doublecorner.mdl");
@@ -233,7 +235,8 @@ void MasterControl::CreateScene()
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
     for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
-    for (int v = 1; v <= 5; v++) new Vehicle(context_, this, 2.3f*Vector3::RIGHT*v);
+    for (int c = 2; c <= 6; c++) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
+    for (int h = 0; h < 5; h++) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f/5.0f) * h, Vector3::UP) * Vector3::RIGHT);
 }
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
