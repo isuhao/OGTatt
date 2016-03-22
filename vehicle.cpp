@@ -34,6 +34,7 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     chassisModel_->SetMaterial(2, masterControl_->resources.materials.darkness);
     chassisModel_->SetMaterial(3, masterControl_->resources.materials.headlights);
     chassisModel_->SetMaterial(4, masterControl_->resources.materials.taillights);
+    chassisModel_->SetMaterial(5, masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
 
     for (unsigned m = 0; m < chassisModel_->GetNumMorphs(); m++){
         chassisModel_->SetMorphWeight(m, Random());
@@ -58,11 +59,11 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
     flameEmitter->SetEmitting(Random(2));
 
-    decal_ = rootNode_->CreateComponent<DecalSet>();
-    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
-    Quaternion decalRotation = rootNode_->GetRotation();
-    decalRotation  = decalRotation * Quaternion(90.0f, rootNode_->GetRight());
-    decal_->AddDecal(chassisModel_, rootNode_->GetWorldPosition()-0.23f*rootNode_->GetDirection(), decalRotation, 0.666f, 1.0f, 2.3f, Vector2::ZERO, Vector2::ONE);
+//    decal_ = rootNode_->CreateComponent<DecalSet>();
+//    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
+//    Quaternion decalRotation = rootNode_->GetRotation();
+//    decalRotation  = decalRotation * Quaternion(90.0f, rootNode_->GetRight());
+//    decal_->AddDecal(chassisModel_, rootNode_->GetWorldPosition()-0.23f*rootNode_->GetDirection(), decalRotation, 0.666f, 1.0f, 2.3f, Vector2::ZERO, Vector2::ONE);
     if (!Random(5)) Destroy();
 }
 

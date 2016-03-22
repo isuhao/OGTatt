@@ -146,8 +146,8 @@ void MasterControl::LoadResources()
     resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mohawk.mdl")));
     resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Seagull.mdl")));
     resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mustain.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Frotoad.mdl")));
 
-    resources.models.doodads.firePit = cache_->GetResource<Model>("Resources/Models/FirePit.mdl");
     resources.models.doodads.streetLight = cache_->GetResource<Model>("Resources/Models/StreetLight.mdl");
 
     resources.models.vehicles.cookieJar = cache_->GetResource<Model>("Resources/Models/CookieJar.mdl");
