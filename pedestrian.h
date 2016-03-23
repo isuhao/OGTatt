@@ -22,7 +22,7 @@
 #include <Urho3D/Urho3D.h>
 
 #include "mastercontrol.h"
-#include "npc.h"
+#include "character.h"
 
 namespace Urho3D {
 class Drawable;
@@ -33,18 +33,11 @@ class Sprite;
 
 using namespace Urho3D;
 
-class Pedestrian : public NPC
+class Pedestrian : public Character
 {
-    URHO3D_OBJECT(Pedestrian, NPC);
+    URHO3D_OBJECT(Pedestrian, Character);
 public:
     Pedestrian(Context *context, MasterControl* masterControl, Vector3 pos);
-protected:
-    Node* modelNode_;
-    AnimatedModel* bodyModel_;
-    StaticModel* hairModel_;
-    AnimationController* animCtrl_;
-    bool male_;
-    Vector<Color> colors_;
 private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
 
@@ -52,7 +45,7 @@ private:
     float turnInterval_;
     Vector3 direction_;
     float walkSpeed_;
-    int hairStyle_;
+
 };
 
 #endif //PEDESTRIAN_H

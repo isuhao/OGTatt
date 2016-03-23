@@ -67,8 +67,8 @@ Pickup::Pickup(Context *context, MasterControl *masterControl):
 
     particleEmitter_->SetEffect(masterControl_->cache_->GetTempResource<ParticleEffect>("Resources/Particles/Shine.xml"));
 
-    sample_ = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Pickup.ogg");
-    sample_->SetLooped(false);
+    shot_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Pickup.ogg");
+    shot_sfx->SetLooped(false);
     sampleSource_ = rootNode_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(0.6f);
     sampleSource_->SetSoundType(SOUND_EFFECT);

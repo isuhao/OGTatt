@@ -33,14 +33,22 @@ class Sprite;
 
 using namespace Urho3D;
 
-class NPC : public SceneObject
+class Character : public SceneObject
 {
-    URHO3D_OBJECT(NPC, SceneObject);
+    URHO3D_OBJECT(Character, SceneObject);
 public:
-    NPC(Context *context, MasterControl* masterControl, Vector3 pos);
+    Character(Context *context, MasterControl* masterControl, Vector3 pos);
 protected:
+    AnimatedModel* bodyModel_;
+    StaticModel* hairModel_;
+
+    AnimationController* animCtrl_;
     RigidBody* rigidBody_;
     CollisionShape* collisionShape_;
+    bool male_;
+    int hairStyle_;
+    Vector<Color> colors_;
+
     float maxHealth_;
     float health_;
 };

@@ -1,4 +1,4 @@
-LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
+    LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
     -lpthread \
     -ldl \
     -lGL
@@ -34,7 +34,6 @@ SOURCES += \
     luckey.cpp \
     mastercontrol.cpp \
     muzzle.cpp \
-    npc.cpp \
     objectpool.cpp \
     ogtattcam.cpp \
     pedestrian.cpp \
@@ -46,7 +45,8 @@ SOURCES += \
     streetlight.cpp \
     tile.cpp \
     vehicle.cpp \
-    wallcollider.cpp
+    wallcollider.cpp \
+    character.cpp
 
 HEADERS += \
     bike.h \
@@ -66,7 +66,6 @@ HEADERS += \
     luckey.h \
     mastercontrol.h \
     muzzle.h \
-    npc.h \
     objectpool.h \
     ogtattcam.h \
     pedestrian.h \
@@ -78,7 +77,8 @@ HEADERS += \
     streetlight.h \
     tile.h \
     vehicle.h \
-    wallcollider.h
+    wallcollider.h \
+    character.h
 
 OTHER_FILES += \
     Docs/Ideas.txt

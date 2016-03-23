@@ -34,7 +34,7 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     particleNode_ = rootNode_->CreateChild("Fire");
     ParticleEmitter* flameEmitter = particleNode_->CreateComponent<ParticleEmitter>();
     flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
-    flameEmitter->SetEmitting(false);
+    flameEmitter->SetEmitting(!Random(5));
 
 //    decal_ = rootNode_->CreateComponent<DecalSet>();
 //    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));

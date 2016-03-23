@@ -19,66 +19,14 @@
 #include "pedestrian.h"
 
 Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 pos):
-    NPC(context, masterControl, pos),
+    Character(context, masterControl, pos),
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
-    walkSpeed_{Random(100.0f, 160.0f)},
-    hairStyle_{Random((int)masterControl_->resources.models.characters.hairStyles.Size() + 1)}
+    walkSpeed_{Random(100.0f, 160.0f)}
 {
     rootNode_->SetName("Pedestrian");
     rootNode_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
-
-    modelNode_ = rootNode_->CreateChild("ModelNode");
-
-    bodyModel_ = rootNode_->CreateComponent<AnimatedModel>();
-    bodyModel_->SetCastShadows(true);
-
-    male_ = Random(2);
-    for (int c = 0; c < 5; c++)
-    {
-        switch (c){
-        case 0:{
-            colors_.Push(RandomSkinColor());
-        } break;
-        case 4:{
-            colors_.Push(RandomHairColor());
-        } break;
-        default: colors_.Push(RandomColor()); break;
-        }
-    }
-    if (male_){
-        bodyModel_->SetModel(masterControl_->resources.models.characters.male);}
-    else{
-        bodyModel_->SetModel(masterControl_->resources.models.characters.female);
-    }
-
-    for (unsigned m = 0; m < bodyModel_->GetNumGeometries(); m++){
-        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
-        Color diffColor = colors_[m];
-        bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor = diffColor*(1.0f-0.1f*m);
-        specColor.a_ = 23.0f - 4.0f * m;
-        bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
-    }
-
-    if (hairStyle_){
-        hairModel_ = rootNode_->GetChild("Head", true)->CreateComponent<StaticModel>();
-        hairModel_->SetCastShadows(true);
-        hairModel_->SetModel(masterControl_->resources.models.characters.hairStyles[hairStyle_ - 1]);
-        //Set color for hair model
-        hairModel_->SetMaterial(masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
-        Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];
-        hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor = diffColor*0.23f;
-        specColor.a_ = 23.0f;
-        hairModel_->GetMaterial()->SetShaderParameter("MatSpecColor", specColor);
-    }
-
-    animCtrl_ = rootNode_->CreateComponent<AnimationController>();
-    animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);
-    animCtrl_->SetSpeed("Resources/Models/IdleRelax.ani", 1.0f);
-    animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
 
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Pedestrian, HandleUpdate));
 }

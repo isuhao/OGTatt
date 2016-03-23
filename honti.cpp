@@ -26,7 +26,7 @@ Honti::Honti(Context *context, MasterControl *masterControl, Vector3 position) :
     chassisModel_->SetModel(masterControl_->resources.models.vehicles.honti);
     SharedPtr<Material> paint = masterControl_->resources.materials.paint->Clone();
     chassisModel_->SetMaterial(0, paint);
-    paint->SetShaderParameter("MatDiffColor", RandomColor());
+    paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
     chassisModel_->SetMaterial(1, masterControl_->resources.materials.glass);
     chassisModel_->SetMaterial(2, masterControl_->resources.materials.darkness);
     chassisModel_->SetMaterial(3, masterControl_->resources.materials.headlights);
@@ -40,7 +40,7 @@ Honti::Honti(Context *context, MasterControl *masterControl, Vector3 position) :
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
-    collisionShape_->SetBox(Vector3(0.3f, 0.5f, 1.1f));
+    collisionShape_->SetBox(Vector3(0.23f, 0.5f, 1.1f),Vector3::RIGHT * 0.034f, Quaternion(9.0f, Vector3::FORWARD));
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.08f));
 }
 

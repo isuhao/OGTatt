@@ -26,10 +26,7 @@ HitFX::HitFX(Context *context, MasterControl *masterControl, Vector3 position):
     ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/BloodFX.xml");
     particleEmitter_->SetEffect(particleEffect);
 
-    sample_ = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Hit.ogg");
-    sample_->SetLooped(false);
-    sampleSource_ = rootNode_->CreateComponent<SoundSource>();
-    sampleSource_->SetGain(0.1f);
-    sampleSource_->SetSoundType(SOUND_EFFECT);
-    sampleSource_->Play(sample_);
+    hit_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Hit.ogg");
+    hit_sfx->SetLooped(false);
+    PlaySample(hit_sfx);
 }

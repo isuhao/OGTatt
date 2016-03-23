@@ -20,12 +20,16 @@
 
 SceneObject::SceneObject(Context* context, MasterControl* masterControl):
     Object(context),
-    masterControl_{masterControl}
+    masterControl_{masterControl},
+    randomizer_{Random()}
 {
-    //Create the root node.
     rootNode_ = masterControl_->world.scene->CreateChild("SceneObject");
-    //Random float between 0.0f and 1.0f used for variation
-    randomizer_ = Random();
+
+    for (int i = 0; i < 3; i++){
+        sampleSources_.Push(SharedPtr<SoundSource>(rootNode_->CreateComponent<SoundSource>()));
+        sampleSources_[i]->SetGain(0.3f);
+        sampleSources_[i]->SetSoundType(SOUND_EFFECT);
+    }
 }
 
 void SceneObject::Set(Vector3 position)
@@ -37,4 +41,23 @@ void SceneObject::Set(Vector3 position)
 void SceneObject::Disable()
 {
     rootNode_->SetEnabledRecursive(false);
+}
+
+void SceneObject::PlaySample(Sound* sample, float gain)
+{
+    using namespace std;
+    for (SoundSource* s : sampleSources_){
+        if (!s->IsPlaying()){
+            s->SetGain(gain);
+            s->Play(sample);
+            break;
+        }
+    }
+//    for (int i = 0; i < sampleSources_.Size(); i++){
+//        if (!sampleSources_[i]->IsPlaying()){
+//            sampleSources_[i]
+//            sampleSources_[i]->Play(sample);
+//            break;
+//        }
+//    }
 }

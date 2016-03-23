@@ -39,8 +39,7 @@ public:
     HitFX(Context* context, MasterControl* masterControl, Vector3 position);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 private:
-    SharedPtr<Sound> sample_;
-    SharedPtr<SoundSource> sampleSource_;
+    Sound* hit_sfx;
 };
 
 #endif // HITFX_H

@@ -26,7 +26,7 @@ Cookiejar::Cookiejar(Context *context, MasterControl *masterControl, Vector3 pos
     chassisModel_->SetModel(masterControl_->resources.models.vehicles.cookiejar);
     SharedPtr<Material> paint = masterControl_->resources.materials.paint->Clone();
     chassisModel_->SetMaterial(0, paint);
-    paint->SetShaderParameter("MatDiffColor", RandomColor());
+    paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
     chassisModel_->SetMaterial(1, masterControl_->resources.materials.glass);
     chassisModel_->SetMaterial(2, masterControl_->resources.materials.darkness);
     chassisModel_->SetMaterial(3, masterControl_->resources.materials.headlights);

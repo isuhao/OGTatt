@@ -235,7 +235,7 @@ void MasterControl::CreateScene()
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
     for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
-    for (int c = 2; c <= 6; c++) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
+    for (int c = 1; c <= 5; c++) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
     for (int h = 0; h < 5; h++) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f/5.0f) * h, Vector3::UP) * Vector3::RIGHT);
 }
 
@@ -309,7 +309,7 @@ void MasterControl::CreateSineLookupTable()
 }
 
 float MasterControl::Sine(float x) {
-    return sine_[(int)round(sine_.Size() * LucKey::Cycle(x/M_PI, 0.0f, 1.0f))%sine_.Size()];
+    return sine_[(int)round(sine_.Size() * LucKey::Cycle((float)(x/M_PI), 0.0f, 1.0f))%sine_.Size()];
 }
 
 float MasterControl::Sine(float freq, float min, float max, float shift)

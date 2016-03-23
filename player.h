@@ -21,27 +21,17 @@
 
 #include <Urho3D/Urho3D.h>
 
-#include "sceneobject.h"
+#include "character.h"
 
-namespace Urho3D {
-class Drawable;
-class Node;
-class Scene;
-class Sprite;
-}
-
-using namespace Urho3D;
-
-class Player : public SceneObject
+class Player : public Character
 {
     URHO3D_OBJECT(Player, SceneObject);
     friend class OGTattCam;
-    friend class FloatingEye;
 public:
     Player(Context* context, MasterControl* masterControl);
     //SharedPtr<Text> scoreText_;
 
-    double GetHealth(){return health_;}
+    float GetHealth(){return health_;}
     void Hit(float damage, int ownerID);
     void AddScore(int points);
     Vector3 GetLinearVelocity() {return rigidBody_->GetLinearVelocity();}
@@ -50,23 +40,13 @@ private:
     float initialHealth_ = 1.0f;
     int firstHitBy_ = 0;
     int lastHitBy_ = 0;
-    int score_ = 0;
-    bool male_ = true;
-    Vector<Color> colors_;
+    int score_ = 0;    
 
     const float shotInterval_ = 0.1f;
     float sinceLastShot_ = 0.0f;
-
-    AnimatedModel* bodyModel_;
-    AnimationController* animCtrl_;
-
-    RigidBody* rigidBody_;
-
-    SharedPtr<Sound> sample_;
-    Vector<SharedPtr<SoundSource> > sampleSources_;
+    Sound* shot_sfx;
 
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
-    void PlaySample(Sound *sample);
 };
 
 #endif // PLAYER_H

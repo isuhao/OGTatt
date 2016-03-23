@@ -30,9 +30,6 @@ class Scene;
 class Sprite;
 }
 
-using namespace Urho3D;
-using namespace LucKey;
-
 class OGTattCam;
 class InputMaster;
 class Level;

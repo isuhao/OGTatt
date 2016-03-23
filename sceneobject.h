@@ -23,14 +23,6 @@
 
 #include "mastercontrol.h"
 
-namespace Urho3D {
-class Node;
-class Scene;
-class Sprite;
-}
-
-using namespace Urho3D;
-
 class SceneObject : public Object
 {
     URHO3D_OBJECT(SceneObject, Object);
@@ -40,11 +32,15 @@ public:
     Vector3 GetPosition() {return rootNode_->GetWorldPosition();}
 protected:
     MasterControl* masterControl_;
-    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
     SharedPtr<Node> rootNode_;
     void Disable();
     void Set(Vector3 position);
     float randomizer_;
+
+    Vector<SharedPtr<SoundSource> > sampleSources_;
+    void PlaySample(Sound *sample, float gain = 0.3f);
+
+    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 };
 
 #endif // SCENEOBJECT_H

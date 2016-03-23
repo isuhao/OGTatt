@@ -120,7 +120,7 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     pitchDelta_ = 0.5*(pitchDelta_ + MOUSE_SENSITIVITY * mouseMove.y_);
     yaw_ += rootNode_->GetRotation().y_ + yawDelta_;
     pitch_ += rootNode_->GetRotation().x_ + pitchDelta_;
-    pitch_ = Clamp(pitch_, -89.0, 89.0);
+    pitch_ = Clamp(pitch_, -89.0f, 89.0f);
     //Construct new orientation for the camera scene node from yaw and pitch. Roll is fixed to zero
     //rootNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
 
@@ -163,9 +163,9 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
 //    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
-    rootNode_->SetPosition(Vector3(0.5f*(targetPosition.x_ + rootNode_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
-                                  rootNode_->GetPosition().y_,
-                                  0.5f*(targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_));
+    rootNode_->SetPosition(Vector3(0.5f * (targetPosition.x_ + rootNode_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
+                                  0.5f * (targetPosition.y_ + 23.0f + 5.0f * smoothTargetVelocity_.Length()),
+                                  0.5f * (targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*
     Quaternion camRot = rootNode_->GetWorldRotation();

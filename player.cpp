@@ -39,67 +39,14 @@
 #include "muzzle.h"
 
 Player::Player(Context *context, MasterControl *masterControl):
-    SceneObject(context, masterControl)
+    Character(context, masterControl, Vector3::ZERO)
 {
     rootNode_->SetName("Player");
 
-    bodyModel_ = rootNode_->CreateComponent<AnimatedModel>();
-    bodyModel_->SetCastShadows(true);
-    male_ = Random(2);
-    for (int c = 0; c < 5; c++)
-    {
-        switch (c){
-        case 0:{
-            colors_.Push(RandomSkinColor());
-        } break;
-        case 4:{
-            colors_.Push(RandomHairColor());
-        } break;
-        default: colors_.Push(RandomColor()); break;
-        }
-    }
-    if (male_){
-        bodyModel_->SetModel(masterControl_->resources.models.characters.male);}
-    else{
-        bodyModel_->SetModel(masterControl_->resources.models.characters.female);
-    }
-
-    for (unsigned m = 0; m < bodyModel_->GetNumGeometries(); m++){
-        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
-        Color diffColor = colors_[m];
-        bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor = diffColor*(1.0f-0.1f*m);
-        specColor.a_ = 23.0f - 4.0f * m;
-        bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
-    }
-
-
-    animCtrl_ = rootNode_->CreateComponent<AnimationController>();
-    animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);
-    animCtrl_->SetSpeed("Resources/Models/IdleRelax.ani", 1.0f);
-    animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
-
-    rigidBody_ = rootNode_->CreateComponent<RigidBody>();
-    rigidBody_->SetFriction(0.0f);
-    rigidBody_->SetRestitution(0.0f);
-    rigidBody_->SetMass(1.0f);
-    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
-    rigidBody_->SetLinearDamping(0.95f);
-    rigidBody_->SetAngularFactor(Vector3::UP);
     rigidBody_->SetAngularDamping(1.0f);
-    rigidBody_->SetLinearRestThreshold(0.01f);
-    rigidBody_->SetAngularRestThreshold(0.1f);
 
-    CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
-    collisionShape->SetCylinder(0.3f, 0.5f);
-
-    sample_ = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Shot.ogg");
-    sample_->SetLooped(false);
-    for (int i = 0; i < 3; i++){
-        sampleSources_.Push(SharedPtr<SoundSource>(rootNode_->CreateComponent<SoundSource>()));
-        sampleSources_[i]->SetGain(0.3f);
-        sampleSources_[i]->SetSoundType(SOUND_EFFECT);
-    }
+    shot_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Shot.ogg");
+    shot_sfx->SetLooped(false);
 
     /*scoreText_ = masterControl_->ui_->GetRoot()->CreateChild<Text>();
     scoreText_->SetText(String(score_));
@@ -114,16 +61,6 @@ Player::Player(Context *context, MasterControl *masterControl):
 void Player::AddScore(int points)
 {
     score_ += points;
-}
-
-void Player::PlaySample(Sound* sample)
-{
-    for (int i = 0; i < sampleSources_.Size(); i++){
-        if (!sampleSources_[i]->IsPlaying()){
-            sampleSources_[i]->Play(sample_);
-            break;
-        }
-    }
 }
 
 void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
@@ -223,7 +160,7 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
             bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),Random(-0.01f, 0.01f),Random(-0.01f, 0.01f)) + fire)*256.0f);
             Muzzle* muzzle = new Muzzle(context_, masterControl_, rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
             muzzle->rootNode_->LookAt(rootNode_->GetPosition() + fire);
-            PlaySample(sample_);
+            PlaySample(shot_sfx);
         }
     }
 }

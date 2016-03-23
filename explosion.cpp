@@ -49,12 +49,12 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     particleEffect->SetColorFrames(colorFrames);
     particleEmitter_->SetEffect(particleEffect);
 
-    sample_ = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Explode.ogg");
-    sample_->SetLooped(false);
+    shot_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Explode.ogg");
+    shot_sfx->SetLooped(false);
     sampleSource_ = rootNode_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(Min(0.5f*size, 1.0f));
     sampleSource_->SetSoundType(SOUND_EFFECT);
-    sampleSource_->Play(sample_);
+    sampleSource_->Play(shot_sfx);
 
     SubscribeToEvent(E_POSTUPDATE, URHO3D_HANDLER(Explosion, UpdateExplosion));
 }

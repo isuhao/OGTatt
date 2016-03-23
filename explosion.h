@@ -44,7 +44,7 @@ protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<Light> light_;
 private:
-    SharedPtr<Sound> sample_;
+    SharedPtr<Sound> shot_sfx;
     SharedPtr<SoundSource> sampleSource_;
     float initialMass_;
     float initialBrightness_;
