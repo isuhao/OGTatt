@@ -101,7 +101,7 @@ Quaternion OGTattCam::GetRotation()
 
 void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
-    Vector3 targetPosition = masterControl_->world.player_->GetPosition();
+    Vector3 targetPosition = masterControl_->world.player_->GetWorldPosition();
     Vector3 targetVelocity = masterControl_->world.player_->GetLinearVelocity();
 
     using namespace Update;

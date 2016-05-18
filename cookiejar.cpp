@@ -45,7 +45,7 @@ Cookiejar::Cookiejar(Context *context, MasterControl *masterControl, Vector3 pos
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
-    collisionShape_->SetBox(Vector3(1.16f, 0.6f, 2.1f));
+    collisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f));
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
 }
 

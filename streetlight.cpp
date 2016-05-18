@@ -30,7 +30,8 @@
 #include "streetlight.h"
 
 StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* tile):
-    Deco(context, masterControl, tile, "StreetLight")
+    Deco(context, masterControl, tile, "StreetLight"),
+    brightness_{1.8f}
 {
     rootNode_->SetRotation(Quaternion(0.0f, tile->coords_.y_%2 * 180.0f, 0.0f));
     rootNode_->SetPosition(Vector3(0.125f - (Random(10)%2)*0.25f, 0.0f, 0.125f - (Random(10)%2)*0.25f));
@@ -47,11 +48,10 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* t
     lightNode_ = rootNode_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));
     light_ = lightNode_->CreateComponent<Light>();
-    light_->SetBrightness(1.8f);
+    light_->SetBrightness(brightness_);
     light_->SetColor(Color(1.0f, 0.6f, 0.4f));
     light_->SetRange(4.0f);
     light_->SetCastShadows(true);
-//    light_->SetShadowIntensity(0.42f);
     light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
     light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));
     light_->SetShadowResolution(0.25f);
@@ -61,6 +61,5 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* t
 
 void StreetLight::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
 {
-    //float brightness = masterControl_->Sine(50.0f, 0.95f, 1.0f);
-    //light_->SetBrightness(brightness);
+    light_->SetBrightness(masterControl_->Sine(50.0f, 0.9666f*brightness_, brightness_));
 }

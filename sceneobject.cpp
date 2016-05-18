@@ -21,6 +21,7 @@
 SceneObject::SceneObject(Context* context, MasterControl* masterControl):
     Object(context),
     masterControl_{masterControl},
+    destructable_{false},
     randomizer_{Random()}
 {
     rootNode_ = masterControl_->world.scene->CreateChild("SceneObject");
@@ -45,7 +46,6 @@ void SceneObject::Disable()
 
 void SceneObject::PlaySample(Sound* sample, float gain)
 {
-    using namespace std;
     for (SoundSource* s : sampleSources_){
         if (!s->IsPlaying()){
             s->SetGain(gain);
@@ -53,11 +53,4 @@ void SceneObject::PlaySample(Sound* sample, float gain)
             break;
         }
     }
-//    for (int i = 0; i < sampleSources_.Size(); i++){
-//        if (!sampleSources_[i]->IsPlaying()){
-//            sampleSources_[i]
-//            sampleSources_[i]->Play(sample);
-//            break;
-//        }
-//    }
 }

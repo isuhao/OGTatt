@@ -29,15 +29,18 @@ class SceneObject : public Object
 public:
     SceneObject(Context *context, MasterControl* masterControl);
 
-    Vector3 GetPosition() {return rootNode_->GetWorldPosition();}
+    Vector3 GetWorldPosition() {return rootNode_->GetWorldPosition();}
 protected:
     MasterControl* masterControl_;
     SharedPtr<Node> rootNode_;
-    void Disable();
-    void Set(Vector3 position);
+    Vector<SharedPtr<SoundSource> > sampleSources_;
+    bool destructable_;
     float randomizer_;
 
-    Vector<SharedPtr<SoundSource> > sampleSources_;
+    void Disable();
+    void Destroy();
+    void Set(Vector3 position);
+
     void PlaySample(Sound *sample, float gain = 0.3f);
 
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);

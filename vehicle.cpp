@@ -32,9 +32,9 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
     collisionShape_ = rootNode_->CreateComponent<CollisionShape>();
 
     particleNode_ = rootNode_->CreateChild("Fire");
-    ParticleEmitter* flameEmitter = particleNode_->CreateComponent<ParticleEmitter>();
-    flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
-    flameEmitter->SetEmitting(!Random(5));
+    flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
+    flameEmitter_->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/fire1.xml"));
+    flameEmitter_->SetEmitting(false);
 
 //    decal_ = rootNode_->CreateComponent<DecalSet>();
 //    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
@@ -54,4 +54,5 @@ void Vehicle::Destroy()
     for (int i = 0; i < chassisModel_->GetNumGeometries(); i++){
         chassisModel_->SetMaterial(i, masterControl_->resources.materials.darkness);
     }
+    flameEmitter_->SetEmitting(true);
 }

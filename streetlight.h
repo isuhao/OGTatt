@@ -43,6 +43,7 @@ public:
 private:
     Node* lightNode_;
     Light* light_;
+    float brightness_;
 };
 
 #endif // STREETLIGHT_H

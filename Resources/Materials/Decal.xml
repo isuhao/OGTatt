@@ -1,5 +1,5 @@
 <material>
-	<technique name="Techniques/DiffAlphaMask.xml" />
+	<technique name="Techniques/DiffAlpha.xml" />
 	<texture unit="diffuse" name="Resources/Textures/Decals/Pirates.png" />
 	<parameter name="MatDiffColor" value="1 1 1 1" />
 	<depthbias constant="0" slopescaled="0" />

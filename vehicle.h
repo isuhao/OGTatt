@@ -43,6 +43,7 @@ protected:
     SharedPtr<RigidBody> rigidBody_;
     CollisionShape* collisionShape_;
     Node* particleNode_;
+    ParticleEmitter* flameEmitter_;
 private:
     void Destroy();
 };
