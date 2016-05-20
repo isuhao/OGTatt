@@ -49,4 +49,4 @@ Makefile*
 /CoreData
 OGTatt
 
-*.blend1
+*.blend*
