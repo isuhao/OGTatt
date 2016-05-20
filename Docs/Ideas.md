@@ -1,34 +1,36 @@
 # Noocodex
 
-OG Tatt is a top-down urban shoot-em-up set in a world where respect is everything.  
-Players can play without joining an existing gang. Play on your own and create a gang with at least three people whenever you feel like it. You'll have to earn enough respect to get a HQ and to be mentioned .
+OG Tatt is a top-down urban shoot-em-up set in a world where respect is is only the beginning.  
+Players can play without joining an existing gang. Play on your own and create a gang with at least three people whenever you feel like it. You'll have to earn enough respect to get an HQ and to be mentioned.  
+HQs 
    
 ## World
 
 ### Overview
 
-![Map](RegionDiagram.png)
+![Map](Map.png)
 
 ### Regions
 
 #### Western
 
-* Grunstatt (Dutch/German) | Hemp
-* Ånslo (Scandinavian) | Fish
-* Noopolis (Italian/Greek) | Mafia
-* Air Strip 1 (British) | Telescreens
+* Grunstatt (Dutch/German/Danish) | **Hemp**
+* Ånslo (Norwegian/Swedish/Finnish) | **Fish**
+* Noopolis (Italian/Greek/French) | **Wine**
+* Air Strip 1 (British/American) | **Telescreens**
 
 #### Southern
 
-* Zombuntu (Savannah) | Wildlife
-* Agrabah (Desert) | Oil
-* Axllotus (Jungle) | Natives and 
+* Zombuntu (Savannah) | **Wildlife**
+* Agroban (Desert) | **Oil**
+* Axllotus (Jungle) | **Natives**
 
 #### Eastern
 
-* Pingrad (Russian/North Korean) | Communism
-* Monkong (Chinese/Tibetan/Japanese) | Pandas, robots and monks
-* Sloompur (Australian/Indonesian/New Zealand) | Giant squids, small islands
+* Pingrad (Russian/North Korean) | **Communism**
+* Balkan (Eastern European) | 
+* Monkong (Chinese/Tibetan/Japanese) | **Pandas, robots and monks**
+* Sloompur (Australian/Indonesian/New Zealand) | **Giant squids, small islands**
 
 ### Vehicles
 
@@ -61,9 +63,9 @@ Built-in gangs will include:
 
 -----------------------
  
-#### Pirates
+#### Lagoonies
 
-All these people became criminals overnight and decided to stop running. Now they are breaking all the other rules too.
+All these people became criminals overnight for sharing audio and decided to stop running. Now they are breaking all the other rules too.
 
 ##### Emblem
 ![cassette and crossbones](../Resources/Textures/Decals/Pirates.png)  
@@ -88,7 +90,7 @@ Spotting targets is so much easier when you're dressed in blue. And these people
 
 ##### Emblem
 
-A stylized burning book.  
+A stylized burning book of law.  
 blue
 
 -----------------------
@@ -115,9 +117,9 @@ red
 
 -----------------------
 
-#### Chaotes
+#### Chaos Squad
 
-Looking for forms of magic that worked this group found pointing guns at people was a highly effective if you wanted them to do whatever really.
+Everything is magic if you look at it that way.
 
 ##### Emblem
 
