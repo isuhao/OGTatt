@@ -16,9 +16,14 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <fstream>
+
+#include "Urho3D/Urho2D/Drawable2D.h"
+
 #include "level.h"
 #include "tile.h"
 #include "wallcollider.h"
+#include "streetlight.h"
 #include "ogtattcam.h"
 
 namespace Urho3D {
@@ -39,64 +44,104 @@ Object(context)
     rootNode_->SetPosition(position);
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
 
-    // Add base tile
-    IntVector2 firstCoordPair = IntVector2(0,0);
+    TmxFile2D* tmxFile{masterControl_->cache_->GetResource<TmxFile2D>("Maps/test.tmx")};
+    if (tmxFile)
+        InitializeFromMap(*tmxFile);
+    else
+        InitializeRandom();
+
+}
+
+
+void Level::InitializeFromMap(const TmxFile2D& tmxFile)
+{
+    XMLFile* xmlFile{masterControl_->cache_->GetResource<XMLFile>(tmxFile.GetName())};
+    XMLElement xmlMap{xmlFile->GetRoot("map")};
+
+    const TmxLayer2D* layer0{tmxFile.GetLayer(0)};
+    if (!layer0)
+        return;
+    if (layer0->GetType() != LT_TILE_LAYER)
+        return;
+
+    const TmxTileLayer2D& tileLayer{*static_cast<const TmxTileLayer2D*>(layer0)};
+
+    for (int y{0}; y < tileLayer.GetHeight(); ++y) {
+        for (int x{0}; x < tileLayer.GetWidth(); ++x) {
+            if (Tile2D* tile{tileLayer.GetTile(x, y)}) {
+                if (tile->HasProperty("building"))
+                    AddTile(IntVector2(x, y));
+            }
+        }
+    }
+
+    rootNode_->Translate(Vector3(-0.5f * tileLayer.GetWidth(), 0.0f, 0.5f * tileLayer.GetHeight()));
+
+    //Read objects
+    const TmxLayer2D* layer1{tmxFile.GetLayer(1)};
+    if (!layer1)
+        return;
+    if (layer1->GetType() != LT_OBJECT_GROUP)
+        return;
+
+    const TmxObjectGroup2D& objectGroup{*static_cast<const TmxObjectGroup2D*>(layer1)};
+
+    for (unsigned i{0}; i < objectGroup.GetNumObjects(); ++i) { ///Vector<TileMapObject2D*> TmxObjectGroup2D::GetObjects()
+        TileMapObject2D* o{objectGroup.GetObject(i)};
+
+        int gid{o->GetTileGid()};
+        PropertySet2D* properties{tmxFile.GetTilePropertySet(gid)};
+        if (!properties)
+            continue;
+
+        float scaleFactor{1.56f};
+        Vector3 pos(scaleFactor * o->GetPosition().x_,
+                    0.0f,
+                    scaleFactor * o->GetPosition().y_ - tileLayer.GetHeight() + 1.0f);
+        Quaternion rot{}; ///float TileMapObject2D::GetRotation()
+                          ///int TileMapObject2D::GetId()
+
+        //Create objects
+        if (properties->HasProperty("streetlight")) {
+            new StreetLight(context_,
+                            masterControl_,
+                            pos + rootNode_->GetPosition(),
+                            rot);
+        }
+    }
+
+    AddColliders();
+}
+
+
+void Level::InitializeRandom()
+{
+    IntVector2 firstCoordPair{IntVector2(0,0)};
     tileMap_[firstCoordPair] = new Tile(context_, firstCoordPair, this);
     // Add random tiles
-    int addedTiles = 1;
-    int worldSize = 512;//Random(32, 128);
+    int addedTiles{1};
+    int worldSize{64};//Random(32, 128);
 
     while (addedTiles < worldSize){
         //Pick a random exsisting tile from a list.
         Vector<IntVector2> coordsVector = tileMap_.Keys();
         IntVector2 randomTileCoords = coordsVector[Random((int)coordsVector.Size())];
 
-        //Create a vector of numbers 1 to 4
-        /*Vector<int> directions;
-        for (int i = 1; i <= 4; i++){directions.Push(i);*/
         //Check neighbours in random orer
-        char startDir = Random(1,4);
-        for (int direction = startDir; direction < startDir+4; direction++){
-            int clampedDir = direction;
+        char startDir{static_cast<char>(Random(1,4))};
+        for (int direction{startDir}; direction < startDir+4; direction++){
+            int clampedDir{direction};
             if (clampedDir > 4) clampedDir -= 4;
             if (CheckEmptyNeighbour(randomTileCoords, (TileElement)clampedDir, true))
             {
-                IntVector2 newTileCoords = GetNeighbourCoords(randomTileCoords, (TileElement)clampedDir);
+                IntVector2 newTileCoords{GetNeighbourCoords(randomTileCoords, (TileElement)clampedDir)};
                 AddTile(newTileCoords);
                 addedTiles++;
-                /*if (newTileCoords.x_ != 0) {
-                    IntVector2 mirrorTileCoords = newTileCoords * IntVector2(-1,1);
-                    tileMap_[mirrorTileCoords] = new Tile(context_, mirrorTileCoords, this);
-                    addedTiles++;
-                }
-                if (newTileCoords.y_ != 0) {
-                    IntVector2 mirrorTileCoords = newTileCoords * IntVector2(1,-1);
-                    tileMap_[mirrorTileCoords] = new Tile(context_, mirrorTileCoords, this);
-                    addedTiles++;
-                }
-                if (newTileCoords.x_ != 0 && newTileCoords.y_ != 0) {
-                    IntVector2 mirrorTileCoords = newTileCoords * IntVector2(-1,-1);
-                    tileMap_[mirrorTileCoords] = new Tile(context_, mirrorTileCoords, this);
-                    addedTiles++;
-                }*/
             }
         }
     }
 
-    //Add slots
-    AddMissingColliders();
-    FixFringe();
-
-    Deselect();
-}
-
-
-void Level::Start()
-{
-}
-
-void Level::Stop()
-{
+    AddColliders();
 }
 
 bool Level::EnableSlot(IntVector2 coords)
@@ -126,31 +171,6 @@ void Level::DisableSlots()
     */
 }
 
-void Level::Select()
-{
-    selected_ = true;
-    EnableSlots();
-}
-
-void Level::Deselect()
-{
-    selected_ = false;
-    DisableSlots();
-}
-
-void Level::SetSelected(bool selected)
-{
-    if (selected == true) Select();
-    if (selected == false) Deselect();
-}
-
-bool Level::IsSelected() const
-{
-    return selected_;
-}
-
-
-
 void Level::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
 }
@@ -160,40 +180,19 @@ void Level::AddTile(IntVector2 newTileCoords)
     tileMap_[newTileCoords] = new Tile(context_, newTileCoords, this);
 }
 
-void Level::AddMissingColliders()
+void Level::AddColliders()
 {
-   Vector<IntVector2> tileCoords = tileMap_.Keys();
-    for (uint nthTile = 0; nthTile < tileCoords.Size(); nthTile++){
+   Vector<IntVector2> tileCoordsVec = tileMap_.Keys();
+    for (uint nthTile = 0; nthTile < tileCoordsVec.Size(); nthTile++){
         for (int element = 0; element <= 4; element++){
-            IntVector2 checkCoords = GetNeighbourCoords(tileCoords[nthTile], (TileElement)element);
-            if (CheckEmpty(checkCoords, false) && CheckEmpty(checkCoords, true))
-                collisionMap_[checkCoords] = new WallCollider(context_, this, checkCoords);
+            IntVector2 tileCoords{tileCoordsVec[nthTile]};
+            IntVector2 checkCoords{GetNeighbourCoords(tileCoords, (TileElement)element)};
+            if (CheckEmpty(checkCoords, false) && CheckEmpty(checkCoords, true)){
+                collisionMap_[tileCoords] = new WallCollider(context_, this, tileCoords);
+                break;
+            }
         }
     }
-}
-
-void Level::FixFringe()
-{
-    Vector<SharedPtr<Tile> > tiles = tileMap_.Values();
-    for (int tile = 0; tile < tiles.Size(); tile++)
-    {
-        tiles[tile]->FixFringe();
-    }
-}
-
-void Level::FixFringe(IntVector2 coords)
-{
-    for (int coordsOffset = 0; coordsOffset < TE_LENGTH; coordsOffset++)
-    {
-        IntVector2 neighbourCoords = GetNeighbourCoords(coords, (TileElement)coordsOffset);
-        if (!CheckEmpty(neighbourCoords, true)) tileMap_[neighbourCoords]->FixFringe();
-    }
-}
-
-void Level::SetTileType(IntVector2 coords, TileType type)
-{
-    tileMap_[coords]->SetBuilding(type);
-    FixFringe(coords);
 }
 
 bool Level::CheckEmpty(IntVector2 coords, bool checkTiles = true) const
@@ -225,20 +224,6 @@ IntVector2 Level::GetNeighbourCoords(IntVector2 coords, TileElement element) con
     default: case TE_CENTER: break;
     }
     return coords + shift;
-}
-
-TileType Level::GetTileType(IntVector2 coords)
-{
-    if (!CheckEmpty(coords))
-    {
-        return tileMap_[coords]->buildingType_;
-    }
-    else return TT_SPACE;
-}
-
-TileType Level::GetNeighbourType(IntVector2 coords, TileElement element)
-{
-    return GetTileType(GetNeighbourCoords(coords, element));
 }
 
 CornerType Level::PickCornerType(IntVector2 tileCoords, TileElement element) const

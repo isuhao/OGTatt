@@ -22,8 +22,7 @@
 #include <Urho3D/Urho3D.h>
 
 #include "mastercontrol.h"
-#include "deco.h"
-#include "tile.h"
+#include "sceneobject.h"
 
 namespace Urho3D {
 class Drawable;
@@ -34,11 +33,11 @@ class Sprite;
 
 using namespace Urho3D;
 
-class StreetLight : public Deco
+class StreetLight : public SceneObject
 {
-    URHO3D_OBJECT(StreetLight, Deco);
+    URHO3D_OBJECT(StreetLight, SceneObject);
 public:
-    StreetLight(Context* context, MasterControl *masterControl, Tile *tile);
+    StreetLight(Context* context, MasterControl *masterControl, Vector3 pos, Quaternion rot);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 private:
     Node* lightNode_;

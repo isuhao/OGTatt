@@ -39,7 +39,7 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     light_->SetBrightness(initialBrightness_);
 
     particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/Explosion.xml");
+    ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Particles/Explosion.xml");
     Vector<ColorFrame> colorFrames;
     colorFrames.Push(ColorFrame(Color(0.0f, 0.0f, 0.0f, 0.0f), 0.0f));
     Color mixColor = 0.5f * (color + particleEffect->GetColorFrame(1)->color_);
@@ -49,7 +49,7 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     particleEffect->SetColorFrames(colorFrames);
     particleEmitter_->SetEffect(particleEffect);
 
-    shot_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Explode.ogg");
+    shot_sfx = masterControl_->cache_->GetResource<Sound>("Samples/Explode.ogg");
     shot_sfx->SetLooped(false);
     sampleSource_ = rootNode_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(Min(0.5f*size, 1.0f));

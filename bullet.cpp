@@ -26,8 +26,8 @@ Bullet::Bullet(Context *context, MasterControl *masterControl):
     rootNode_->SetName("Bullet");
     rootNode_->SetScale(Vector3(1.0f, 1.0f, 0.1f));
     model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(masterControl_->cache_->GetResource<Model>("Resources/Models/Bullet.mdl"));
-    model_->SetMaterial(masterControl_->cache_->GetResource<Material>("Resources/Materials/Bullet.xml"));
+    model_->SetModel(masterControl_->cache_->GetResource<Model>("Models/Bullet.mdl"));
+    model_->SetMaterial(masterControl_->cache_->GetResource<Material>("Materials/Bullet.xml"));
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetMass(0.23f);

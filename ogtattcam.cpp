@@ -21,13 +21,14 @@
 
 OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
     Object(context),
-    yaw_(0.0f),
-    pitch_(88.0f),
-    roll_{0.0f},
+    altitude_{23.0f},
+    yaw_(0.0f), pitch_(88.0f), roll_{0.0f},
+    yawDelta_{0.0}, pitchDelta_{0.0},
+    forceMultiplier{1.0},
     smoothTargetPosition_{Vector3::ZERO},
     smoothTargetVelocity_{Vector3::ZERO}
 {
-    float viewRange = 50.0f;
+    float viewRange = 500.0f;
     masterControl_ = masterControl;
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(OGTattCam, HandleUpdate));
 
@@ -57,16 +58,6 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
     rigidBody_->SetMass(1.0f);
 
     SetupViewport();
-}
-
-
-
-void OGTattCam::Start()
-{
-}
-
-void OGTattCam::Stop()
-{
 }
 
 void OGTattCam::SetupViewport()
@@ -107,11 +98,11 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     using namespace Update;
 
     //Take the frame time step, which is stored as a double
-    float timeStep = eventData[P_TIMESTEP].GetFloat();
+    float t{eventData[P_TIMESTEP].GetFloat()};
     //Movement speed as world units per second
-    const double MOVE_SPEED = 1024.0;
+    const float MOVE_SPEED{1024.0f};
     //Mouse sensitivity as degrees per pixel
-    const double MOUSE_SENSITIVITY = 0.1;
+    const float MOUSE_SENSITIVITY{0.1f};
 
     //Use this frame's mouse motion to adjust camera node yaw and pitch. Clamp the pitch between -90 and 90 degrees. Only move the camera when the cursor is hidden.
     Input* input = GetSubsystem<Input>();
@@ -130,12 +121,15 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     Vector3 camForce = Vector3::ZERO;
     Vector3 centerForce = LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
-    if (input->GetKeyDown('T')) camForce += LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
-    if (input->GetKeyDown('G')) camForce += LucKey::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
-    if (input->GetKeyDown('H')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
-    if (input->GetKeyDown('F')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
-    if (input->GetKeyDown('Y')) camForce += Vector3::UP;
-    if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
+//    if (input->GetKeyDown('T')) camForce += LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
+//    if (input->GetKeyDown('G')) camForce += LucKey::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
+//    if (input->GetKeyDown('H')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
+//    if (input->GetKeyDown('F')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), -(Vector3::ONE - Vector3::UP) ).Normalized() + centerForce;
+//    if (input->GetKeyDown('Y')) camForce += Vector3::UP;
+//    if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
+
+    if (input->GetKeyDown('Y')) altitude_ += (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
+    if (input->GetKeyDown('R')) altitude_ -= (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
 
     //Read joystick input
     /*JoystickState* joystickState = input->GetJoystickByIndex(0);
@@ -152,7 +146,7 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     if ( forceMultiplier < 8.0 && (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) ){
         forceMultiplier += 0.23;
     } else forceMultiplier = pow(forceMultiplier, 0.75);
-    rigidBody_->ApplyForce(forceMultiplier * camForce * timeStep);
+    rigidBody_->ApplyForce(forceMultiplier * camForce * t);
 
     //Prevent camera from going too low
     if (rootNode_->GetPosition().y_ < 1.5f)
@@ -164,7 +158,7 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 //    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
     rootNode_->SetPosition(Vector3(0.5f * (targetPosition.x_ + rootNode_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
-                                  0.5f * (targetPosition.y_ + 23.0f + 5.0f * smoothTargetVelocity_.Length()),
+                                  0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetVelocity_.Length()),
                                   0.5f * (targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*

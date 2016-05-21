@@ -31,7 +31,7 @@ Cookiejar::Cookiejar(Context *context, MasterControl *masterControl, Vector3 pos
     chassisModel_->SetMaterial(2, masterControl_->resources.materials.darkness);
     chassisModel_->SetMaterial(3, masterControl_->resources.materials.headlights);
     chassisModel_->SetMaterial(4, masterControl_->resources.materials.taillights);
-    chassisModel_->SetMaterial(5, masterControl_->cache_->GetResource<Material>("Resources/Materials/Decal.xml"));
+    chassisModel_->SetMaterial(5, masterControl_->cache_->GetResource<Material>("Materials/Decal.xml"));
 
     for (unsigned m = 0; m < chassisModel_->GetNumMorphs(); m++){
         chassisModel_->SetMorphWeight(m, Random());

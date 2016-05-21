@@ -40,6 +40,8 @@ void MasterControl::Setup()
     //Set custom window title and icon.
     engineParameters_["WindowTitle"] = "OG Tatt";
     engineParameters_["LogName"] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
+    engineParameters_["ResourcePaths"] = "Data;CoreData;Resources";
+    engineParameters_["WindowIcon"] = "icon.png";
 //    engineParameters_["FullScreen"] = false;
 //    engineParameters_["Headless"] = false;
 //    engineParameters_["WindowWidth"] = 960;
@@ -68,8 +70,8 @@ void MasterControl::Start()
     //Hook up to the frame update and render post-update events
     SubscribeToEvents();
 
-    Sound* music = cache_->GetResource<Sound>("Resources/Music/Huilende Rappers - Loop als een Piraatje.ogg");
-//    Sound* music = cache_->GetResource<Sound>("Resources/Music/Grim_Shit_-_When_The_System_Collapses.ogg");
+    Sound* music = cache_->GetResource<Sound>("Music/Huilende Rappers - Loop als een Piraatje.ogg");
+//    Sound* music = cache_->GetResource<Sound>("Music/Grim_Shit_-_When_The_System_Collapses.ogg");
     music->SetLooped(true);
     Node* musicNode = world.scene->CreateChild("Music");
     musicSource_ = musicNode->CreateComponent<SoundSource>();
@@ -132,7 +134,7 @@ void MasterControl::CreateUI()
     //Construct new Text object, set string to display and font to use
     Text* instructionText = ui->GetRoot()->CreateChild<Text>();
     instructionText->SetText("OG Tatt");
-    instructionText->SetFont(cache->GetResource<Font>("Resources/Fonts/infinite.ttf"), 23);
+    instructionText->SetFont(cache->GetResource<Font>("Fonts/infinite.ttf"), 23);
     instructionText->SetColor(Color(0.666f, 1.0f, 0.23f, 0.42f));
     //The text has multiple rows. Center them in relation to each other
     instructionText->SetHorizontalAlignment(HA_CENTER);
@@ -142,52 +144,52 @@ void MasterControl::CreateUI()
 
 void MasterControl::LoadResources()
 {
-    resources.models.characters.male = cache_->GetResource<Model>("Resources/Models/Male.mdl");
-    resources.models.characters.female = cache_->GetResource<Model>("Resources/Models/Female.mdl");
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mohawk.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Seagull.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Mustain.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Resources/Models/Frotoad.mdl")));
+    resources.models.characters.male = cache_->GetResource<Model>("Models/Male.mdl");
+    resources.models.characters.female = cache_->GetResource<Model>("Models/Female.mdl");
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Mohawk.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Seagull.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Mustain.mdl")));
+    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Frotoad.mdl")));
 
-    resources.models.doodads.streetLight = cache_->GetResource<Model>("Resources/Models/StreetLight.mdl");
+    resources.models.doodads.streetLight = cache_->GetResource<Model>("Models/StreetLight.mdl");
 
-    resources.models.vehicles.cookiejar = cache_->GetResource<Model>("Resources/Models/Cookiejar.mdl");
-    resources.models.vehicles.honti = cache_->GetResource<Model>("Resources/Models/Honti.mdl");
+    resources.models.vehicles.cookiejar = cache_->GetResource<Model>("Models/Cookiejar.mdl");
+    resources.models.vehicles.honti = cache_->GetResource<Model>("Models/Honti.mdl");
 
-    resources.models.tileParts.blockCenter = cache_->GetResource<Model>("Resources/Models/Block_center.mdl");
-    resources.models.tileParts.blockDoubleCorner = cache_->GetResource<Model>("Resources/Models/Block_doublecorner.mdl");
-    resources.models.tileParts.blockFillCorner = cache_->GetResource<Model>("Resources/Models/Block_fillcorner.mdl");
-    resources.models.tileParts.blockInCorner = cache_->GetResource<Model>("Resources/Models/Block_incorner.mdl");
-    resources.models.tileParts.blockOutCorner = cache_->GetResource<Model>("Resources/Models/Block_outcorner.mdl");
-    resources.models.tileParts.blockSide = cache_->GetResource<Model>("Resources/Models/Block_side.mdl");
-    resources.models.tileParts.blockTween = cache_->GetResource<Model>("Resources/Models/Block_tween.mdl");
-    resources.models.tileParts.blockTweenCorner = cache_->GetResource<Model>("Resources/Models/Block_tweencorner.mdl");
+    resources.models.tileParts.blockCenter = cache_->GetResource<Model>("Models/Block_center.mdl");
+    resources.models.tileParts.blockDoubleCorner = cache_->GetResource<Model>("Models/Block_doublecorner.mdl");
+    resources.models.tileParts.blockFillCorner = cache_->GetResource<Model>("Models/Block_fillcorner.mdl");
+    resources.models.tileParts.blockInCorner = cache_->GetResource<Model>("Models/Block_incorner.mdl");
+    resources.models.tileParts.blockOutCorner = cache_->GetResource<Model>("Models/Block_outcorner.mdl");
+    resources.models.tileParts.blockSide = cache_->GetResource<Model>("Models/Block_side.mdl");
+    resources.models.tileParts.blockTween = cache_->GetResource<Model>("Models/Block_tween.mdl");
+    resources.models.tileParts.blockTweenCorner = cache_->GetResource<Model>("Models/Block_tweencorner.mdl");
 
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_0.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_1.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_2.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_3.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/Skin_4.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_0.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_1.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_2.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_3.xml")));
+    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_4.xml")));
 
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothWhite.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothBlack.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothRed.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothYellow.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothGreen.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Resources/Materials/ClothBlue.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothWhite.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothBlack.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothRed.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothYellow.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothGreen.xml")));
+    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothBlue.xml")));
 
-    resources.materials.darkness = cache_->GetResource<Material>("Resources/Materials/Darkness.xml");
-    resources.materials.sidewalk = cache_->GetResource<Material>("Resources/Materials/Sidewalk.xml");
-    resources.materials.metal = cache_->GetResource<Material>("Resources/Materials/Metal.xml");
-    resources.materials.leather = cache_->GetResource<Material>("Resources/Materials/Leather.xml");
-    resources.materials.wall = cache_->GetResource<Material>("Resources/Materials/Wall.xml");
-    resources.materials.hair = cache_->GetResource<Material>("Resources/Materials/Hair.xml");
-    resources.materials.pants = cache_->GetResource<Material>("Resources/Materials/Pants.xml");
-    resources.materials.paint = cache_->GetResource<Material>("Resources/Materials/Paint.xml");
-    resources.materials.glass = cache_->GetResource<Material>("Resources/Materials/Glass.xml");
-    resources.materials.amber = cache_->GetResource<Material>("Resources/Materials/Amber.xml");
-    resources.materials.headlights = cache_->GetResource<Material>("Resources/Materials/HeadLights.xml");
-    resources.materials.taillights = cache_->GetResource<Material>("Resources/Materials/TailLights.xml");
+    resources.materials.darkness = cache_->GetResource<Material>("Materials/Darkness.xml");
+    resources.materials.sidewalk = cache_->GetResource<Material>("Materials/Sidewalk.xml");
+    resources.materials.metal = cache_->GetResource<Material>("Materials/Metal.xml");
+    resources.materials.leather = cache_->GetResource<Material>("Materials/Leather.xml");
+    resources.materials.wall = cache_->GetResource<Material>("Materials/Wall.xml");
+    resources.materials.hair = cache_->GetResource<Material>("Materials/Hair.xml");
+    resources.materials.pants = cache_->GetResource<Material>("Materials/Pants.xml");
+    resources.materials.paint = cache_->GetResource<Material>("Materials/Paint.xml");
+    resources.materials.glass = cache_->GetResource<Material>("Materials/Glass.xml");
+    resources.materials.amber = cache_->GetResource<Material>("Materials/Amber.xml");
+    resources.materials.headlights = cache_->GetResource<Material>("Materials/HeadLights.xml");
+    resources.materials.taillights = cache_->GetResource<Material>("Materials/TailLights.xml");
 }
 
 void MasterControl::CreateScene()
@@ -204,21 +206,21 @@ void MasterControl::CreateScene()
     world.cursor.sceneCursor = world.scene->CreateChild("Cursor");
     world.cursor.sceneCursor->SetPosition(Vector3(0.0f,0.0f,0.0f));
     //StaticModel* cursorObject = world.cursor.sceneCursor->CreateComponent<StaticModel>();
-    //cursorObject->SetModel(cache_->GetResource<Model>("Resources/Models/Cursor.mdl"));
-    //cursorObject->SetMaterial(cache_->GetResource<Material>("Resources/Materials/glow.xml"));
+    //cursorObject->SetModel(cache_->GetResource<Model>("Models/Cursor.mdl"));
+    //cursorObject->SetMaterial(cache_->GetResource<Material>("Materials/glow.xml"));
 
     //Create an invisible plane for mouse raycasting
     world.voidNode = world.scene->CreateChild("Void");
     //Location is set in update since the plane moves with the camera.
     world.voidNode->SetScale(Vector3(1000.0f, 1.0f, 1000.0f));
-    StaticModel* planeObject = world.voidNode->CreateComponent<StaticModel>();
+    StaticModel* planeObject{world.voidNode->CreateComponent<StaticModel>()};
     planeObject->SetModel(cache_->GetResource<Model>("Models/Plane.mdl"));
-    planeObject->SetMaterial(cache_->GetResource<Material>("Resources/Materials/Invisible.xml"));
+    planeObject->SetMaterial(cache_->GetResource<Material>("Materials/Invisible.xml"));
 
     //Create a directional light.
-    Node* lightNode = world.scene->CreateChild("DirectionalLight");
+    Node* lightNode{world.scene->CreateChild("DirectionalLight")};
     lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
-    Light* light = lightNode->CreateComponent<Light>();
+    Light* light{lightNode->CreateComponent<Light>()};
     light->SetLightType(LIGHT_DIRECTIONAL);
     light->SetBrightness(0.23f);
     light->SetColor(Color(1.0f, 0.9f, 0.666f));
@@ -234,9 +236,9 @@ void MasterControl::CreateScene()
 
     new Level(context_, Vector3::ZERO, this);
     world.player_ = new Player(context_, this);
-    for (int p = 0; p < 100; p++) new Pedestrian(context_, this, Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
-    for (int c = 1; c <= 5; c++) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
-    for (int h = 0; h < 5; h++) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f/5.0f) * h, Vector3::UP) * Vector3::RIGHT);
+    for (int p{0}; p < 5; ++p) new Pedestrian(context_, this, Vector3(Random(-50.0f, 50.0f), 0.0f, Random(-50.0f, 50.0f)));
+    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
+    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
 }
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
@@ -247,7 +249,7 @@ void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
 void MasterControl::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 {
     using namespace Update;
-    float timeStep = eventData[P_TIMESTEP].GetFloat();
+    float timeStep{eventData[P_TIMESTEP].GetFloat()};
     world.voidNode->SetPosition(LucKey::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
     UpdateCursor(timeStep);
 }
@@ -303,7 +305,7 @@ void MasterControl::Exit()
 void MasterControl::CreateSineLookupTable()
 {
     //Generate sine lookup array
-    for (int i = 0; i < 1024; i++){
+    for (int i{0}; i < 1024; i++){
         sine_.Push(sin((i/512.0)*2.0*M_PI));
     }
 }

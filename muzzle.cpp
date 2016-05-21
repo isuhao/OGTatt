@@ -23,7 +23,7 @@ Muzzle::Muzzle(Context *context, MasterControl *masterControl, Vector3 position)
 {
     rootNode_->SetPosition(position);
     particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Resources/Particles/Muzzle.xml");
+    ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Particles/Muzzle.xml");
     particleEmitter_->SetEffect(particleEffect);
 
     Node* lightNode_ = rootNode_->CreateChild("LightNode");

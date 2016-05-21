@@ -29,16 +29,16 @@
 
 #include "streetlight.h"
 
-StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* tile):
-    Deco(context, masterControl, tile, "StreetLight"),
+StreetLight::StreetLight(Context* context, MasterControl* masterControl, Vector3 pos, Quaternion rot):
+    SceneObject(context, masterControl),
     brightness_{1.8f}
 {
-    rootNode_->SetRotation(Quaternion(0.0f, tile->coords_.y_%2 * 180.0f, 0.0f));
-    rootNode_->SetPosition(Vector3(0.125f - (Random(10)%2)*0.25f, 0.0f, 0.125f - (Random(10)%2)*0.25f));
+    rootNode_->SetPosition(pos);
+    rootNode_->SetRotation(rot);
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(masterControl_->cache_->GetResource<Model>("Resources/Models/StreetLight.mdl"));
-    model_->SetMaterial(0, masterControl_->cache_->GetResource<Material>("Resources/Materials/Metal.xml"));
+    model_->SetModel(masterControl_->cache_->GetResource<Model>("Models/StreetLight.mdl"));
+    model_->SetMaterial(0, masterControl_->cache_->GetResource<Material>("Materials/Metal.xml"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();
@@ -47,10 +47,13 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Tile* t
 
     lightNode_ = rootNode_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));
+    lightNode_->SetDirection(Vector3::DOWN);
     light_ = lightNode_->CreateComponent<Light>();
+    light_->SetLightType(LIGHT_SPOT);
     light_->SetBrightness(brightness_);
     light_->SetColor(Color(1.0f, 0.6f, 0.4f));
     light_->SetRange(4.0f);
+    light_->SetFov(90.0f);
     light_->SetCastShadows(true);
     light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
     light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));

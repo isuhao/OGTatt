@@ -1,6 +1,6 @@
-# Noocodex
+- # Noocodex
 
-OG Tatt is a top-down urban shoot-em-up set in a world where respect is is only the beginning.  
+OG Tatt is a top-down urban shoot-em-up set in a world where respect is only the beginning.  
 Players can play without joining an existing gang. Play on your own and create a gang with at least three people whenever you feel like it. You'll have to earn enough respect to get an HQ and to be mentioned.  
 HQs 
    
@@ -8,7 +8,7 @@ HQs
 
 ### Overview
 
-![Map](Map.png)
+![Map](WorldMap.png)
 
 ### Regions
 
@@ -34,23 +34,23 @@ HQs
 
 ### Vehicles
 
- * Land
-  - Cars
-  - Motorcycles
-  - Tanks
- * Water
-  - Rowboats
-  - Speedboats
-  - Jet-skis
+* Land
+   - Cars
+   - Motorcycles
+   - Tanks
+* Water
+   - Rowboats
+   - Speedboats
+   - Jet-skis
 
 ### Weapons
 
- + Pistol: Little Elvis
- + SMG: Spitfire
- + Mini-gun: Herzstark
- + Flamethrower: Libertorch
- + Rocket Launcher: Harab Shrapnels
- + Explosive Drones: Freedom Delivery System
++ Pistol: Little Elvis
++ SMG: Spitfire
++ Mini-gun: Herzstark
++ Flamethrower: Libertorch
++ Rocket Launcher: Harab Shrapnels
++ Explosive Drones: Freedom Delivery System
  
 ### Gangs
 
@@ -156,7 +156,7 @@ Realizing they'll need to make some more noise if they want to reclaim the title
 
 ##### Emblem
 
-"Bob".  
+"Bob"  
 dark red
 
 -----------------------
@@ -167,14 +167,14 @@ Fight pollution, free animals, kill meat eaters.
 
 ##### Emblem
 
-Boars head.  
+Boars head  
 bright Green
 
 -----------------------
 
 #### Association of Autonomous Astronauts
 
-Trying to get into space they ran into a little budget problem.
+Trying to get away from this place they ran into a little budget problem.
 
 ##### Emblem
 
@@ -187,13 +187,17 @@ silver
 
 ## Controls
 
- * `Enter`: Enter/Leave nearest vehicle on the most convenient side
- * `]`: Specifically enter/leave nearest vehicle on the right side
- * `[`: Specifically enter/leave nearest vehicle on the left side
+* Keyboard
+   - `Enter`: Enter/Leave nearest vehicle on the most convenient side
+   - `]`: Specifically enter/leave nearest vehicle on the right side
+   - `[`: Specifically enter/leave nearest vehicle on the left side
+ 
+## UI
+
++ Chat as pop-up with avatar and message for people on-screen and.
  
 ## Hand-to-Hand combat
 
- + Disarm
- + Counter
- + Grab/Chokehold (PvP: buttonbash to break neck/free)
- 
++ Disarm
++ Counter
++ Grab/Chokehold (PvP: buttonbash to break neck/free)

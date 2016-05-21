@@ -57,10 +57,7 @@ public:
     TileType GetTileType(IntVector2 coords);
     TileType GetNeighbourType(IntVector2 coords, TileElement element);
 
-
-    virtual void Start();
-    virtual void Stop();
-    void AddMissingColliders();
+    void AddColliders();
     void FixFringe();
     void FixFringe(IntVector2 coords);
 
@@ -77,15 +74,10 @@ private:
 
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
 
-    bool selected_;
-
-    void Select();
-    void Deselect();
-    void SetSelected(bool selected);
-    bool IsSelected() const;
-
     void SetTileType(IntVector2 coords, TileType type = TT_ENGINE);
     void EmptyTile(IntVector2 coords) {SetTileType(coords, TT_EMPTY);}
+    void InitializeFromMap(const TmxFile2D& tmxFile);
+    void InitializeRandom();
 };
 
 #endif

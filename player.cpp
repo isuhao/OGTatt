@@ -45,12 +45,12 @@ Player::Player(Context *context, MasterControl *masterControl):
 
     rigidBody_->SetAngularDamping(1.0f);
 
-    shot_sfx = masterControl_->cache_->GetResource<Sound>("Resources/Samples/Shot.ogg");
+    shot_sfx = masterControl_->cache_->GetResource<Sound>("Samples/Shot.ogg");
     shot_sfx->SetLooped(false);
 
     /*scoreText_ = masterControl_->ui_->GetRoot()->CreateChild<Text>();
     scoreText_->SetText(String(score_));
-    scoreText_->SetFont(masterControl_->cache_->GetResource<Font>("Resources/Fonts/skirmishergrad.ttf"), 32);
+    scoreText_->SetFont(masterControl_->cache_->GetResource<Font>("Fonts/skirmishergrad.ttf"), 32);
     scoreText_->SetHorizontalAlignment(HA_LEFT);
     scoreText_->SetVerticalAlignment(VA_TOP);
     scoreText_->SetPosition(0, masterControl_->ui_->GetRoot()->GetHeight()/2.1);*/
@@ -134,13 +134,13 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 
     //Update animation
     if (velocity.Length() > 0.1f){
-        animCtrl_->PlayExclusive("Resources/Models/WalkRelax.ani", 0, true, 0.15f);
-        animCtrl_->SetSpeed("Resources/Models/WalkRelax.ani", velocity.Length()*2.3f);
-        animCtrl_->SetStartBone("Resources/Models/WalkRelax.ani", "MasterBone");
+        animCtrl_->PlayExclusive("Models/WalkRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetSpeed("Models/WalkRelax.ani", velocity.Length()*2.3f);
+        animCtrl_->SetStartBone("Models/WalkRelax.ani", "MasterBone");
     }
     else {
-        animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.15f);
-        animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
+        animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
     }
 
     //Shooting

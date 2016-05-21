@@ -34,7 +34,7 @@ Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 p
 void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
     using namespace Update;
-    float timeStep = eventData[P_TIMESTEP].GetFloat();
+    float timeStep{eventData[P_TIMESTEP].GetFloat()};
     sinceLastTurn_ += timeStep;
     if (sinceLastTurn_ > turnInterval_){
         sinceLastTurn_ = 0.0f;
@@ -66,19 +66,19 @@ void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)
     if (direction_.Length() > 0.23f) rigidBody_->ApplyForce(direction_*walkSpeed_*timeStep);
 
     //Update rotation according to movement direction.
-        Vector3 velocity = rigidBody_->GetLinearVelocity();
-        Quaternion rotation = rootNode_->GetWorldRotation();
-        Quaternion aimRotation = rotation;
+    Vector3 velocity{rigidBody_->GetLinearVelocity()};
+    Quaternion rotation{rootNode_->GetWorldRotation()};
+    Quaternion aimRotation{rotation};
         aimRotation.FromLookRotation(velocity);
         rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
         if (velocity.Length() > 0.1f){
-            animCtrl_->PlayExclusive("Resources/Models/WalkRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetSpeed("Resources/Models/WalkRelax.ani", velocity.Length()*2.3f);
-            animCtrl_->SetStartBone("Resources/Models/WalkRelax.ani", "MasterBone");
+            animCtrl_->PlayExclusive("Models/WalkRelax.ani", 0, true, 0.15f);
+            animCtrl_->SetSpeed("Models/WalkRelax.ani", velocity.Length() * 2.3f);
+            animCtrl_->SetStartBone("Models/WalkRelax.ani", "MasterBone");
         }
         else {
-            animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
+            animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.15f);
+            animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
         }
 }

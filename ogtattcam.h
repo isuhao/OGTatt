@@ -45,9 +45,6 @@ class OGTattCam : public Object
 public:
     OGTattCam(Context *context, MasterControl* masterControl);
 
-    virtual void Start();
-    virtual void Stop();
-
     SharedPtr<Camera> camera_;
     SharedPtr<Viewport> viewport_;
     SharedPtr<RenderPath> effectRenderPath;
@@ -62,12 +59,13 @@ private:
     Vector3 smoothTargetVelocity_;
 
     SharedPtr<RigidBody> rigidBody_;
+    float altitude_;
     float yaw_;
     float pitch_;
     float roll_;
-    float yawDelta_ = 0.0;
-    float pitchDelta_ = 0.0;
-    float forceMultiplier = 1.0;
+    float yawDelta_;
+    float pitchDelta_;
+    float forceMultiplier;
     void SetupViewport();
     void Lock(SharedPtr<Node> node);
 };

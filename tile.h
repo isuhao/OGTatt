@@ -41,16 +41,9 @@ class Tile : public Object
     friend class Deco;
     URHO3D_OBJECT(Tile, Object);
 public:
-    Tile(Context *context, const IntVector2 coords, Level *platform);
-
-    virtual void Start();
-    virtual void Stop();
-
+    Tile(Context *context, const IntVector2 coords, Level *level);
 
     IntVector2 coords_;
-    TileType buildingType_ = TT_EMPTY;
-    float GetHealth(){return health_;}
-    float ApplyDamage(float damage){health_ = Max(health_ - damage, 0.0f);}
 private:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
     MasterControl* masterControl_;
@@ -58,14 +51,6 @@ private:
     Node* rootNode_;
     CollisionShape* collisionShape_;
     Node* elements_[TE_LENGTH];
-    float health_ = 1.0f;
-    //A node pointer for each element:
-    // 516 ^
-    // 402 N
-    // 837 |
-    void SetBuilding(TileType type);
-    TileType GetBuilding();
-    void FixFringe();
 };
 
 #endif // TILE_H

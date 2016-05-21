@@ -38,13 +38,6 @@ void InputMaster::HandleMouseDown(StringHash eventType, VariantMap &eventData)
     }
 }
 
-void InputMaster::SetSelection(SharedPtr<Level> platform)
-{
-    DeselectAll();
-    selectedDungeons_ += platform;
-    platform->Select();
-}
-
 void InputMaster::HandleMouseUp(StringHash eventType, VariantMap &eventData)
 {
     using namespace MouseButtonUp;
@@ -77,13 +70,4 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
     case KEY_M: masterControl_->musicSource_->SetGain(masterControl_->musicSource_->GetGain()==0.0f ? 0.32f : 0.0f);
         break;
     }
-}
-
-void InputMaster::DeselectAll()
-{
-    for (int i = 0; i < selectedDungeons_.Size(); i++)
-    {
-        selectedDungeons_[i]->Deselect();
-    }
-    selectedDungeons_.Clear();
 }

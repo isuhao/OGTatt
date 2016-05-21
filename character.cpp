@@ -51,7 +51,7 @@ Character::Character(Context *context, MasterControl *masterControl, Vector3 pos
     }
 
     for (unsigned m = 0; m < bodyModel_->GetNumGeometries(); m++){
-        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
+        bodyModel_->SetMaterial(m, masterControl_->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor = colors_[m];
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
         Color specColor = diffColor*(1.0f-0.1f*m);
@@ -64,7 +64,7 @@ Character::Character(Context *context, MasterControl *masterControl, Vector3 pos
         hairModel_->SetCastShadows(true);
         hairModel_->SetModel(masterControl_->resources.models.characters.hairStyles[hairStyle_ - 1]);
         //Set color for hair model
-        hairModel_->SetMaterial(masterControl_->cache_->GetTempResource<Material>("Resources/Materials/Basic.xml"));
+        hairModel_->SetMaterial(masterControl_->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];
         hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
         Color specColor = diffColor*0.23f;
@@ -73,9 +73,9 @@ Character::Character(Context *context, MasterControl *masterControl, Vector3 pos
     }
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();
-    animCtrl_->PlayExclusive("Resources/Models/IdleRelax.ani", 0, true, 0.1f);
-    animCtrl_->SetSpeed("Resources/Models/IdleRelax.ani", 1.0f);
-    animCtrl_->SetStartBone("Resources/Models/IdleRelax.ani", "MasterBone");
+    animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.1f);
+    animCtrl_->SetSpeed("Models/IdleRelax.ani", 1.0f);
+    animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
 
     //Setup physics components
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
