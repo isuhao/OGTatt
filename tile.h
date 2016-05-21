@@ -41,16 +41,15 @@ class Tile : public Object
     friend class Deco;
     URHO3D_OBJECT(Tile, Object);
 public:
-    Tile(Context *context, const IntVector2 coords, Level *level);
+    Tile(const TileInfo info, Level *level);
 
-    IntVector2 coords_;
+    IntVector3 GetCoords() const { return info_.coords_; }
 private:
-    void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    MasterControl* masterControl_;
-    Level* dungeon_;
+    Level* level_;
+
+    TileInfo info_;
     Node* rootNode_;
     CollisionShape* collisionShape_;
-    Node* elements_[TE_LENGTH];
 };
 
 #endif // TILE_H

@@ -28,10 +28,18 @@
 
 URHO3D_DEFINE_APPLICATION_MAIN(MasterControl);
 
+MasterControl* MasterControl::instance_ = NULL;
+
+MasterControl* MasterControl::GetInstance()
+{
+    return MasterControl::instance_;
+}
+
 MasterControl::MasterControl(Context *context):
     Application(context),
     paused_(false)
 {
+    instance_ = this;
 }
 
 void MasterControl::Setup()
@@ -232,13 +240,13 @@ void MasterControl::CreateScene()
 //    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
 
     //Create camera
-    world.camera = new OGTattCam(context_, this);
+    world.camera = new OGTattCam();
 
-    new Level(context_, Vector3::ZERO, this);
-    world.player_ = new Player(context_, this);
-    for (int p{0}; p < 5; ++p) new Pedestrian(context_, this, Vector3(Random(-50.0f, 50.0f), 0.0f, Random(-50.0f, 50.0f)));
-    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
-    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
+    new Level();
+    world.player_ = new Player();
+    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-23.0f, 23.0f), 0.0f, Random(-23.0f, 23.0f)));
+//    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
+//    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
 }
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)

@@ -24,108 +24,140 @@
 #include "tile.h"
 #include "wallcollider.h"
 #include "streetlight.h"
+#include "honti.h"
+#include "cookiejar.h"
 #include "ogtattcam.h"
 
 namespace Urho3D {
-template <> unsigned MakeHash(const IntVector2& value)
-  {
-    return LucKey::IntVector2ToHash(value);
-  }
+
+    template <> unsigned MakeHash(const IntVector2& value)
+    {
+        return LucKey::IntVector2ToHash(value);
+    }
 }
 
-Level::Level(Context *context, Vector3 position, MasterControl* masterControl):
-Object(context)
+Level::Level(Vector3 position):
+Object(MC->GetContext())
 {
-    masterControl_ = masterControl;
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Level, HandleUpdate));
-    rootNode_ = masterControl_->world.scene->CreateChild("World");
-//    masterControl_->platformMap_[rootNode_->GetID()] = WeakPtr<Dungeon>(this);
+    rootNode_ = MC->world.scene->CreateChild("World");
+//    MC->platformMap_[rootNode_->GetID()] = WeakPtr<Dungeon>(this);
 
     rootNode_->SetPosition(position);
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
 
-    TmxFile2D* tmxFile{masterControl_->cache_->GetResource<TmxFile2D>("Maps/test.tmx")};
+    TmxFile2D* tmxFile{MC->cache_->GetResource<TmxFile2D>("Maps/smallTest.tmx")};
     if (tmxFile)
         InitializeFromMap(*tmxFile);
-    else
-        InitializeRandom();
+//    else
+//        InitializeRandom();
 
 }
-
 
 void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 {
-    XMLFile* xmlFile{masterControl_->cache_->GetResource<XMLFile>(tmxFile.GetName())};
-    XMLElement xmlMap{xmlFile->GetRoot("map")};
+    XMLFile* xmlFile{MC->cache_->GetResource<XMLFile>(tmxFile.GetName())};
 
-    const TmxLayer2D* layer0{tmxFile.GetLayer(0)};
-    if (!layer0)
-        return;
-    if (layer0->GetType() != LT_TILE_LAYER)
-        return;
+    float mapWidth{};
+    float mapHeight{};
 
-    const TmxTileLayer2D& tileLayer{*static_cast<const TmxTileLayer2D*>(layer0)};
+    int nthTileLayer{0};
 
-    for (int y{0}; y < tileLayer.GetHeight(); ++y) {
-        for (int x{0}; x < tileLayer.GetWidth(); ++x) {
-            if (Tile2D* tile{tileLayer.GetTile(x, y)}) {
-                if (tile->HasProperty("building"))
-                    AddTile(IntVector2(x, y));
+    for (unsigned i{0}; i < tmxFile.GetNumLayers(); ++i){
+        const TmxLayer2D* layer{tmxFile.GetLayer(i)};
+        if (mapWidth < layer->GetWidth())
+            mapWidth = layer->GetWidth();
+        if (mapHeight < layer->GetHeight())
+            mapHeight = layer->GetHeight();
+
+        if (!layer)
+            return;
+        if (layer->GetType() == LT_TILE_LAYER){
+
+            const TmxTileLayer2D& tileLayer{*static_cast<const TmxTileLayer2D*>(layer)};
+
+            for (int y{0}; y < tileLayer.GetHeight(); ++y) {
+                for (int x{0}; x < tileLayer.GetWidth(); ++x) {
+                    if (Tile2D* tile{tileLayer.GetTile(x, y)}) {
+                        if (tile->HasProperty("model")){
+
+                            TileInfo info{};
+                            info.coords_ = IntVector3(x, nthTileLayer, y);
+                            info.obstacle_ = tile->HasProperty("obstacle");
+
+                            if (tile->HasProperty("model")){
+                                info.modelName_ = tile->GetProperty("model");
+                            }
+
+                            if (tile->HasProperty("material")){
+                                info.materialName_ = tile->GetProperty("material");
+                            }
+
+                            AddTile(info);
+                        }
+                    }
+                }
+            }
+            ++nthTileLayer;
+
+        } else if (layer->GetType() == LT_OBJECT_GROUP){
+
+            const TmxObjectGroup2D& objectGroup{*static_cast<const TmxObjectGroup2D*>(layer)};
+
+            for (unsigned i{0}; i < objectGroup.GetNumObjects(); ++i) { ///Vector<TileMapObject2D*> TmxObjectGroup2D::GetObjects()
+                TileMapObject2D* object{objectGroup.GetObject(i)};
+
+                int gid{object->GetTileGid()};
+                PropertySet2D* properties{tmxFile.GetTilePropertySet(gid)};
+                if (!properties)
+                    continue;
+
+                float scaleFactor{1.56f};
+                Vector3 pos(scaleFactor * object->GetPosition().x_,
+                            0.0f,
+                            scaleFactor * object->GetPosition().y_);
+                pos += Vector3(-0.5f*mapWidth, 0.0f, -0.5f*mapHeight+1);
+
+                Quaternion rot{}; ///float TileMapObject2D::GetRotation()
+                ///int TileMapObject2D::GetId()
+
+                //Create objects
+                if (properties->HasProperty("streetlight")) {
+                    new StreetLight(pos,
+                                    rot);
+                } else if (properties->HasProperty("car")) {
+                    new Cookiejar(pos);
+                } else if (properties->HasProperty("bike")) {
+                    new Honti(pos);
+                }
             }
         }
     }
-
-    rootNode_->Translate(Vector3(-0.5f * tileLayer.GetWidth(), 0.0f, 0.5f * tileLayer.GetHeight()));
-
-    //Read objects
-    const TmxLayer2D* layer1{tmxFile.GetLayer(1)};
-    if (!layer1)
-        return;
-    if (layer1->GetType() != LT_OBJECT_GROUP)
-        return;
-
-    const TmxObjectGroup2D& objectGroup{*static_cast<const TmxObjectGroup2D*>(layer1)};
-
-    for (unsigned i{0}; i < objectGroup.GetNumObjects(); ++i) { ///Vector<TileMapObject2D*> TmxObjectGroup2D::GetObjects()
-        TileMapObject2D* o{objectGroup.GetObject(i)};
-
-        int gid{o->GetTileGid()};
-        PropertySet2D* properties{tmxFile.GetTilePropertySet(gid)};
-        if (!properties)
-            continue;
-
-        float scaleFactor{1.56f};
-        Vector3 pos(scaleFactor * o->GetPosition().x_,
-                    0.0f,
-                    scaleFactor * o->GetPosition().y_ - tileLayer.GetHeight() + 1.0f);
-        Quaternion rot{}; ///float TileMapObject2D::GetRotation()
-                          ///int TileMapObject2D::GetId()
-
-        //Create objects
-        if (properties->HasProperty("streetlight")) {
-            new StreetLight(context_,
-                            masterControl_,
-                            pos + rootNode_->GetPosition(),
-                            rot);
-        }
-    }
-
-    AddColliders();
+    rootNode_->Translate(Vector3(-0.5f * mapWidth,
+                                 0.0f,
+                                 0.5f * mapHeight));
 }
 
+void Level::AddTile(TileInfo info)
+{
+//    tileMap_[info.coords_] = new Tile(info, this);
+    new Tile(info, this);
+}
 
+/*
 void Level::InitializeRandom()
 {
+
     IntVector2 firstCoordPair{IntVector2(0,0)};
-    tileMap_[firstCoordPair] = new Tile(context_, firstCoordPair, this);
+    tileMap_[firstCoordPair] = new Tile(firstCoordPair, this);
     // Add random tiles
     int addedTiles{1};
     int worldSize{64};//Random(32, 128);
 
     while (addedTiles < worldSize){
         //Pick a random exsisting tile from a list.
-        Vector<IntVector2> coordsVector = tileMap_.Keys();
-        IntVector2 randomTileCoords = coordsVector[Random((int)coordsVector.Size())];
+        Vector<IntVector2> coordsVector{tileMap_.Keys()};
+        IntVector2 randomTileCoords{coordsVector[Random((int)coordsVector.Size())]};
 
         //Check neighbours in random orer
         char startDir{static_cast<char>(Random(1,4))};
@@ -143,43 +175,13 @@ void Level::InitializeRandom()
 
     AddColliders();
 }
-
-bool Level::EnableSlot(IntVector2 coords)
-{
-    //collisionMap_[coords]->rootNode_->SetEnabled(true);
-}
-void Level::EnableSlots()
-{
-    /*for (int i = 0; i < collisionMap_.Values().Length(); i++)
-    {
-        if (GetTileType(collisionMap_.Values()[i]->coords_) <= TT_EMPTY)
-            EnableSlot(collisionMap_.Values()[i]->coords_);
-    }*/
-}
-
-bool Level::DisableSlot(IntVector2 coords)
-{
-    //collisionMap_[coords]->rootNode_->SetEnabled(false);
-}
-void Level::DisableSlots()
-{
-    /*
-    for (int i = 0; i < collisionMap_.Values().Length(); i++)
-    {
-        DisableSlot(collisionMap_.Values()[i]->coords_);
-    }
-    */
-}
+*/
 
 void Level::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
 }
 
-void Level::AddTile(IntVector2 newTileCoords)
-{
-    tileMap_[newTileCoords] = new Tile(context_, newTileCoords, this);
-}
-
+/*
 void Level::AddColliders()
 {
    Vector<IntVector2> tileCoordsVec = tileMap_.Keys();
@@ -195,23 +197,23 @@ void Level::AddColliders()
     }
 }
 
-bool Level::CheckEmpty(IntVector2 coords, bool checkTiles = true) const
+bool Level::CheckEmpty(IntVector3 coords, bool checkTiles = true) const
 {
     if (checkTiles) return (!tileMap_.Keys().Contains(coords));
     else return (!collisionMap_.Keys().Contains(coords));
 }
 
 
-bool Level::CheckEmptyNeighbour(IntVector2 coords, TileElement element, bool checkTiles = true) const
+bool Level::CheckEmptyNeighbour(IntVector3 coords, TileElement element, bool checkTiles = true) const
 {
     return CheckEmpty(GetNeighbourCoords(coords, element), checkTiles);
 }
 
 
 
-IntVector2 Level::GetNeighbourCoords(IntVector2 coords, TileElement element) const
+IntVector3 Level::GetNeighbourCoords(IntVector3 coords, TileElement element) const
 {
-    IntVector2 shift = IntVector2::ZERO;
+    IntVector3 shift = IntVector3::ZERO;
     switch (element){
     case TE_NORTH: shift.y_ =  1; break;
     case TE_EAST:  shift.x_ =  1; break;
@@ -226,7 +228,7 @@ IntVector2 Level::GetNeighbourCoords(IntVector2 coords, TileElement element) con
     return coords + shift;
 }
 
-CornerType Level::PickCornerType(IntVector2 tileCoords, TileElement element) const
+CornerType Level::PickCornerType(IntVector3 tileCoords, TileElement element) const
 {
     bool emptyCheck[3] = {false, false, false};
     switch (element){
@@ -270,3 +272,4 @@ CornerType Level::PickCornerType(IntVector2 tileCoords, TileElement element) con
     default: return CT_NONE; break;
     }
 }
+*/

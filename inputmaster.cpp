@@ -52,7 +52,7 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
 
     switch (key){
     //Exit when ESC is pressed
-    case KEY_ESC: masterControl_->Exit();
+    case KEY_ESC: MC->Exit();
         break;
         //Take screenshot
     case KEY_9:
@@ -67,7 +67,7 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
         screenshot.SavePNG(fileName);
     } break;
         //Toggle music on M
-    case KEY_M: masterControl_->musicSource_->SetGain(masterControl_->musicSource_->GetGain()==0.0f ? 0.32f : 0.0f);
+    case KEY_M: MC->musicSource_->SetGain(MC->musicSource_->GetGain()==0.0f ? 0.32f : 0.0f);
         break;
     }
 }

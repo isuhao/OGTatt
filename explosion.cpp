@@ -19,8 +19,8 @@
 #include "explosion.h"
 #include "hitfx.h"
 
-Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 position, float size, Color color):
-    Effect(context, masterControl, position, "Explosion"),
+Explosion::Explosion(Vector3 position, float size, Color color):
+    Effect(position, "Explosion"),
     initialMass_{3.0f*size},
     initialBrightness_{8.0f}
 {
@@ -39,7 +39,7 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     light_->SetBrightness(initialBrightness_);
 
     particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = masterControl_->cache_->GetResource<ParticleEffect>("Particles/Explosion.xml");
+    ParticleEffect* particleEffect = MC->cache_->GetResource<ParticleEffect>("Particles/Explosion.xml");
     Vector<ColorFrame> colorFrames;
     colorFrames.Push(ColorFrame(Color(0.0f, 0.0f, 0.0f, 0.0f), 0.0f));
     Color mixColor = 0.5f * (color + particleEffect->GetColorFrame(1)->color_);
@@ -49,7 +49,7 @@ Explosion::Explosion(Context *context, MasterControl *masterControl, Vector3 pos
     particleEffect->SetColorFrames(colorFrames);
     particleEmitter_->SetEffect(particleEffect);
 
-    shot_sfx = masterControl_->cache_->GetResource<Sound>("Samples/Explode.ogg");
+    shot_sfx = MC->cache_->GetResource<Sound>("Samples/Explode.ogg");
     shot_sfx->SetLooped(false);
     sampleSource_ = rootNode_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(Min(0.5f*size, 1.0f));
@@ -70,7 +70,7 @@ void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)
     if (rootNode_->IsEnabled()) {
         PODVector<RigidBody* > hitResults;
         float radius = 2.0f*initialMass_ + age_*7.0f;
-        if (masterControl_->PhysicsSphereCast(hitResults,rootNode_->GetPosition(), radius, M_MAX_UNSIGNED)){
+        if (MC->PhysicsSphereCast(hitResults,rootNode_->GetPosition(), radius, M_MAX_UNSIGNED)){
             for (int i = 0; i < hitResults.Size(); i++){
                 if (!hitResults[i]->IsTrigger()){
                     hitResults[i]->ApplyForce((hitResults[i]->GetNode()->GetWorldPosition() - rootNode_->GetWorldPosition()) * sqrt(radius-LucKey::Distance(rootNode_->GetWorldPosition(), hitResults[i]->GetNode()->GetWorldPosition()))*timeStep*500.0f*rigidBody_->GetMass()

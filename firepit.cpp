@@ -18,16 +18,16 @@
 
 #include "firepit.h"
 
-FirePit::FirePit(Context* context, MasterControl* masterControl, Tile* tile):
-    Deco(context, masterControl, tile, "FirePit")
+FirePit::FirePit(Tile* tile):
+    Deco(tile, "FirePit")
 {
     rootNode_->SetRotation(Quaternion(0.0f, randomizer_ * 360.0f, 0.0f));
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(masterControl_->cache_->GetResource<Model>("Models/FirePit.mdl"));
-    model_->SetMaterial(0, masterControl_->cache_->GetResource<Material>("Materials/Metal.xml"));
-    model_->SetMaterial(1, masterControl_->resources.materials.darkness);
-    model_->SetMaterial(2, masterControl_->cache_->GetResource<Material>("Materials/Amber.xml"));
+    model_->SetModel(MC->cache_->GetResource<Model>("Models/FirePit.mdl"));
+    model_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/Metal.xml"));
+    model_->SetMaterial(1, MC->resources.materials.darkness);
+    model_->SetMaterial(2, MC->cache_->GetResource<Material>("Materials/Amber.xml"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();
@@ -37,9 +37,9 @@ FirePit::FirePit(Context* context, MasterControl* masterControl, Tile* tile):
     Node* particleNode = rootNode_->CreateChild("Fire");
     particleNode->SetPosition(Vector3::UP * 0.16f);
     ParticleEmitter* flameEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    flameEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
     ParticleEmitter* sparkEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    sparkEmitter->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
+    sparkEmitter->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
 
     lightNode_ = rootNode_->CreateChild("LightNode");
     light_ = lightNode_->CreateComponent<Light>();
@@ -58,18 +58,18 @@ void FirePit::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
     float range = 0.001f;
     float x = 0.0f;
     for (int i = 1; i < 9; i++)
-        x += masterControl_->Sine(4.0f + i, -range, range, i+(i*randomizer_ * 1.0f*M_PI))/(i*0.666f);
+        x += MC->Sine(4.0f + i, -range, range, i+(i*randomizer_ * 1.0f*M_PI))/(i*0.666f);
     float y = 0.5f;
     for (int i = 1; i < 9; i++)
-        y += masterControl_->Sine(5.0f + i, -range, range, i+(i*randomizer_ * 1.5f*M_PI))/(i*0.666f);
+        y += MC->Sine(5.0f + i, -range, range, i+(i*randomizer_ * 1.5f*M_PI))/(i*0.666f);
     float z = 0.0f;
     for (int i = 1; i < 9; i++)
-        z += masterControl_->Sine(6.0f + i, -range, range, i+(i*randomizer_ * 2.0f*M_PI))/(i*0.666f);
+        z += MC->Sine(6.0f + i, -range, range, i+(i*randomizer_ * 2.0f*M_PI))/(i*0.666f);
     lightNode_->SetPosition(Vector3(x, y, z));
     float brightness = 1.0f;
     for (int i = 1; i < 5; i++)
     {
-        brightness += masterControl_->Sine(randomizer_ + 7.123f + i, -0.001f, 0.023f, (randomizer_ * 2.0f*M_PI) + i*(0.2f+randomizer_));//((5+i)*0.2f);
+        brightness += MC->Sine(randomizer_ + 7.123f + i, -0.001f, 0.023f, (randomizer_ * 2.0f*M_PI) + i*(0.2f+randomizer_));//((5+i)*0.2f);
     }
     light_->SetBrightness(brightness);
 }

@@ -18,16 +18,16 @@
 
 #include "bullet.h"
 
-Bullet::Bullet(Context *context, MasterControl *masterControl):
-    SceneObject(context, masterControl),
+Bullet::Bullet():
+    SceneObject(),
     lifetime_{1.0f},
     damage_{0.25f}
 {
     rootNode_->SetName("Bullet");
     rootNode_->SetScale(Vector3(1.0f, 1.0f, 0.1f));
     model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(masterControl_->cache_->GetResource<Model>("Models/Bullet.mdl"));
-    model_->SetMaterial(masterControl_->cache_->GetResource<Material>("Materials/Bullet.xml"));
+    model_->SetModel(MC->cache_->GetResource<Model>("Models/Bullet.mdl"));
+    model_->SetMaterial(MC->cache_->GetResource<Material>("Materials/Bullet.xml"));
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetMass(0.23f);
@@ -71,12 +71,12 @@ void Bullet::HitCheck(float timeStep) {
     if (!fading_) {
         PODVector<PhysicsRaycastResult> hitResults;
         Ray bulletRay(rootNode_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, rootNode_->GetDirection());
-        if (masterControl_->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
+        if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
             for (int i = 0; i < hitResults.Size(); i++){
                 if (!hitResults[i].body_->IsTrigger() && hitResults[i].body_->GetNode()->GetNameHash() != N_PLAYER){
                     hitResults[i].body_->ApplyImpulse(rigidBody_->GetLinearVelocity()*0.023f - 0.23f*hitResults[i].normal_,
 hitResults[i].position_ - hitResults[i].body_->GetNode()->GetWorldPosition());
-                    new HitFX(context_, masterControl_, hitResults[i].position_);
+                    new HitFX(hitResults[i].position_);
                     //Deal damage
                     unsigned hitID = hitResults[i].body_->GetNode()->GetID();
                     Disable();

@@ -123,6 +123,8 @@ StringHash const N_SLOT = StringHash("Slot");
 
 enum JoyStickButton {JB_SELECT, JB_LEFTSTICK, JB_RIGHTSTICK, JB_START, JB_DPAD_UP, JB_DPAD_RIGHT, JB_DPAD_DOWN, JB_DPAD_LEFT, JB_L2, JB_R2, JB_L1, JB_R1, JB_TRIANGLE, JB_CIRCLE, JB_CROSS, JB_SQUARE};
 
+#define MC MasterControl::GetInstance()
+
 class MasterControl : public Application
 {
     /// Enable type information.
@@ -132,6 +134,8 @@ class MasterControl : public Application
 public:
     /// Constructor.
     MasterControl(Context* context);
+    static MasterControl* GetInstance();
+
     GameWorld world;
     Resources resources;
     SharedPtr<ResourceCache> cache_;
@@ -152,6 +156,8 @@ public:
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
 private:
+    static MasterControl* instance_;
+
     SoundSource* musicSource_;
     SharedPtr<UI> ui_;
     SharedPtr<Renderer> renderer_;

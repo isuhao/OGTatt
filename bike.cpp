@@ -18,7 +18,7 @@
 
 #include "bike.h"
 
-Bike::Bike(Context* context, MasterControl* masterControl, Vector3 position) : Vehicle(context, masterControl, position)
+Bike::Bike(Vector3 position) : Vehicle(position)
 {
     rootNode_->SetName("Bike");
 }

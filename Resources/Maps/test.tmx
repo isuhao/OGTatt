@@ -1,656 +1,788 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="117" height="117" tilewidth="64" tileheight="64" backgroundcolor="#22a6fd" nextobjectid="39">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="117" height="117" tilewidth="64" tileheight="64" backgroundcolor="#22a6fd" nextobjectid="87">
  <tileset firstgid="1" name="Grunstatt" tilewidth="64" tileheight="64" tilecount="256">
   <tileoffset x="-32" y="32"/>
   <image source="Grunstatt.png" width="1024" height="1024"/>
   <tile id="0">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="4">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="6">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="7">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="8">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="9">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="10">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="11">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="12">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="13">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="14">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="15">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="16">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="17">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="18">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="19">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="20">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="21">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="22">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="23">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="24">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="25">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="26">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="27">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="28">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="29">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="30">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="31">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="32">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="33">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="34">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="35">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="36">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="37">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="38">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="39">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="40">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="41">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="42">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="43">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="44">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="45">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="46">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="47">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="48">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="49">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="50">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="51">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="52">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="53">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="54">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="55">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="56">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="57">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="58">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="59">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="60">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="61">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="62">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="63">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="64">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="65">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="66">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="67">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="68">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="69">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="70">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="71">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="72">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="73">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="74">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="75">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="76">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="77">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="78">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="79">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="80">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="81">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="82">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="83">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="84">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="85">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="86">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="87">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="88">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="89">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="90">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="91">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="92">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="93">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="94">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="95">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="96">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="97">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="98">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="99">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="100">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="101">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="102">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="103">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="104">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="105">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="106">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="107">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="108">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="109">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="110">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="111">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="112">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="113">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="114">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="115">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="116">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="117">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="118">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="119">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="120">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="121">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="122">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="123">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="124">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="125">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="126">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="127">
    <properties>
-    <property name="floor" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
    </properties>
   </tile>
   <tile id="128">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="129">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="136">
@@ -658,64 +790,98 @@
     <property name="streetlight" value=""/>
    </properties>
   </tile>
+  <tile id="137">
+   <properties>
+    <property name="car" value=""/>
+   </properties>
+  </tile>
+  <tile id="138">
+   <properties>
+    <property name="bike" value=""/>
+   </properties>
+  </tile>
   <tile id="144">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="145">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="160">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="161">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="176">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="177">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="192">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="193">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="208">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="209">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="224">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
   <tile id="225">
    <properties>
-    <property name="building" value=""/>
+    <property name="material" value=""/>
+    <property name="model" value=""/>
+    <property name="obstacle" value=""/>
    </properties>
   </tile>
  </tileset>
@@ -14413,14 +14579,14 @@
   </data>
  </layer>
  <objectgroup name="Objects">
-  <object id="5" gid="137" x="2790.67" y="2332" width="64" height="64"/>
-  <object id="6" gid="137" x="3136" y="2333.33" width="64" height="64"/>
-  <object id="7" gid="137" x="3505.33" y="2330.67" width="64" height="64"/>
-  <object id="8" gid="137" x="3866.67" y="2338.67" width="64" height="64"/>
-  <object id="9" gid="137" x="4210.67" y="2337.33" width="64" height="64"/>
-  <object id="10" gid="137" x="4516" y="2334.67" width="64" height="64"/>
-  <object id="11" gid="137" x="4938.67" y="2342.67" width="64" height="64"/>
-  <object id="12" gid="137" x="5257.33" y="2333.33" width="64" height="64"/>
+  <object id="5" gid="137" x="5259.33" y="2354.34" width="64" height="64" rotation="-180"/>
+  <object id="6" gid="137" x="4914" y="2353.01" width="64" height="64" rotation="-180"/>
+  <object id="7" gid="137" x="4544.67" y="2355.67" width="64" height="64" rotation="-180"/>
+  <object id="8" gid="137" x="4183.33" y="2347.67" width="64" height="64" rotation="-180"/>
+  <object id="9" gid="137" x="3839.33" y="2349.01" width="64" height="64" rotation="-180"/>
+  <object id="10" gid="137" x="3534" y="2351.67" width="64" height="64" rotation="-180"/>
+  <object id="11" gid="137" x="3111.33" y="2343.67" width="64" height="64" rotation="-180"/>
+  <object id="12" gid="137" x="2792.67" y="2353.01" width="64" height="64" rotation="-180"/>
   <object id="13" gid="137" x="2802.24" y="4110.55" width="64" height="64"/>
   <object id="14" gid="137" x="3562.12" y="4114.18" width="64" height="64"/>
   <object id="15" gid="137" x="3844.97" y="4225.52" width="64" height="64" rotation="-131.653"/>
@@ -14445,5 +14611,22 @@
   <object id="36" gid="137" x="3950" y="5620" width="64" height="64" rotation="-270"/>
   <object id="37" gid="137" x="3952" y="5212" width="64" height="64" rotation="-270"/>
   <object id="38" gid="137" x="3946" y="4818" width="64" height="64" rotation="-270"/>
+  <object id="69" gid="138" x="3489.33" y="4286.67" width="64" height="64"/>
+  <object id="70" gid="138" x="3490.67" y="4410.67" width="64" height="64"/>
+  <object id="71" gid="138" x="3654.67" y="4640" width="64" height="64"/>
+  <object id="72" gid="138" x="3785.33" y="4641.33" width="64" height="64"/>
+  <object id="73" gid="138" x="6332" y="4761" width="64" height="64"/>
+  <object id="74" gid="138" x="6470" y="4760" width="64" height="64"/>
+  <object id="76" gid="138" x="6723" y="4762" width="64" height="64"/>
+  <object id="77" gid="138" x="7239" y="5219" width="64" height="64"/>
+  <object id="78" gid="138" x="7101" y="5215" width="64" height="64"/>
+  <object id="79" gid="138" x="6976" y="5219" width="64" height="64"/>
+  <object id="80" gid="138" x="6334" y="5217" width="64" height="64"/>
+  <object id="81" gid="138" x="6468" y="5217" width="64" height="64"/>
+  <object id="82" gid="138" x="6597.33" y="5217.33" width="64" height="64"/>
+  <object id="83" gid="138" x="6725.33" y="5216" width="64" height="64"/>
+  <object id="84" gid="139" x="2940.73" y="4928.97" width="64" height="64"/>
+  <object id="85" gid="139" x="2843.76" y="4955.88" width="64" height="64"/>
+  <object id="86" gid="139" x="3871.03" y="3704.73" width="64" height="64"/>
  </objectgroup>
 </map>

@@ -24,8 +24,8 @@
 
 #include "effect.h"
 
-Effect::Effect(Context *context, MasterControl *masterControl, Vector3 position, String name):
-    SceneObject(context, masterControl)
+Effect::Effect(Vector3 position, String name):
+    SceneObject()
 {
     rootNode_->SetName(name);
     rootNode_->SetPosition(position);

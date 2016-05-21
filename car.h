@@ -36,7 +36,7 @@ class Car : public Vehicle
 {
     URHO3D_OBJECT(Car, Vehicle);
 public:
-    Car(Context* context, MasterControl* masterControl, Vector3 position);
+    Car(Vector3 position);
 };
 
 #endif // CAR_H

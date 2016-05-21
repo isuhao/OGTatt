@@ -19,8 +19,8 @@
 #include "vehicle.h"
 #include "explosion.h"
 
-Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 position):
-    SceneObject(context, masterControl)
+Vehicle::Vehicle(Vector3 position):
+    SceneObject()
 {
     rootNode_->SetName("Vehicle");
     rootNode_->SetPosition(position);
@@ -33,11 +33,11 @@ Vehicle::Vehicle(Context *context, MasterControl *masterControl, Vector3 positio
 
     particleNode_ = rootNode_->CreateChild("Fire");
     flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
-    flameEmitter_->SetEffect(masterControl_->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter_->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
     flameEmitter_->SetEmitting(false);
 
 //    decal_ = rootNode_->CreateComponent<DecalSet>();
-//    decal_->SetMaterial(masterControl_->cache_->GetResource<Material>("Materials/Decal.xml"));
+//    decal_->SetMaterial(MC->cache_->GetResource<Material>("Materials/Decal.xml"));
 //    Quaternion decalRotation = rootNode_->GetRotation();
 //    decalRotation  = decalRotation * Quaternion(90.0f, rootNode_->GetRight());
 //    decal_->AddDecal(chassisModel_, rootNode_->GetWorldPosition()-0.23f*rootNode_->GetDirection(), decalRotation, 0.666f, 1.0f, 2.3f, Vector2::ZERO, Vector2::ONE);
@@ -50,9 +50,9 @@ void Vehicle::Hit(float damage)
 
 void Vehicle::Destroy()
 {
-    new Explosion(context_, masterControl_, rootNode_->GetPosition(), 1.0f);
-    for (int i = 0; i < chassisModel_->GetNumGeometries(); i++){
-        chassisModel_->SetMaterial(i, masterControl_->resources.materials.darkness);
+    new Explosion(rootNode_->GetPosition(), 1.0f);
+    for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
+        chassisModel_->SetMaterial(i, MC->resources.materials.darkness);
     }
     flameEmitter_->SetEmitting(true);
 }

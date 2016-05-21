@@ -18,13 +18,12 @@
 
 #include "sceneobject.h"
 
-SceneObject::SceneObject(Context* context, MasterControl* masterControl):
-    Object(context),
-    masterControl_{masterControl},
+SceneObject::SceneObject():
+    Object(MC->GetContext()),
     destructable_{false},
     randomizer_{Random()}
 {
-    rootNode_ = masterControl_->world.scene->CreateChild("SceneObject");
+    rootNode_ = MC->world.scene->CreateChild("SceneObject");
 
     for (int i = 0; i < 3; i++){
         sampleSources_.Push(SharedPtr<SoundSource>(rootNode_->CreateComponent<SoundSource>()));

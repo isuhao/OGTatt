@@ -37,7 +37,7 @@ class Character : public SceneObject
 {
     URHO3D_OBJECT(Character, SceneObject);
 public:
-    Character(Context *context, MasterControl* masterControl, Vector3 pos);
+    Character(Vector3 pos);
 protected:
     AnimatedModel* bodyModel_;
     StaticModel* hairModel_;

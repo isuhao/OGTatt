@@ -28,7 +28,7 @@ class Player : public Character
     URHO3D_OBJECT(Player, SceneObject);
     friend class OGTattCam;
 public:
-    Player(Context* context, MasterControl* masterControl);
+    Player();
     //SharedPtr<Text> scoreText_;
 
     float GetHealth(){return health_;}

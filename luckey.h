@@ -77,6 +77,8 @@
 
 #include <Urho3D/DebugNew.h>
 
+#include "intvector3.h"
+
 namespace Urho3D {
 class Drawable;
 class Node;

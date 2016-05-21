@@ -22,19 +22,29 @@
 #include "firepit.h"
 #include "streetlight.h"
 
-Tile::Tile(Context *context, const IntVector2 coords, Level *level):
-Object(context)
+Tile::Tile(TileInfo info, Level *level):
+    Object(MC->GetContext()),
+    info_{info}
 {
-    masterControl_ = level->masterControl_;
-    dungeon_ = level;
-    coords_ = coords;
+    level_ = level;
 
-    rootNode_ = dungeon_->rootNode_->CreateChild("Tile");
-    rootNode_->SetPosition(Vector3(static_cast<float>(coords_.x_), 2.0f, static_cast<float>(-coords_.y_)));
-    rootNode_->SetScale(Vector3(1.0f, 4.0f, 1.0f));
+    rootNode_ = level_->rootNode_->CreateChild("Tile");
+    rootNode_->SetPosition(Vector3(static_cast<float>(info_.coords_.x_),
+                                   static_cast<float>(info_.coords_.y_),
+                                   static_cast<float>(-info_.coords_.z_)));
+//    rootNode_->SetScale(Vector3(1.0f, 4.0f, 1.0f));
 
+    if (info_.obstacle_){
+        CollisionShape* collider{level_->rootNode_->CreateComponent<CollisionShape>()};
+        collider->SetBox(Vector3::ONE, rootNode_->GetPosition());
+    }
+    if (info_.modelName_.Length()){
         StaticModel* model{rootNode_->CreateComponent<StaticModel>()};
-        model->SetModel(masterControl_->cache_->GetResource<Model>("Models/Box.mdl"));
-//        model->SetMaterial(masterControl_->);
+        model->SetModel(MC->cache_->GetResource<Model>("Models/"+info.modelName_+".mdl"));
         model->SetCastShadows(true);
+
+        if (info_.materialName_.Length()){
+            model->SetMaterial(MC->cache_->GetResource<Material>("Materials/"+info.materialName_+".xml"));
+        }
+    }
 }

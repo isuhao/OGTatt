@@ -36,7 +36,7 @@ class Cookiejar : public Car
 {
     URHO3D_OBJECT(Cookiejar, Car);
 public:
-    Cookiejar(Context *context, MasterControl *masterControl, Vector3 position);
+    Cookiejar(Vector3 position);
 };
 
 #endif // COOKIEJAR_H

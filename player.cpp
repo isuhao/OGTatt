@@ -38,22 +38,22 @@
 #include "bullet.h"
 #include "muzzle.h"
 
-Player::Player(Context *context, MasterControl *masterControl):
-    Character(context, masterControl, Vector3::ZERO)
+Player::Player():
+    Character(Vector3::ZERO)
 {
     rootNode_->SetName("Player");
 
     rigidBody_->SetAngularDamping(1.0f);
 
-    shot_sfx = masterControl_->cache_->GetResource<Sound>("Samples/Shot.ogg");
+    shot_sfx = MC->cache_->GetResource<Sound>("Samples/Shot.ogg");
     shot_sfx->SetLooped(false);
 
-    /*scoreText_ = masterControl_->ui_->GetRoot()->CreateChild<Text>();
+    /*scoreText_ = MC->ui_->GetRoot()->CreateChild<Text>();
     scoreText_->SetText(String(score_));
-    scoreText_->SetFont(masterControl_->cache_->GetResource<Font>("Fonts/skirmishergrad.ttf"), 32);
+    scoreText_->SetFont(MC->cache_->GetResource<Font>("Fonts/skirmishergrad.ttf"), 32);
     scoreText_->SetHorizontalAlignment(HA_LEFT);
     scoreText_->SetVerticalAlignment(VA_TOP);
-    scoreText_->SetPosition(0, masterControl_->ui_->GetRoot()->GetHeight()/2.1);*/
+    scoreText_->SetPosition(0, MC->ui_->GetRoot()->GetHeight()/2.1);*/
 
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Player, HandleSceneUpdate));
 }
@@ -71,8 +71,8 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
     Input* input = GetSubsystem<Input>();
 
     //Orientation vectors
-    Vector3 camRight = masterControl_->world.camera->rootNode_->GetRight();
-    Vector3 camForward = masterControl_->world.camera->rootNode_->GetDirection();
+    Vector3 camRight = MC->world.camera->rootNode_->GetRight();
+    Vector3 camForward = MC->world.camera->rootNode_->GetDirection();
     camRight = LucKey::Scale(camRight, Vector3::ONE - Vector3::UP).Normalized();
     camForward = LucKey::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
     //Movement values
@@ -154,11 +154,11 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
         if (sinceLastShot_ > shotInterval_)
         {
             sinceLastShot_ = 0.0;
-            Bullet* bullet = new Bullet(context_, masterControl_);
+            Bullet* bullet = new Bullet();
             bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * 0.5f);
             bullet->rootNode_->LookAt(rootNode_->GetPosition() + fire);
             bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),Random(-0.01f, 0.01f),Random(-0.01f, 0.01f)) + fire)*256.0f);
-            Muzzle* muzzle = new Muzzle(context_, masterControl_, rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
+            Muzzle* muzzle = new Muzzle(rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
             muzzle->rootNode_->LookAt(rootNode_->GetPosition() + fire);
             PlaySample(shot_sfx);
         }

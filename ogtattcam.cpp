@@ -19,8 +19,8 @@
 #include "ogtattcam.h"
 #include "player.h"
 
-OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
-    Object(context),
+OGTattCam::OGTattCam():
+    Object(MC->GetContext()),
     altitude_{23.0f},
     yaw_(0.0f), pitch_(88.0f), roll_{0.0f},
     yawDelta_{0.0}, pitchDelta_{0.0},
@@ -28,12 +28,11 @@ OGTattCam::OGTattCam(Context *context, MasterControl *masterControl):
     smoothTargetPosition_{Vector3::ZERO},
     smoothTargetVelocity_{Vector3::ZERO}
 {
-    float viewRange = 500.0f;
-    masterControl_ = masterControl;
+    float viewRange{500.0f};
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(OGTattCam, HandleUpdate));
 
     //Create the camera. Limit far clip distance to match the fog
-    rootNode_ = masterControl_->world.scene->CreateChild("CamTrans");
+    rootNode_ = MC->world.scene->CreateChild("CamTrans");
     camera_ = rootNode_->CreateComponent<Camera>();
     camera_->SetFarClip(viewRange);
     camera_->SetNearClip(0.1f);
@@ -66,7 +65,7 @@ void OGTattCam::SetupViewport()
     Renderer* renderer = GetSubsystem<Renderer>();
 
     //Set up a viewport to the Renderer subsystem so that the 3D scene can be seen
-    SharedPtr<Viewport> viewport(new Viewport(context_, masterControl_->world.scene, camera_));
+    SharedPtr<Viewport> viewport(new Viewport(context_, MC->world.scene, camera_));
 
     //Add anti-asliasing and bloom
     effectRenderPath = viewport->GetRenderPath();
@@ -92,8 +91,8 @@ Quaternion OGTattCam::GetRotation()
 
 void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
-    Vector3 targetPosition = masterControl_->world.player_->GetWorldPosition();
-    Vector3 targetVelocity = masterControl_->world.player_->GetLinearVelocity();
+    Vector3 targetPosition = MC->world.player_->GetWorldPosition();
+    Vector3 targetVelocity = MC->world.player_->GetLinearVelocity();
 
     using namespace Update;
 

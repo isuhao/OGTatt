@@ -18,8 +18,8 @@
 
 #include "car.h"
 
-Car::Car(Context* context, MasterControl* masterControl, Vector3 position) :
-    Vehicle(context, masterControl, position)
+Car::Car(Vector3 position) :
+    Vehicle(position)
 {
     rootNode_->SetName("Car");
 }

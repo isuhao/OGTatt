@@ -37,7 +37,7 @@ class Muzzle : public Effect
     friend class Player;
     URHO3D_OBJECT(Muzzle, Effect);
 public:
-    Muzzle(Context* context, MasterControl* masterControl, Vector3 position);
+    Muzzle(Vector3 position);
 private:
     SharedPtr<Light> light_;
     void HandleUpdate(StringHash eventType, VariantMap &eventData);

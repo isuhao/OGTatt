@@ -33,8 +33,8 @@
 
 #include "pickup.h"
 
-Pickup::Pickup(Context *context, MasterControl *masterControl):
-    SceneObject(context, masterControl)
+Pickup::Pickup():
+    SceneObject()
 {
     rootNode_->SetName("Pickup");
     model_ = rootNode_->CreateComponent<StaticModel>();
@@ -65,9 +65,9 @@ Pickup::Pickup(Context *context, MasterControl *masterControl):
 
     particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
 
-    particleEmitter_->SetEffect(masterControl_->cache_->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
+    particleEmitter_->SetEffect(MC->cache_->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
 
-    shot_sfx = masterControl_->cache_->GetResource<Sound>("Samples/Pickup.ogg");
+    shot_sfx = MC->cache_->GetResource<Sound>("Samples/Pickup.ogg");
     shot_sfx->SetLooped(false);
     sampleSource_ = rootNode_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(0.6f);

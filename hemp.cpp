@@ -18,10 +18,9 @@
 
 #include "hemp.h"
 
-Hemp::Hemp(Context *context, MasterControl *masterControl, Node *parent, Vector3 pos) : Object(context)
+Hemp::Hemp(Node *parent, Vector3 pos) : Object(MC->GetContext())
 {
     growthStart_ = Random(0.0f, 5.0f);
-    masterControl_ = masterControl;
     rootNode_ = parent->CreateChild("Frop");
     rootNode_->SetPosition(pos);
     rootNode_->Rotate(Quaternion(Random(-10.0f, 10.0f),Random(360.0f),Random(-10.0f, 10.0f)));
@@ -30,8 +29,8 @@ Hemp::Hemp(Context *context, MasterControl *masterControl, Node *parent, Vector3
     scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
     rootNode_->SetScale(scale_);
     fropModel_ = rootNode_->CreateComponent<StaticModel>();
-    fropModel_->SetModel(masterControl_->cache_->GetResource<Model>("Models/Frop.mdl"));
-    fropModel_->SetMaterial(masterControl_->cache_->GetResource<Material>("Materials/frop.xml"));
+    fropModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frop.mdl"));
+    fropModel_->SetMaterial(MC->cache_->GetResource<Material>("Materials/frop.xml"));
     fropModel_->SetCastShadows(true);
 
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));

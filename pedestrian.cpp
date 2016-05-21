@@ -18,8 +18,8 @@
 
 #include "pedestrian.h"
 
-Pedestrian::Pedestrian(Context *context, MasterControl *masterControl, Vector3 pos):
-    Character(context, masterControl, pos),
+Pedestrian::Pedestrian(Vector3 pos):
+    Character(pos),
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},

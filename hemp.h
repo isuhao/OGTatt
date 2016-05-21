@@ -36,13 +36,12 @@ class Hemp : public Object
 {
     URHO3D_OBJECT(Hemp, Object);
 public:
-    Hemp(Context *context, MasterControl* masterControl, Urho3D::Node *parent, Vector3 pos);
-    Hemp(Context* context, MasterControl* masterControl): Hemp(context, masterControl, masterControl->world.scene, Vector3::ZERO){}
+    Hemp(Urho3D::Node *parent, Vector3 pos);
+    Hemp() : Hemp(MC->world.scene, Vector3::ZERO){}
     virtual void Start();
     virtual void Stop();
 private:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    MasterControl* masterControl_;
     Node* rootNode_;
     StaticModel* fropModel_;
     Vector3 scale_;

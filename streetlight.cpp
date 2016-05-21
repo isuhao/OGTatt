@@ -29,16 +29,16 @@
 
 #include "streetlight.h"
 
-StreetLight::StreetLight(Context* context, MasterControl* masterControl, Vector3 pos, Quaternion rot):
-    SceneObject(context, masterControl),
+StreetLight::StreetLight(Vector3 pos, Quaternion rot):
+    SceneObject(),
     brightness_{1.8f}
 {
     rootNode_->SetPosition(pos);
     rootNode_->SetRotation(rot);
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(masterControl_->cache_->GetResource<Model>("Models/StreetLight.mdl"));
-    model_->SetMaterial(0, masterControl_->cache_->GetResource<Material>("Materials/Metal.xml"));
+    model_->SetModel(MC->cache_->GetResource<Model>("Models/StreetLight.mdl"));
+    model_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/Metal.xml"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();
@@ -64,5 +64,5 @@ StreetLight::StreetLight(Context* context, MasterControl* masterControl, Vector3
 
 void StreetLight::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
 {
-    light_->SetBrightness(masterControl_->Sine(50.0f, 0.9666f*brightness_, brightness_));
+    light_->SetBrightness(MC->Sine(50.0f, 0.9666f*brightness_, brightness_));
 }

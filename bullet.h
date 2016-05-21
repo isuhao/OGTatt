@@ -37,7 +37,7 @@ class Bullet : public SceneObject
     friend class Player;
     URHO3D_OBJECT(Bullet, SceneObject);
 public:
-    Bullet(Context *context, MasterControl* masterControl);
+    Bullet();
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<StaticModel> model_;

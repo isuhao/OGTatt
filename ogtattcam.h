@@ -43,7 +43,7 @@ class OGTattCam : public Object
     friend class InputMaster;
     friend class Player;
 public:
-    OGTattCam(Context *context, MasterControl* masterControl);
+    OGTattCam();
 
     SharedPtr<Camera> camera_;
     SharedPtr<Viewport> viewport_;
@@ -52,7 +52,6 @@ public:
     Vector3 GetWorldPosition();
     Quaternion GetRotation();
 private:
-    MasterControl* masterControl_;
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
     SharedPtr<Node> rootNode_;
     Vector3 smoothTargetPosition_;

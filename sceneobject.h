@@ -27,11 +27,10 @@ class SceneObject : public Object
 {
     URHO3D_OBJECT(SceneObject, Object);
 public:
-    SceneObject(Context *context, MasterControl* masterControl);
+    SceneObject();
 
     Vector3 GetWorldPosition() {return rootNode_->GetWorldPosition();}
 protected:
-    MasterControl* masterControl_;
     SharedPtr<Node> rootNode_;
     Vector<SharedPtr<SoundSource> > sampleSources_;
     bool destructable_;

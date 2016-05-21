@@ -34,6 +34,14 @@ using namespace Urho3D;
 
 class Tile;
 class WallCollider;
+struct TileInfo;
+
+typedef struct TileInfo{
+    IntVector3 coords_;
+    bool obstacle_;
+    String modelName_;
+    String materialName_;
+} TileInfo;
 
 enum TileElement {TE_CENTER = 0, TE_NORTH, TE_EAST, TE_SOUTH, TE_WEST, TE_NORTHWEST, TE_NORTHEAST, TE_SOUTHEAST, TE_SOUTHWEST, TE_LENGTH};
 enum CornerType {CT_NONE, CT_IN, CT_OUT, CT_TWEEN, CT_DOUBLE, CT_FILL};
@@ -44,40 +52,33 @@ class Level : public Object
     URHO3D_OBJECT(Level, Object);
     friend class InputMaster;
 public:
-    Level(Context *context, Vector3 position, MasterControl* masterControl);
+    Level(Vector3 position = Vector3::ZERO);
 
-    MasterControl* masterControl_;
     Node* rootNode_;
 
-    bool CheckEmpty(Vector3 coords, bool checkTiles) const { return CheckEmpty(IntVector2(round(coords.x_), round(coords.z_)), checkTiles); }
-    bool CheckEmpty(IntVector2 coords, bool checkTiles) const;
-    bool CheckEmptyNeighbour(IntVector2 coords, TileElement element, bool tileMap) const;
-    IntVector2 GetNeighbourCoords(IntVector2 coords, TileElement element) const;
-    CornerType PickCornerType(IntVector2 tileCoords, TileElement element) const;
-    TileType GetTileType(IntVector2 coords);
-    TileType GetNeighbourType(IntVector2 coords, TileElement element);
+//    bool CheckEmpty(Vector3 coords, bool checkTiles) const { return CheckEmpty(IntVector3(round(coords.x_), round(coords.y_), round(coords.z_)), checkTiles); }
+//    bool CheckEmpty(IntVector3 coords, bool checkTiles) const;
+//    bool CheckEmptyNeighbour(IntVector3 coords, TileElement element, bool tileMap) const;
+//    IntVector3 GetNeighbourCoords(IntVector3 coords, TileElement element) const;
+//    CornerType PickCornerType(IntVector3 tileCoords, TileElement element) const;
+//    TileType GetTileType(IntVector3 coords);
+//    TileType GetNeighbourType(IntVector3 coords, TileElement element);
 
-    void AddColliders();
-    void FixFringe();
-    void FixFringe(IntVector2 coords);
+//    void AddColliders();
 
-    void AddTile(IntVector2 newTileCoords);
-    bool DisableSlot(IntVector2 coords);
-    bool EnableSlot(IntVector2 coords);
-    void EnableSlots();
-    void DisableSlots();
+    void AddTile(TileInfo info);
 private:
     RigidBody* rigidBody_;
-    HashMap<IntVector2, SharedPtr<Tile> > tileMap_;
-    HashMap<IntVector2, SharedPtr<WallCollider> > collisionMap_;
-    HashMap<IntVector2, TileType> buildingMap_;
+//    HashMap<IntVector3, SharedPtr<Tile> > tileMap_;
+//    HashMap<IntVector3, SharedPtr<WallCollider> > collisionMap_;
+//    HashMap<IntVector3, TileType> buildingMap_;
 
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
 
-    void SetTileType(IntVector2 coords, TileType type = TT_ENGINE);
-    void EmptyTile(IntVector2 coords) {SetTileType(coords, TT_EMPTY);}
+//    void SetTileType(IntVector3 coords, TileType type = TT_ENGINE);
+//    void EmptyTile(IntVector3 coords) {SetTileType(coords, TT_EMPTY);}
     void InitializeFromMap(const TmxFile2D& tmxFile);
-    void InitializeRandom();
+//    void InitializeRandom();
 };
 
 #endif

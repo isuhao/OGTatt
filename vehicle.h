@@ -36,7 +36,7 @@ class Vehicle : public SceneObject
 {
     URHO3D_OBJECT(Vehicle, SceneObject);
 public:
-    Vehicle(Context* context, MasterControl* masterControl, Vector3 position);
+    Vehicle(Vector3 position);
     void Hit(float damage);
 protected:
     AnimatedModel* chassisModel_;

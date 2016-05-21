@@ -36,7 +36,7 @@ class Effect : public SceneObject
 {
     URHO3D_OBJECT(Effect, SceneObject);
 public:
-    Effect(Context* context, MasterControl* masterControl, Vector3 position, String name);
+    Effect(Vector3 position, String name);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 protected:
     SharedPtr<ParticleEmitter> particleEmitter_;

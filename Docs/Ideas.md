@@ -134,7 +134,7 @@ Having spent too much time in the dark these suits were cast back down to earth 
 
 ##### Emblem
 
-Closed eye of providence.  
+Closed eye of providence  
 pink
 
 -----------------------
@@ -145,7 +145,7 @@ Hail Eris! Whatever that means
 
 ##### Emblem
 
-A golden apple inscribed with the number 23.  
+A golden apple inscribed with the number 23  
 orange
 
 -----------------------
@@ -178,7 +178,7 @@ Trying to get away from this place they ran into a little budget problem.
 
 ##### Emblem
 
-AAA.  
+AAA  
 silver
 
 -----------------------

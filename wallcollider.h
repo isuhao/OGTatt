@@ -38,7 +38,7 @@ class WallCollider: public Object
 {
     URHO3D_OBJECT(WallCollider, Object);
 public:
-    WallCollider(Context *context, Level* dungeon, IntVector2 coords);
+    WallCollider(Context *context, Level* level, IntVector2 coords);
 };
 
 #endif // WALLCOLLIDER_H

@@ -37,7 +37,7 @@ class Pedestrian : public Character
 {
     URHO3D_OBJECT(Pedestrian, Character);
 public:
-    Pedestrian(Context *context, MasterControl* masterControl, Vector3 pos);
+    Pedestrian(Vector3 pos);
 private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
 

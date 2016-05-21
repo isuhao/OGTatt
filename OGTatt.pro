@@ -46,7 +46,8 @@ SOURCES += \
     tile.cpp \
     vehicle.cpp \
     wallcollider.cpp \
-    character.cpp
+    character.cpp \
+    intvector3.cpp
 
 HEADERS += \
     bike.h \
@@ -78,7 +79,8 @@ HEADERS += \
     tile.h \
     vehicle.h \
     wallcollider.h \
-    character.h
+    character.h \
+    intvector3.h
 
 OTHER_FILES += \
     Docs/Ideas.txt
