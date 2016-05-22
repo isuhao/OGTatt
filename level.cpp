@@ -26,6 +26,7 @@
 #include "streetlight.h"
 #include "honti.h"
 #include "cookiejar.h"
+#include "frop.h"
 #include "ogtattcam.h"
 
 namespace Urho3D {
@@ -118,17 +119,19 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
                             scaleFactor * object->GetPosition().y_);
                 pos += Vector3(-0.5f*mapWidth, 0.0f, -0.5f*mapHeight+1);
 
-                Quaternion rot{}; ///float TileMapObject2D::GetRotation()
-                ///int TileMapObject2D::GetId()
+                Quaternion rot{};   ///float TileMapObject2D::GetRotation()
+                                    ///int TileMapObject2D::GetId()
+                Vector2 size{object->GetSize()};
 
                 //Create objects
                 if (properties->HasProperty("streetlight")) {
-                    new StreetLight(pos,
-                                    rot);
+                    new StreetLight(pos, rot);
                 } else if (properties->HasProperty("car")) {
-                    new Cookiejar(pos);
+                    new Cookiejar(pos, rot);
                 } else if (properties->HasProperty("bike")) {
-                    new Honti(pos);
+                    new Honti(pos, rot);
+                } else if (properties->HasProperty("frop")) {
+                    new Frop(pos, rot, Vector3(size.x_, size.y_, size.x_));
                 }
             }
         }

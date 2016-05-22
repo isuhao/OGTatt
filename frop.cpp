@@ -16,35 +16,29 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "hemp.h"
+#include "frop.h"
 
-Hemp::Hemp(Node *parent, Vector3 pos) : Object(MC->GetContext())
+Frop::Frop(Vector3 pos, Quaternion rot, Vector3 scale) :
+    SceneObject(),
+    age_{0.0f},
+    scale_{scale}
 {
-    growthStart_ = Random(0.0f, 5.0f);
-    rootNode_ = parent->CreateChild("Frop");
+//    growthStart_ = Random(0.0f, 5.0f);
     rootNode_->SetPosition(pos);
-    rootNode_->Rotate(Quaternion(Random(-10.0f, 10.0f),Random(360.0f),Random(-10.0f, 10.0f)));
+    rootNode_->SetRotation(rot);
+    rootNode_->SetScale(scale * 4.2f);
 
-    float randomWidth = Random(2.0f,3.0f);
-    scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
-    rootNode_->SetScale(scale_);
+//    float randomWidth{Random(2.0f,3.0f)};
+//    scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
     fropModel_ = rootNode_->CreateComponent<StaticModel>();
     fropModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frop.mdl"));
     fropModel_->SetMaterial(MC->cache_->GetResource<Material>("Materials/frop.xml"));
     fropModel_->SetCastShadows(true);
 
-    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));
+//    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));
 }
 
-void Hemp::Start()
-{
-}
-
-void Hemp::Stop()
-{
-}
-
-void Hemp::HandleUpdate(StringHash eventType, VariantMap &eventData)
+void Frop::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
     /*using namespace Update;
     double timeStep = eventData[P_TIMESTEP].GetFloat();

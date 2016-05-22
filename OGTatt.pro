@@ -26,7 +26,6 @@ SOURCES += \
     explosion.cpp \
     firepit.cpp \
     grass.cpp \
-    hemp.cpp \
     hitfx.cpp \
     honti.cpp \
     inputmaster.cpp \
@@ -47,7 +46,8 @@ SOURCES += \
     vehicle.cpp \
     wallcollider.cpp \
     character.cpp \
-    intvector3.cpp
+    intvector3.cpp \
+    frop.cpp
 
 HEADERS += \
     bike.h \
@@ -59,7 +59,6 @@ HEADERS += \
     explosion.h \
     firepit.h \
     grass.h \
-    hemp.h \
     hitfx.h \
     honti.h \
     inputmaster.h \
@@ -80,7 +79,8 @@ HEADERS += \
     vehicle.h \
     wallcollider.h \
     character.h \
-    intvector3.h
+    intvector3.h \
+    frop.h
 
 OTHER_FILES += \
     Docs/Ideas.txt

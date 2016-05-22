@@ -48,62 +48,6 @@ typedef struct GameWorld
     } cursor;
 } GameWorld;
 
-typedef struct Resources
-{
-    struct {
-        struct {
-            SharedPtr<Model> male;
-            SharedPtr<Model> female;
-            Vector< SharedPtr<Model> > hairStyles;
-        } characters;
-        struct {
-            SharedPtr<Model> firePit;
-            SharedPtr<Model> streetLight;
-        } doodads;
-        struct {
-            SharedPtr<Model> cookiejar;
-            SharedPtr<Model> honti;
-        } vehicles;
-        struct {
-            SharedPtr<Model> blockCenter;
-            SharedPtr<Model> blockSide;
-            SharedPtr<Model> blockTween;
-            SharedPtr<Model> blockTweenCorner;
-            SharedPtr<Model> blockInCorner;
-            SharedPtr<Model> blockOutCorner;
-            SharedPtr<Model> blockFillCorner;
-            SharedPtr<Model> blockDoubleCorner;
-        } tileParts;
-    } models;
-    struct {
-        Vector<SharedPtr<Material> > skin;
-        Vector<SharedPtr<Material> > cloth;
-        SharedPtr<Material> darkness;
-        SharedPtr<Material> metal;
-        SharedPtr<Material> leather;
-        SharedPtr<Material> sidewalk;
-        SharedPtr<Material> wall;
-        SharedPtr<Material> hair;
-        SharedPtr<Material> pants;
-        SharedPtr<Material> paint;
-        SharedPtr<Material> glass;
-        SharedPtr<Material> amber;
-        SharedPtr<Material> headlights;
-        SharedPtr<Material> taillights;
-        struct {
-            SharedPtr<Material> shroomies;
-            SharedPtr<Material> squaters;
-            SharedPtr<Material> pirates;
-            SharedPtr<Material> ninjas;
-            SharedPtr<Material> zionists;
-            SharedPtr<Material> rastafari;
-            SharedPtr<Material> illuminati;
-            SharedPtr<Material> discordians;
-            SharedPtr<Material> chaotes;
-        } decals;
-    } materials;
-} Resources;
-
 typedef struct HitInfo
 {
     Vector3 position_;
@@ -137,7 +81,6 @@ public:
     static MasterControl* GetInstance();
 
     GameWorld world;
-    Resources resources;
     SharedPtr<ResourceCache> cache_;
     SharedPtr<Graphics> graphics_;
 
@@ -194,7 +137,6 @@ private:
 
     ///Sine lookup table
     Vector<double> sine_;
-    void LoadResources();
 };
 
 #endif // MASTERCONTROL_H

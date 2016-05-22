@@ -36,7 +36,7 @@ class Vehicle : public SceneObject
 {
     URHO3D_OBJECT(Vehicle, SceneObject);
 public:
-    Vehicle(Vector3 position);
+    Vehicle(Vector3 position, Quaternion rotation = Quaternion::IDENTITY);
     void Hit(float damage);
 protected:
     AnimatedModel* chassisModel_;

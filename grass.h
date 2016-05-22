@@ -35,13 +35,12 @@ class Grass : public Object
 {
     URHO3D_OBJECT(Grass, Object);
 public:
-    Grass(Context *context, MasterControl* masterControl, Urho3D::Node *parent, Vector3 pos);
-    Grass(Context* context, MasterControl* masterControl): Grass(context, masterControl, masterControl->world.scene, Vector3::ZERO){}
+    Grass(Urho3D::Node *parent, Vector3 pos);
+    Grass(): Grass(MC->world.scene, Vector3::ZERO){}
     virtual void Start();
     virtual void Stop();
 private:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    MasterControl* masterControl_;
     Node* rootNode_;
     StaticModel* grassModel_;
     double randomizer_;

@@ -18,9 +18,8 @@
 
 #include "grass.h"
 
-Grass::Grass(Context *context, MasterControl *masterControl, Node *parent, Vector3 pos) : Object(context)
+Grass::Grass(Node *parent, Vector3 pos) : Object(MC->GetContext())
 {
-    masterControl_ = masterControl;
     rootNode_ = parent->CreateChild("Grass");
     rootNode_->SetPosition(pos);
     rootNode_->Rotate(Quaternion(Random(-10.0f, 10.0f),Random(360.0f),Random(-10.0f, 10.0f)));

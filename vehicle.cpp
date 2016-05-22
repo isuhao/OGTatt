@@ -19,11 +19,12 @@
 #include "vehicle.h"
 #include "explosion.h"
 
-Vehicle::Vehicle(Vector3 position):
+Vehicle::Vehicle(Vector3 position, Quaternion rotation):
     SceneObject()
 {
     rootNode_->SetName("Vehicle");
     rootNode_->SetPosition(position);
+    rootNode_->SetRotation(rotation);
     chassisModel_ = rootNode_->CreateComponent<AnimatedModel>();
     chassisModel_->SetCastShadows(true);
 
@@ -52,7 +53,7 @@ void Vehicle::Destroy()
 {
     new Explosion(rootNode_->GetPosition(), 1.0f);
     for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
-        chassisModel_->SetMaterial(i, MC->resources.materials.darkness);
+        chassisModel_->SetMaterial(i, MC->cache_->GetResource<Material>("Materials/Darkness.xml"));
     }
     flameEmitter_->SetEmitting(true);
 }

@@ -18,8 +18,8 @@
 
 #include "car.h"
 
-Car::Car(Vector3 position) :
-    Vehicle(position)
+Car::Car(Vector3 position, Quaternion rotation) :
+    Vehicle(position, rotation)
 {
     rootNode_->SetName("Car");
 }

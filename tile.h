@@ -35,6 +35,8 @@ using namespace Urho3D;
 
 class Level;
 
+#define LAYER_THICKNESS 1.5f
+
 class Tile : public Object
 {
     friend class Level;

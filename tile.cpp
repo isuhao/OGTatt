@@ -17,7 +17,7 @@
 */
 
 #include "tile.h"
-#include "hemp.h"
+#include "frop.h"
 #include "grass.h"
 #include "firepit.h"
 #include "streetlight.h"
@@ -30,10 +30,8 @@ Tile::Tile(TileInfo info, Level *level):
 
     rootNode_ = level_->rootNode_->CreateChild("Tile");
     rootNode_->SetPosition(Vector3(static_cast<float>(info_.coords_.x_),
-                                   static_cast<float>(info_.coords_.y_),
+                                   LAYER_THICKNESS * static_cast<float>(info_.coords_.y_),
                                    static_cast<float>(-info_.coords_.z_)));
-//    rootNode_->SetScale(Vector3(1.0f, 4.0f, 1.0f));
-
     if (info_.obstacle_){
         CollisionShape* collider{level_->rootNode_->CreateComponent<CollisionShape>()};
         collider->SetBox(Vector3::ONE, rootNode_->GetPosition());

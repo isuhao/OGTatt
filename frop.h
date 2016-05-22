@@ -21,7 +21,7 @@
 
 #include <Urho3D/Urho3D.h>
 
-#include "mastercontrol.h"
+#include "sceneobject.h"
 
 namespace Urho3D {
 class Drawable;
@@ -32,23 +32,19 @@ class Sprite;
 
 using namespace Urho3D;
 
-class Hemp : public Object
+class Frop : public SceneObject
 {
-    URHO3D_OBJECT(Hemp, Object);
+    URHO3D_OBJECT(Frop, SceneObject);
 public:
-    Hemp(Urho3D::Node *parent, Vector3 pos);
-    Hemp() : Hemp(MC->world.scene, Vector3::ZERO){}
-    virtual void Start();
-    virtual void Stop();
+    Frop(Vector3 pos, Quaternion rot, Vector3 scale);
 private:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    Node* rootNode_;
     StaticModel* fropModel_;
     Vector3 scale_;
 
-    double growthStart_;
+    float growthStart_;
 
-    double age_ = 0.0;
+    float age_;
 };
 
 #endif // HEMP_H

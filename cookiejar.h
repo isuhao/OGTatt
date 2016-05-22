@@ -36,7 +36,7 @@ class Cookiejar : public Car
 {
     URHO3D_OBJECT(Cookiejar, Car);
 public:
-    Cookiejar(Vector3 position);
+    Cookiejar(Vector3 position, Quaternion rotation = Quaternion::IDENTITY);
 };
 
 #endif // COOKIEJAR_H

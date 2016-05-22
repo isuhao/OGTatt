@@ -40,7 +40,7 @@ OGTattCam::OGTattCam():
 
     Zone* zone = rootNode_->CreateComponent<Zone>();
     zone->SetBoundingBox(BoundingBox(Vector3(-100.0f, -50.0f, -100.0f), Vector3(100.0f, 50.0f, 100.0f)));
-    zone->SetAmbientColor(Color(0.23f, 0.23f, 1.0f, 0.42f));
+    zone->SetAmbientColor(Color(0.13f, 0.23f, 0.8f));
     zone->SetFogColor(Color(0.42f, 0.3f, 0.23f, 1.0f));
     zone->SetFogStart(23.0f);
     zone->SetFogEnd(viewRange);
@@ -52,8 +52,8 @@ OGTattCam::OGTattCam():
     rigidBody_->SetAngularDamping(10.0f);
     rigidBody_->SetLinearDamping(0.9f);
     rigidBody_->SetUseGravity(false);
-    CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
-    collisionShape->SetSphere(0.1f);
+//    CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
+//    collisionShape->SetSphere(0.1f);
     rigidBody_->SetMass(1.0f);
 
     SetupViewport();
@@ -104,10 +104,10 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     const float MOUSE_SENSITIVITY{0.1f};
 
     //Use this frame's mouse motion to adjust camera node yaw and pitch. Clamp the pitch between -90 and 90 degrees. Only move the camera when the cursor is hidden.
-    Input* input = GetSubsystem<Input>();
-    IntVector2 mouseMove = input->GetMouseMove();
-    yawDelta_ = 0.5*(yawDelta_ + MOUSE_SENSITIVITY * mouseMove.x_);
-    pitchDelta_ = 0.5*(pitchDelta_ + MOUSE_SENSITIVITY * mouseMove.y_);
+    Input* input{GetSubsystem<Input>()};
+    IntVector2 mouseMove{input->GetMouseMove()};
+    yawDelta_ = 0.5f * (yawDelta_ + MOUSE_SENSITIVITY * mouseMove.x_);
+    pitchDelta_ = 0.5f * (pitchDelta_ + MOUSE_SENSITIVITY * mouseMove.y_);
     yaw_ += rootNode_->GetRotation().y_ + yawDelta_;
     pitch_ += rootNode_->GetRotation().x_ + pitchDelta_;
     pitch_ = Clamp(pitch_, -89.0f, 89.0f);
@@ -115,11 +115,10 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     //rootNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
 
     //Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
-    Vector3 camForward = rootNode_->GetDirection();
+    Vector3 camForward{rootNode_->GetDirection()};
     camForward = LucKey::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
 
-    Vector3 camForce = Vector3::ZERO;
-    Vector3 centerForce = LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized()*0.23f;
+    Vector3 camForce{};
 //    if (input->GetKeyDown('T')) camForce += LucKey::Scale( rootNode_->GetDirection(), Vector3::ONE - Vector3::UP ).Normalized();
 //    if (input->GetKeyDown('G')) camForce += LucKey::Scale( rootNode_->GetDirection(), -(Vector3::ONE - Vector3::UP) ).Normalized();
 //    if (input->GetKeyDown('H')) camForce += LucKey::Scale( rootNode_->GetWorldRight(), Vector3::ONE - Vector3::UP ).Normalized() + centerForce;
@@ -142,9 +141,9 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     camForce = camForce.Normalized() * MOVE_SPEED;
 
-    if ( forceMultiplier < 8.0 && (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) ){
-        forceMultiplier += 0.23;
-    } else forceMultiplier = pow(forceMultiplier, 0.75);
+    if ( forceMultiplier < 8.0f && (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) ){
+        forceMultiplier += 0.23f;
+    } else forceMultiplier = pow(forceMultiplier, 0.75f);
     rigidBody_->ApplyForce(forceMultiplier * camForce * t);
 
     //Prevent camera from going too low
@@ -158,7 +157,7 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
     rootNode_->SetPosition(Vector3(0.5f * (targetPosition.x_ + rootNode_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
                                   0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetVelocity_.Length()),
-                                  0.5f * (targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_));
+                                  0.5f * (targetPosition.z_ + rootNode_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_ - 0.23f - 0.03f * smoothTargetVelocity_.Length()));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*
     Quaternion camRot = rootNode_->GetWorldRotation();

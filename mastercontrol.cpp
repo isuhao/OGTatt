@@ -44,6 +44,7 @@ MasterControl::MasterControl(Context *context):
 
 void MasterControl::Setup()
 {
+    SetRandomSeed(GetSubsystem<Time>()->GetSystemTime());
     // Modify engine startup parameters.
     //Set custom window title and icon.
     engineParameters_["WindowTitle"] = "OG Tatt";
@@ -57,12 +58,10 @@ void MasterControl::Setup()
 }
 void MasterControl::Start()
 {
-    new InputMaster(context_, this);
+    new InputMaster();
     cache_ = GetSubsystem<ResourceCache>();
     graphics_ = GetSubsystem<Graphics>();
     renderer_ = GetSubsystem<Renderer>();
-
-    LoadResources();
 
     CreateSineLookupTable();
 
@@ -79,7 +78,6 @@ void MasterControl::Start()
     SubscribeToEvents();
 
     Sound* music = cache_->GetResource<Sound>("Music/Huilende Rappers - Loop als een Piraatje.ogg");
-//    Sound* music = cache_->GetResource<Sound>("Music/Grim_Shit_-_When_The_System_Collapses.ogg");
     music->SetLooped(true);
     Node* musicNode = world.scene->CreateChild("Music");
     musicSource_ = musicNode->CreateComponent<SoundSource>();
@@ -140,64 +138,14 @@ void MasterControl::CreateUI()
     world.cursor.uiCursor->SetPosition(graphics_->GetWidth()/2, graphics_->GetHeight()/2);
 
     //Construct new Text object, set string to display and font to use
-    Text* instructionText = ui->GetRoot()->CreateChild<Text>();
-    instructionText->SetText("OG Tatt");
-    instructionText->SetFont(cache->GetResource<Font>("Fonts/infinite.ttf"), 23);
-    instructionText->SetColor(Color(0.666f, 1.0f, 0.23f, 0.42f));
-    //The text has multiple rows. Center them in relation to each other
-    instructionText->SetHorizontalAlignment(HA_CENTER);
-    instructionText->SetVerticalAlignment(VA_CENTER);
-    instructionText->SetPosition(0, ui->GetRoot()->GetHeight()/2.1);
-}
-
-void MasterControl::LoadResources()
-{
-    resources.models.characters.male = cache_->GetResource<Model>("Models/Male.mdl");
-    resources.models.characters.female = cache_->GetResource<Model>("Models/Female.mdl");
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Mohawk.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Seagull.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Mustain.mdl")));
-    resources.models.characters.hairStyles.Push(SharedPtr<Model>(cache_->GetResource<Model>("Models/Frotoad.mdl")));
-
-    resources.models.doodads.streetLight = cache_->GetResource<Model>("Models/StreetLight.mdl");
-
-    resources.models.vehicles.cookiejar = cache_->GetResource<Model>("Models/Cookiejar.mdl");
-    resources.models.vehicles.honti = cache_->GetResource<Model>("Models/Honti.mdl");
-
-    resources.models.tileParts.blockCenter = cache_->GetResource<Model>("Models/Block_center.mdl");
-    resources.models.tileParts.blockDoubleCorner = cache_->GetResource<Model>("Models/Block_doublecorner.mdl");
-    resources.models.tileParts.blockFillCorner = cache_->GetResource<Model>("Models/Block_fillcorner.mdl");
-    resources.models.tileParts.blockInCorner = cache_->GetResource<Model>("Models/Block_incorner.mdl");
-    resources.models.tileParts.blockOutCorner = cache_->GetResource<Model>("Models/Block_outcorner.mdl");
-    resources.models.tileParts.blockSide = cache_->GetResource<Model>("Models/Block_side.mdl");
-    resources.models.tileParts.blockTween = cache_->GetResource<Model>("Models/Block_tween.mdl");
-    resources.models.tileParts.blockTweenCorner = cache_->GetResource<Model>("Models/Block_tweencorner.mdl");
-
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_0.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_1.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_2.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_3.xml")));
-    resources.materials.skin.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/Skin_4.xml")));
-
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothWhite.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothBlack.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothRed.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothYellow.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothGreen.xml")));
-    resources.materials.cloth.Push(SharedPtr<Material>(cache_->GetResource<Material>("Materials/ClothBlue.xml")));
-
-    resources.materials.darkness = cache_->GetResource<Material>("Materials/Darkness.xml");
-    resources.materials.sidewalk = cache_->GetResource<Material>("Materials/Sidewalk.xml");
-    resources.materials.metal = cache_->GetResource<Material>("Materials/Metal.xml");
-    resources.materials.leather = cache_->GetResource<Material>("Materials/Leather.xml");
-    resources.materials.wall = cache_->GetResource<Material>("Materials/Wall.xml");
-    resources.materials.hair = cache_->GetResource<Material>("Materials/Hair.xml");
-    resources.materials.pants = cache_->GetResource<Material>("Materials/Pants.xml");
-    resources.materials.paint = cache_->GetResource<Material>("Materials/Paint.xml");
-    resources.materials.glass = cache_->GetResource<Material>("Materials/Glass.xml");
-    resources.materials.amber = cache_->GetResource<Material>("Materials/Amber.xml");
-    resources.materials.headlights = cache_->GetResource<Material>("Materials/HeadLights.xml");
-    resources.materials.taillights = cache_->GetResource<Material>("Materials/TailLights.xml");
+//    Text* instructionText = ui->GetRoot()->CreateChild<Text>();
+//    instructionText->SetText("OG Tatt");
+//    instructionText->SetFont(cache->GetResource<Font>("Fonts/infinite.ttf"), 23);
+//    instructionText->SetColor(Color(0.666f, 1.0f, 0.23f, 0.42f));
+//    //The text has multiple rows. Center them in relation to each other
+//    instructionText->SetHorizontalAlignment(HA_CENTER);
+//    instructionText->SetVerticalAlignment(VA_CENTER);
+//    instructionText->SetPosition(0, ui->GetRoot()->GetHeight()/2.1);
 }
 
 void MasterControl::CreateScene()
@@ -230,9 +178,9 @@ void MasterControl::CreateScene()
     lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
     Light* light{lightNode->CreateComponent<Light>()};
     light->SetLightType(LIGHT_DIRECTIONAL);
-    light->SetBrightness(0.23f);
+    light->SetBrightness(0.1f);
     light->SetColor(Color(1.0f, 0.9f, 0.666f));
-    light->SetCastShadows(true);
+//    light->SetCastShadows(true);
     light->SetShadowIntensity(0.8f);
     light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
 
@@ -244,7 +192,7 @@ void MasterControl::CreateScene()
 
     new Level();
     world.player_ = new Player();
-    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-23.0f, 23.0f), 0.0f, Random(-23.0f, 23.0f)));
+    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-13.0f, 13.0f), 0.0f, Random(-13.0f, 13.0f)));
 //    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
 //    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
 }

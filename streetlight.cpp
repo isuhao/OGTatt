@@ -52,12 +52,12 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     light_->SetLightType(LIGHT_SPOT);
     light_->SetBrightness(brightness_);
     light_->SetColor(Color(1.0f, 0.6f, 0.4f));
-    light_->SetRange(4.0f);
-    light_->SetFov(90.0f);
+    light_->SetRange(6.0f);
+    light_->SetFov(130.0f);
     light_->SetCastShadows(true);
-    light_->SetShadowBias(BiasParameters(0.00023f, 0.5f));
-    light_->SetShadowCascade(CascadeParameters(1.0f, 2.0f, 3.0f, 5.0f, 0.5f));
-    light_->SetShadowResolution(0.25f);
+    light_->SetShadowBias(BiasParameters(0.00001f, 0.5f));
+    light_->SetShadowCascade(CascadeParameters(0.23f, 2.0f, 3.0f, 5.0f, 0.5f));
+    light_->SetShadowResolution(0.5f);
 
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(StreetLight, HandleSceneUpdate));
 }

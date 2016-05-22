@@ -54,17 +54,16 @@ public:
 private:
     void HandleUpdate(StringHash eventType, VariantMap &eventData);
     SharedPtr<Node> rootNode_;
+    SharedPtr<RigidBody> rigidBody_;
+
+    float altitude_;
+    float yaw_, pitch_, roll_;
+    float yawDelta_, pitchDelta_;
+    float forceMultiplier;
+
     Vector3 smoothTargetPosition_;
     Vector3 smoothTargetVelocity_;
 
-    SharedPtr<RigidBody> rigidBody_;
-    float altitude_;
-    float yaw_;
-    float pitch_;
-    float roll_;
-    float yawDelta_;
-    float pitchDelta_;
-    float forceMultiplier;
     void SetupViewport();
     void Lock(SharedPtr<Node> node);
 };

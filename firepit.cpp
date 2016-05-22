@@ -26,7 +26,7 @@ FirePit::FirePit(Tile* tile):
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
     model_->SetModel(MC->cache_->GetResource<Model>("Models/FirePit.mdl"));
     model_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/Metal.xml"));
-    model_->SetMaterial(1, MC->resources.materials.darkness);
+    model_->SetMaterial(1, MC->cache_->GetResource<Material>("Materials/Darkness.xml"));
     model_->SetMaterial(2, MC->cache_->GetResource<Material>("Materials/Amber.xml"));
     model_->SetCastShadows(true);
 

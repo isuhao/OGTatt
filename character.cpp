@@ -23,8 +23,7 @@ Character::Character(Vector3 pos):
     male_{Random(2)},
     maxHealth_{100.0f},
     health_{maxHealth_},
-    hairStyle_{Random(static_cast<int>(
-                          MC->resources.models.characters.hairStyles.Size() + 1))}
+    hairStyle_{static_cast<Hair>(Random(static_cast<int>(HAIRSTYLES)))}
 {
     rootNode_->SetName("Character");
     rootNode_->SetPosition(pos);
@@ -44,17 +43,17 @@ Character::Character(Vector3 pos):
         default: colors_.Push(LucKey::RandomColor()); break;
         }
     }
-    if (male_){
-        bodyModel_->SetModel(MC->resources.models.characters.male);}
-    else{
-        bodyModel_->SetModel(MC->resources.models.characters.female);
-    }
+
+    if (male_)
+        bodyModel_->SetModel(MC->cache_->GetResource<Model>("Models/Male.mdl"));
+    else
+        bodyModel_->SetModel(MC->cache_->GetResource<Model>("Models/Female.mdl"));
 
     for (unsigned m{0}; m < bodyModel_->GetNumGeometries(); ++m){
         bodyModel_->SetMaterial(m, MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
-        Color diffColor = colors_[m];
+        Color diffColor{colors_[m]};
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor = diffColor*(1.0f-0.1f*m);
+        Color specColor{diffColor*(1.0f-0.1f*m)};
         specColor.a_ = 23.0f - 4.0f * m;
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
     }
@@ -62,7 +61,23 @@ Character::Character(Vector3 pos):
     if (hairStyle_){
         hairModel_ = rootNode_->GetChild("Head", true)->CreateComponent<StaticModel>();
         hairModel_->SetCastShadows(true);
-        hairModel_->SetModel(MC->resources.models.characters.hairStyles[hairStyle_ - 1]);
+
+        switch (hairStyle_){
+        default: case HAIR_BALD: hairModel_->SetModel(nullptr); break;
+        case HAIR_MOHAWK:
+            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Mohawk.mdl"));
+            break;
+        case HAIR_SEAGULL:
+            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Seagull.mdl"));
+                    break;
+        case HAIR_MUSTAIN:
+            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Mustain.mdl"));
+                    break;
+        case HAIR_FROTOAD:
+            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frotoad.mdl"));
+                    break;
+        }
+
         //Set color for hair model
         hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];

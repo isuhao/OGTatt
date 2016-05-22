@@ -20,9 +20,8 @@
 #include "level.h"
 #include "ogtattcam.h"
 
-InputMaster::InputMaster(Context* context, MasterControl* masterControl) : Object(context)
+InputMaster::InputMaster() : Object(MC->GetContext())
 {
-    masterControl_ = masterControl;
     input_ = GetSubsystem<Input>();
     //Subscribe mouse down event
     SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(InputMaster, HandleMouseDown));

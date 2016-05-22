@@ -37,13 +37,11 @@ class InputMaster : public Object
 {
     URHO3D_OBJECT(InputMaster, Object);
 public:
-    InputMaster(Context* context, MasterControl* masterControl);
+    InputMaster();
     WeakPtr<Node> firstHit_;
 
     void DeselectAll();
 private:
-    MasterControl* masterControl_;
-
     Input* input_;
     void HandleMouseDown(StringHash eventType, VariantMap &eventData);
     void HandleKeyDown(StringHash eventType, VariantMap &eventData);

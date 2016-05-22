@@ -18,7 +18,7 @@
 
 #include "bike.h"
 
-Bike::Bike(Vector3 position) : Vehicle(position)
+Bike::Bike(Vector3 position, Quaternion rotation) : Vehicle(position, rotation)
 {
     rootNode_->SetName("Bike");
 }

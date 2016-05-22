@@ -36,7 +36,7 @@ class Honti : public Bike
 {
     URHO3D_OBJECT(Honti, Bike);
 public:
-    Honti(Vector3 position);
+    Honti(Vector3 position, Quaternion rotation = Quaternion::IDENTITY);
 };
 
 #endif // HONTI_H

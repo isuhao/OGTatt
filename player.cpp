@@ -144,6 +144,8 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
     }
 
     //Shooting
+    float bulletHeight{0.42f};
+
     sinceLastShot_ += timeStep;
 
     if (fire.Length() > 0.1f) fire.Normalize();
@@ -155,10 +157,13 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
         {
             sinceLastShot_ = 0.0;
             Bullet* bullet = new Bullet();
-            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * 0.5f);
+            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * bulletHeight);
             bullet->rootNode_->LookAt(rootNode_->GetPosition() + fire);
-            bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),Random(-0.01f, 0.01f),Random(-0.01f, 0.01f)) + fire)*256.0f);
-            Muzzle* muzzle = new Muzzle(rootNode_->GetPosition() + Vector3::UP * 0.5f + 0.1f*fire);
+            bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),
+                                                    Random(-0.01f, 0.01f),
+                                                    Random(-0.01f, 0.01f))
+                                            + fire) * 256.0f);
+            Muzzle* muzzle = new Muzzle(rootNode_->GetPosition() + Vector3::UP * bulletHeight + 0.1f * fire);
             muzzle->rootNode_->LookAt(rootNode_->GetPosition() + fire);
             PlaySample(shot_sfx);
         }

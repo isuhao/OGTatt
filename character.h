@@ -33,6 +33,8 @@ class Sprite;
 
 using namespace Urho3D;
 
+enum Hair{HAIR_BALD, HAIR_MOHAWK, HAIR_SEAGULL, HAIR_MUSTAIN, HAIR_FROTOAD, HAIRSTYLES};
+
 class Character : public SceneObject
 {
     URHO3D_OBJECT(Character, SceneObject);
@@ -46,7 +48,7 @@ protected:
     RigidBody* rigidBody_;
     CollisionShape* collisionShape_;
     bool male_;
-    int hairStyle_;
+    Hair hairStyle_;
     Vector<Color> colors_;
 
     float maxHealth_;
