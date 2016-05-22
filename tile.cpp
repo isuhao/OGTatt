@@ -38,11 +38,11 @@ Tile::Tile(TileInfo info, Level *level):
     }
     if (info_.modelName_.Length()){
         StaticModel* model{rootNode_->CreateComponent<StaticModel>()};
-        model->SetModel(MC->cache_->GetResource<Model>("Models/"+info.modelName_+".mdl"));
+        model->SetModel(MC->GetModel(info.modelName_));
         model->SetCastShadows(true);
 
         if (info_.materialName_.Length()){
-            model->SetMaterial(MC->cache_->GetResource<Material>("Materials/"+info.materialName_+".xml"));
+            model->SetMaterial(MC->GetMaterial(info.materialName_));
         }
     }
 }

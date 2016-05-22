@@ -38,7 +38,7 @@ Vehicle::Vehicle(Vector3 position, Quaternion rotation):
     flameEmitter_->SetEmitting(false);
 
 //    decal_ = rootNode_->CreateComponent<DecalSet>();
-//    decal_->SetMaterial(MC->cache_->GetResource<Material>("Materials/Decal.xml"));
+//    decal_->SetMaterial(MC->GetMaterial("Decal"));
 //    Quaternion decalRotation = rootNode_->GetRotation();
 //    decalRotation  = decalRotation * Quaternion(90.0f, rootNode_->GetRight());
 //    decal_->AddDecal(chassisModel_, rootNode_->GetWorldPosition()-0.23f*rootNode_->GetDirection(), decalRotation, 0.666f, 1.0f, 2.3f, Vector2::ZERO, Vector2::ONE);
@@ -83,7 +83,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
         for (int r{0}; r < rear; ++r){
             Pair<SharedPtr<Node>, SharedPtr<Light>> light;
             light.first_ = rootNode_->CreateChild("TailLight");
-            light.first_->SetDirection(Vector3(0.0f, -0.8f, -0.5f));
+            light.first_->SetDirection(Vector3(0.0f, -0.6f, -0.5f));
             if (front == 1) {
                 light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
                                                   box.max_.y_,
@@ -92,13 +92,13 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
                 light.first_->SetPosition(Vector3(box.min_.x_ + r * (box.Size().x_ / (rear - 1)),
                                                   box.max_.y_,
                                                   box.min_.z_));
-                light.first_->Rotate(Quaternion(30.0f - r * (60.0f / rear - 1), Vector3::DOWN));
+                light.first_->Rotate(Quaternion(30.0f - r * (60.0f / (rear - 1)), Vector3::UP), TS_WORLD);
             }
             light.second_ = light.first_->CreateComponent<Light>();
             light.second_->SetLightType(LIGHT_SPOT);
             light.second_->SetColor(Color::RED);
-            light.second_->SetRange(2.0f);
-            light.second_->SetFov(160.0f);
+            light.second_->SetRange(3.0f);
+            light.second_->SetFov(120.0f);
             light.second_->SetBrightness(2.0f);
             light.second_->SetCastShadows(true);
             light.second_->SetShadowResolution(0.25f);
@@ -112,7 +112,7 @@ void Vehicle::Destroy()
 {
     new Explosion(rootNode_->GetPosition(), 1.0f);
     for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
-        chassisModel_->SetMaterial(i, MC->cache_->GetResource<Material>("Materials/Darkness.xml"));
+        chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }
     flameEmitter_->SetEmitting(true);
 }

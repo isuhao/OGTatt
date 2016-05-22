@@ -33,12 +33,14 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     SceneObject(),
     brightness_{1.8f}
 {
+    rootNode_->SetName("StreetLight");
+
     rootNode_->SetPosition(pos);
     rootNode_->SetRotation(rot);
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(MC->cache_->GetResource<Model>("Models/StreetLight.mdl"));
-    model_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/Metal.xml"));
+    model_->SetModel(MC->GetModel("StreetLight"));
+    model_->SetMaterial(0, MC->GetMaterial("Metal"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();

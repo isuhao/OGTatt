@@ -41,7 +41,7 @@ Level::Level(Vector3 position):
 Object(MC->GetContext())
 {
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Level, HandleUpdate));
-    rootNode_ = MC->world.scene->CreateChild("World");
+    rootNode_ = MC->world.scene->CreateChild("Level");
 //    MC->platformMap_[rootNode_->GetID()] = WeakPtr<Dungeon>(this);
 
     rootNode_->SetPosition(position);

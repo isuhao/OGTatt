@@ -26,8 +26,8 @@ Bullet::Bullet():
     rootNode_->SetName("Bullet");
     rootNode_->SetScale(Vector3(1.0f, 1.0f, 0.1f));
     model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(MC->cache_->GetResource<Model>("Models/Bullet.mdl"));
-    model_->SetMaterial(MC->cache_->GetResource<Material>("Materials/Bullet.xml"));
+    model_->SetModel(MC->GetModel("Bullet"));
+    model_->SetMaterial(MC->GetMaterial("Bullet"));
 
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
     rigidBody_->SetMass(0.23f);
@@ -72,13 +72,21 @@ void Bullet::HitCheck(float timeStep) {
         PODVector<PhysicsRaycastResult> hitResults;
         Ray bulletRay(rootNode_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, rootNode_->GetDirection());
         if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
-            for (unsigned i{0}; i < hitResults.Size(); ++i){
-                if (!hitResults[i].body_->IsTrigger()){
-                    hitResults[i].body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * hitResults[i].normal_,
-hitResults[i].position_ - hitResults[i].body_->GetNode()->GetWorldPosition());
-                    new HitFX(hitResults[i].position_);
+            for (PhysicsRaycastResult r : hitResults){
+                if (!r.body_->IsTrigger()){
+                    r.body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * r.normal_,
+r.position_ - r.body_->GetNode()->GetWorldPosition());
+                    Substance substance{Substance::Flesh};
+                    if (r.body_->GetNode()->GetNameHash() == StringHash("Level")){
+                        substance = Substance::Rock;
+                    } else if (r.body_->GetNode()->GetNameHash() == StringHash("StreetLight") ||
+                               r.body_->GetNode()->GetNameHash() == StringHash("Honti") ||
+                               r.body_->GetNode()->GetNameHash() == StringHash("Cookiejar")) {
+                        substance = Substance::Metal;
+                    }
+                    new HitFX(r.position_, substance);
                     //Deal damage
-//                    unsigned hitID = hitResults[i].body_->GetNode()->GetID();
+//                    unsigned hitID = r.body_->GetNode()->GetID();
                     Disable();
                 }
             }

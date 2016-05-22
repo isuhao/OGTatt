@@ -44,10 +44,10 @@ HitFX::HitFX(Vector3 position, Substance substance):
         ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/MetalHit.xml")};
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Klang.ogg");
+        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
         hit_sfx->SetLooped(false);
     } break;
     }
 
-    PlaySample(hit_sfx);
+    PlaySample(hit_sfx, 0.13f);
 }

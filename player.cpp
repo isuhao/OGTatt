@@ -156,7 +156,7 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
         {
             sinceLastShot_ = 0.0;
             Bullet* bullet = new Bullet();
-            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * bulletHeight + 0.23f * fire);
+            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * bulletHeight + collisionShape_->GetSize().x_*0.5f * fire);
             bullet->rootNode_->SetDirection(fire);
             bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),
                                                     Random(-0.01f, 0.01f),

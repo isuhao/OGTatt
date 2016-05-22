@@ -71,12 +71,12 @@ enum JoyStickButton {JB_SELECT, JB_LEFTSTICK, JB_RIGHTSTICK, JB_START, JB_DPAD_U
 
 class MasterControl : public Application
 {
-    /// Enable type information.
+    // Enable type information.
     URHO3D_OBJECT(MasterControl, Application);
     friend class InputMaster;
     friend class OGTattCam;
 public:
-    /// Constructor.
+    // Constructor.
     MasterControl(Context* context);
     static MasterControl* GetInstance();
 
@@ -84,20 +84,23 @@ public:
     SharedPtr<ResourceCache> cache_;
     SharedPtr<Graphics> graphics_;
 
-    /// Setup before engine initialization. Modifies the engine paramaters.
+    // Setup before engine initialization. Modifies the engine paramaters.
     virtual void Setup();
-    /// Setup after engine initialization.
+    // Setup after engine initialization.
     virtual void Start();
-    /// Cleanup after the main loop. Called by Application.
+    // Cleanup after the main loop. Called by Application.
     virtual void Stop();
     void Exit();
 
-    void CreateSineLookupTable();
-    float Sine(float x);
-    float Sine(float freq, float min, float max, float shift = 0.0f);
-    ///Physics
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
+
+    //Resource getters
+    Material* GetMaterial(String name) const { return cache_->GetResource<Material>("Materials/"+name+".xml"); }
+    Model* GetModel(String name) const { return cache_->GetResource<Model>("Models/"+name+".mdl"); }
+
+    float Sine(const float freq, const float min, const float max, const float shift = 0.0f);
+    float Cosine(const float freq, const float min, const float max, const float shift = 0.0f);
 private:
     static MasterControl* instance_;
 
@@ -107,36 +110,31 @@ private:
     SharedPtr<XMLFile> defaultStyle_;
     SharedPtr<PhysicsWorld> physicsWorld_;
 
-    /// Set custom window title and icon
-    void SetWindowTitleAndIcon();
-    /// Create console and debug HUD
+    // Create console and debug HUD
     void CreateConsoleAndDebugHud();
 
-    /// Construct the scene content.
+    // Construct the scene content.
     void CreateScene();
-    /// Construct user interface elements.
+    // Construct user interface elements.
     void CreateUI();
-    /// Subscribe to application-wide logic update and post-render update events.
+    // Subscribe to application-wide logic update and post-render update events.
     void SubscribeToEvents();
 
-    /// Handle scene update event to control camera's pitch and yaw.
+    // Handle scene update event to control camera's pitch and yaw.
     void HandleSceneUpdate(StringHash eventType, VariantMap& eventData);
-    /// Handle the logic update event.
+    // Handle the logic update event.
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    /// Handle the post-render update event.
+    // Handle the post-render update event.
     void HandlePostRenderUpdate(StringHash eventType, VariantMap& eventData);
 
-    /// Create a mushroom object at position.
+    // Create a mushroom object at position.
     void CreateDungeon(const Vector3 pos);
     void UpdateCursor(float timeStep);
-    /// Utility function to raycast to the cursor position. Return true if hit.
+    // Utility function to raycast to the cursor position. Return true if hit.
     bool CursorRayCast(double maxDistance, PODVector<RayQueryResult> &hitResults);
 
-    /// Pause flag
+    // Pause flag
     bool paused_;
-
-    ///Sine lookup table
-    Vector<double> sine_;
 };
 
 #endif // MASTERCONTROL_H

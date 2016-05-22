@@ -63,11 +63,8 @@ void MasterControl::Start()
     graphics_ = GetSubsystem<Graphics>();
     renderer_ = GetSubsystem<Renderer>();
 
-    CreateSineLookupTable();
-
     // Get default style
     defaultStyle_ = cache_->GetResource<XMLFile>("UI/DefaultStyle.xml");
-    SetWindowTitleAndIcon();
     //Create console and debug HUD.
     CreateConsoleAndDebugHud();
     //Create the scene content
@@ -98,18 +95,6 @@ void MasterControl::SubscribeToEvents()
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(MasterControl, HandleUpdate));
     //Subscribe scene update event.
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(MasterControl, HandleSceneUpdate));
-}
-
-void MasterControl::SetWindowTitleAndIcon()
-{
-    //Create console
-    Console* console = engine_->CreateConsole();
-    console->SetDefaultStyle(defaultStyle_);
-    console->GetBackground()->SetOpacity(0.0f);
-
-    //Create debug HUD
-    DebugHud* debugHud = engine_->CreateDebugHud();
-    debugHud->SetDefaultStyle(defaultStyle_);
 }
 
 void MasterControl::CreateConsoleAndDebugHud()
@@ -162,7 +147,7 @@ void MasterControl::CreateScene()
     world.cursor.sceneCursor = world.scene->CreateChild("Cursor");
     world.cursor.sceneCursor->SetPosition(Vector3(0.0f,0.0f,0.0f));
     //StaticModel* cursorObject = world.cursor.sceneCursor->CreateComponent<StaticModel>();
-    //cursorObject->SetModel(cache_->GetResource<Model>("Models/Cursor.mdl"));
+    //cursorObject->SetModel(GetModel("Cursor"));
     //cursorObject->SetMaterial(cache_->GetResource<Material>("Materials/glow.xml"));
 
     //Create an invisible plane for mouse raycasting
@@ -170,8 +155,8 @@ void MasterControl::CreateScene()
     //Location is set in update since the plane moves with the camera.
     world.voidNode->SetScale(Vector3(1000.0f, 1.0f, 1000.0f));
     StaticModel* planeObject{world.voidNode->CreateComponent<StaticModel>()};
-    planeObject->SetModel(cache_->GetResource<Model>("Models/Plane.mdl"));
-    planeObject->SetMaterial(cache_->GetResource<Material>("Materials/Invisible.xml"));
+    planeObject->SetModel(GetModel("Plane"));
+    planeObject->SetMaterial(GetMaterial("Invisible"));
 
     //Create a directional light.
     Node* lightNode{world.scene->CreateChild("DirectionalLight")};
@@ -180,9 +165,10 @@ void MasterControl::CreateScene()
     light->SetLightType(LIGHT_DIRECTIONAL);
     light->SetBrightness(0.1f);
     light->SetColor(Color(1.0f, 0.9f, 0.666f));
+    light->SetSpecularIntensity(0.0f);
 //    light->SetCastShadows(true);
-    light->SetShadowIntensity(0.8f);
-    light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
+//    light->SetShadowIntensity(0.8f);
+//    light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
 
     //Set cascade splits at 10, 50, 200 world unitys, fade shadows at 80% of maximum shadow distance
 //    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
@@ -258,23 +244,17 @@ void MasterControl::Exit()
     engine_->Exit();
 }
 
-void MasterControl::CreateSineLookupTable()
+float MasterControl::Sine(const float freq, const float min, const float max, const float shift)
 {
-    //Generate sine lookup array
-    for (int i{0}; i < 1024; i++){
-        sine_.Push(sin((i/512.0)*2.0*M_PI));
-    }
+    float phase{freq * world.scene->GetElapsedTime() + shift};
+    float add{0.5f * (min + max)};
+    return LucKey::Sine(phase) * 0.5f * (max - min) + add;
 }
-
-float MasterControl::Sine(float x) {
-    return sine_[(int)round(sine_.Size() * LucKey::Cycle((float)(x/M_PI), 0.0f, 1.0f))%sine_.Size()];
-}
-
-float MasterControl::Sine(float freq, float min, float max, float shift)
+float MasterControl::Cosine(const float freq, const float min, const float max, const float shift)
 {
-    float phase = freq * world.scene->GetElapsedTime() + shift;
-    float add = 0.5f*(min+max);
-    return Sine(phase) * 0.5f * (max - min) + add;
+    float phase{freq * world.scene->GetElapsedTime() + shift};
+    float add{0.5f * (min + max)};
+    return LucKey::Cosine(phase) * 0.5f * (max - min) + add;
 }
 
 void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData)

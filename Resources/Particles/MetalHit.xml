@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <particleeffect>
-	<material name="Resources/Materials/Flash.xml" />
-	<numparticles value="10" />
+	<material name="Resources/Materials/Spark.xml" />
+	<numparticles value="13" />
 	<updateinvisible enable="true" />
 	<relative enable="true" />
 	<scaled enable="true" />
@@ -15,14 +15,13 @@
 	<activetime value="0" />
 	<inactivetime value="0" />
 	<emissionrate min="400" max="400" />
-	<particlesize min="0.02 0.02" max="0.05 0.05" />
-	<timetolive min="0.23" max="0.5" />
-	<velocity min="0" max="5" />
+	<particlesize min="0.03 0.03" max="0.04 0.04" />
+	<timetolive min="0.05" max="1.23" />
+	<velocity min="1" max="4" />
 	<rotation min="0" max="360" />
 	<rotationspeed min="180" max="360" />
-	<sizedelta add="1" mul="-2" />
+	<sizedelta add="-1" mul="-2" />
 	<colorfade color="1 1 1 5" time="0" />
-	<colorfade color="1 0.5 0 3" time="0.1" />
-	<colorfade color="0 0 0 1" time="0.5" />
-
+	<colorfade color="1 0.5 0 3" time="0.05" />
+	<colorfade color="0 0 0 1" time="0.1" />
 </particleeffect>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <particleeffect>
-	<material name="Resources/Materials/Flash.xml" />
+	<material name="Resources/Materials/Spark.xml" />
 	<numparticles value="5" />
 	<updateinvisible enable="true" />
 	<relative enable="true" />

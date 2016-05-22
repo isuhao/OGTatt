@@ -26,9 +26,9 @@ Grass::Grass(Node *parent, Vector3 pos) : Object(MC->GetContext())
     float randomWidth = Random(0.5f,1.5f);
     rootNode_->SetScale(Vector3(randomWidth, Random(0.25f,randomWidth), randomWidth));
     grassModel_ = rootNode_->CreateComponent<StaticModel>();
-    grassModel_->SetModel(MC->cache_->GetResource<Model>("Models/Grass.mdl"));
-    grassModel_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/block_center.xml"));
-    grassModel_->SetMaterial(1, MC->cache_->GetResource<Material>("Materials/shadow.xml"));
+    grassModel_->SetModel(MC->GetModel("Grass"));
+    grassModel_->SetMaterial(0, MC->GetMaterial("block_center.xml"));
+    grassModel_->SetMaterial(1, MC->GetMaterial("shadow.xml"));
     grassModel_->SetCastShadows(false);
 
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Grass, HandleUpdate));

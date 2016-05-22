@@ -115,6 +115,9 @@ Vector2 Rotate(const Vector2 vec2, const float angle);
 Color RandomColor();
 Color RandomSkinColor();
 Color RandomHairColor();
+
+float Sine(float x);
+float Cosine(float x);
 }
 
 #endif // LUCKEY_H

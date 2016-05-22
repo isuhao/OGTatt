@@ -44,9 +44,9 @@ Character::Character(Vector3 pos):
     }
 
     if (male_)
-        bodyModel_->SetModel(MC->cache_->GetResource<Model>("Models/Male.mdl"));
+        bodyModel_->SetModel(MC->GetModel("Male"));
     else
-        bodyModel_->SetModel(MC->cache_->GetResource<Model>("Models/Female.mdl"));
+        bodyModel_->SetModel(MC->GetModel("Female"));
 
     for (unsigned m{0}; m < bodyModel_->GetNumGeometries(); ++m){
         bodyModel_->SetMaterial(m, MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
@@ -64,16 +64,16 @@ Character::Character(Vector3 pos):
         switch (hairStyle_){
         default: case HAIR_BALD: hairModel_->SetModel(nullptr); break;
         case HAIR_MOHAWK:
-            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Mohawk.mdl"));
+            hairModel_->SetModel(MC->GetModel("Mohawk"));
             break;
         case HAIR_SEAGULL:
-            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Seagull.mdl"));
+            hairModel_->SetModel(MC->GetModel("Seagull"));
                     break;
         case HAIR_MUSTAIN:
-            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Mustain.mdl"));
+            hairModel_->SetModel(MC->GetModel("Mustain"));
                     break;
         case HAIR_FROTOAD:
-            hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frotoad.mdl"));
+            hairModel_->SetModel(MC->GetModel("Frotoad"));
                     break;
         }
         if (hairStyle_ != HAIR_BALD) hairModel_->SetMorphWeight(0, Random());

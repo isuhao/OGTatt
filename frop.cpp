@@ -31,8 +31,8 @@ Frop::Frop(Vector3 pos, Quaternion rot, Vector3 scale) :
 //    float randomWidth{Random(2.0f,3.0f)};
 //    scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
     fropModel_ = rootNode_->CreateComponent<StaticModel>();
-    fropModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frop.mdl"));
-    fropModel_->SetMaterial(MC->cache_->GetResource<Material>("Materials/frop.xml"));
+    fropModel_->SetModel(MC->GetModel("Frop"));
+    fropModel_->SetMaterial(MC->GetMaterial("Frop"));
     fropModel_->SetCastShadows(true);
 
 //    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));

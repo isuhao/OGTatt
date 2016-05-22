@@ -24,10 +24,10 @@ FirePit::FirePit(Tile* tile):
     rootNode_->SetRotation(Quaternion(0.0f, randomizer_ * 360.0f, 0.0f));
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
-    model_->SetModel(MC->cache_->GetResource<Model>("Models/FirePit.mdl"));
-    model_->SetMaterial(0, MC->cache_->GetResource<Material>("Materials/Metal.xml"));
-    model_->SetMaterial(1, MC->cache_->GetResource<Material>("Materials/Darkness.xml"));
-    model_->SetMaterial(2, MC->cache_->GetResource<Material>("Materials/Amber.xml"));
+    model_->SetModel(MC->GetModel("FirePit"));
+    model_->SetMaterial(0, MC->GetMaterial("Metal"));
+    model_->SetMaterial(1, MC->GetMaterial("Darkness"));
+    model_->SetMaterial(2, MC->GetMaterial("Amber"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();

@@ -23,15 +23,15 @@ Cookiejar::Cookiejar(Vector3 position, Quaternion rotation) :
 {
     rootNode_->SetName("Cookiejar");
 
-    chassisModel_->SetModel(MC->cache_->GetResource<Model>("Models/Cookiejar.mdl"));
-    SharedPtr<Material> paint = MC->cache_->GetResource<Material>("Materials/Glass.xml")->Clone();
+    chassisModel_->SetModel(MC->GetModel("Cookiejar"));
+    SharedPtr<Material> paint = MC->GetMaterial("Paint")->Clone();
     chassisModel_->SetMaterial(0, paint);
     paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
-    chassisModel_->SetMaterial(1, MC->cache_->GetResource<Material>("Materials/Glass.xml"));
-    chassisModel_->SetMaterial(2, MC->cache_->GetResource<Material>("Materials/Darkness.xml"));
-    chassisModel_->SetMaterial(3, MC->cache_->GetResource<Material>("Materials/Headlight.xml"));
-    chassisModel_->SetMaterial(4, MC->cache_->GetResource<Material>("Materials/Taillight.xml"));
-    chassisModel_->SetMaterial(5, MC->cache_->GetResource<Material>("Materials/Decal.xml"));
+    chassisModel_->SetMaterial(1, MC->GetMaterial("Glass"));
+    chassisModel_->SetMaterial(2, MC->GetMaterial("Darkness"));
+    chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
+    chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
+    chassisModel_->SetMaterial(5, MC->GetMaterial("Decal"));
 
     for (unsigned m{0}; m < chassisModel_->GetNumMorphs(); ++m){
         chassisModel_->SetMorphWeight(m, Random());
