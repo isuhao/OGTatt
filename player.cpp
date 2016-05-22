@@ -54,7 +54,6 @@ Player::Player():
     scoreText_->SetHorizontalAlignment(HA_LEFT);
     scoreText_->SetVerticalAlignment(VA_TOP);
     scoreText_->SetPosition(0, MC->ui_->GetRoot()->GetHeight()/2.1);*/
-
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Player, HandleSceneUpdate));
 }
 
@@ -144,7 +143,7 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
     }
 
     //Shooting
-    float bulletHeight{0.42f};
+    float bulletHeight{0.34f};
 
     sinceLastShot_ += timeStep;
 
@@ -157,8 +156,8 @@ void Player::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
         {
             sinceLastShot_ = 0.0;
             Bullet* bullet = new Bullet();
-            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * bulletHeight);
-            bullet->rootNode_->LookAt(rootNode_->GetPosition() + fire);
+            bullet->rootNode_->SetPosition(rootNode_->GetPosition() + Vector3::UP * bulletHeight + 0.23f * fire);
+            bullet->rootNode_->SetDirection(fire);
             bullet->rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),
                                                     Random(-0.01f, 0.01f),
                                                     Random(-0.01f, 0.01f))

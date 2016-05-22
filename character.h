@@ -40,9 +40,10 @@ class Character : public SceneObject
     URHO3D_OBJECT(Character, SceneObject);
 public:
     Character(Vector3 pos);
+    Substance GetSubstance();
 protected:
     AnimatedModel* bodyModel_;
-    StaticModel* hairModel_;
+    AnimatedModel* hairModel_;
 
     AnimationController* animCtrl_;
     RigidBody* rigidBody_;

@@ -49,6 +49,65 @@ void Vehicle::Hit(float damage)
 {
 }
 
+void Vehicle::SetupLights(int front, int rear, BoundingBox box)
+{
+    if (front) {
+        for (int f{0}; f < front; ++f){
+            Pair<SharedPtr<Node>, SharedPtr<Light>> light;
+            light.first_ = rootNode_->CreateChild("HeadLight");
+            light.first_->SetDirection(Vector3(0.0f, -0.23f, 0.666f));
+            if (front == 1) {
+                light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
+                                                  box.min_.y_,
+                                                  box.max_.z_));
+            } else {
+                light.first_->SetPosition(Vector3(box.min_.x_ + f * (box.Size().x_ / (front - 1)),
+                                                  box.min_.y_,
+                                                  box.max_.z_));
+            }
+            light.second_ = light.first_->CreateComponent<Light>();
+            light.second_->SetLightType(LIGHT_SPOT);
+            light.second_->SetColor(Color(1.0f, 0.9f, 0.8f));
+            light.second_->SetRange(8.0f);
+            light.second_->SetFov(60.0f);
+            light.second_->SetBrightness(5.0f);
+            light.second_->SetCastShadows(true);
+            light.second_->SetShadowResolution(0.25f);
+            light.second_->SetShadowBias(BiasParameters(0.00001f, 0.5f));
+            light.second_->SetShadowCascade(CascadeParameters(0.23f, 2.0f, 3.0f, 5.0f, 0.5f));
+
+            headLights_.Push(light);
+        }
+    }
+    if (rear) {
+        for (int r{0}; r < rear; ++r){
+            Pair<SharedPtr<Node>, SharedPtr<Light>> light;
+            light.first_ = rootNode_->CreateChild("TailLight");
+            light.first_->SetDirection(Vector3(0.0f, -0.8f, -0.5f));
+            if (front == 1) {
+                light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
+                                                  box.max_.y_,
+                                                  box.min_.z_));
+            } else {
+                light.first_->SetPosition(Vector3(box.min_.x_ + r * (box.Size().x_ / (rear - 1)),
+                                                  box.max_.y_,
+                                                  box.min_.z_));
+                light.first_->Rotate(Quaternion(30.0f - r * (60.0f / rear - 1), Vector3::DOWN));
+            }
+            light.second_ = light.first_->CreateComponent<Light>();
+            light.second_->SetLightType(LIGHT_SPOT);
+            light.second_->SetColor(Color::RED);
+            light.second_->SetRange(2.0f);
+            light.second_->SetFov(160.0f);
+            light.second_->SetBrightness(2.0f);
+            light.second_->SetCastShadows(true);
+            light.second_->SetShadowResolution(0.25f);
+
+            tailLights_.Push(light);
+        }
+    }
+}
+
 void Vehicle::Destroy()
 {
     new Explosion(rootNode_->GetPosition(), 1.0f);

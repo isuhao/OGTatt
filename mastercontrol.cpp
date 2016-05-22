@@ -154,7 +154,7 @@ void MasterControl::CreateScene()
 
     //Create octree, use default volume (-1000, -1000, -1000) to (1000,1000,1000)
     /*Octree* octree = */world.scene->CreateComponent<Octree>();
-    //octree->SetSize(BoundingBox(Vector3(-10000, -100, -10000), Vector3(10000, 1000, 10000)), 1024);
+//    octree->SetSize(BoundingBox(Vector3(-10000, -100, -10000), Vector3(10000, 1000, 10000)), 1024);
     physicsWorld_ = world.scene->CreateComponent<PhysicsWorld>();
     world.scene->CreateComponent<DebugRenderer>();
 

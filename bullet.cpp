@@ -72,13 +72,13 @@ void Bullet::HitCheck(float timeStep) {
         PODVector<PhysicsRaycastResult> hitResults;
         Ray bulletRay(rootNode_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, rootNode_->GetDirection());
         if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
-            for (int i = 0; i < hitResults.Size(); i++){
-                if (!hitResults[i].body_->IsTrigger() && hitResults[i].body_->GetNode()->GetNameHash() != N_PLAYER){
-                    hitResults[i].body_->ApplyImpulse(rigidBody_->GetLinearVelocity()*0.023f - 0.23f*hitResults[i].normal_,
+            for (unsigned i{0}; i < hitResults.Size(); ++i){
+                if (!hitResults[i].body_->IsTrigger()){
+                    hitResults[i].body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * hitResults[i].normal_,
 hitResults[i].position_ - hitResults[i].body_->GetNode()->GetWorldPosition());
                     new HitFX(hitResults[i].position_);
                     //Deal damage
-                    unsigned hitID = hitResults[i].body_->GetNode()->GetID();
+//                    unsigned hitID = hitResults[i].body_->GetNode()->GetID();
                     Disable();
                 }
             }

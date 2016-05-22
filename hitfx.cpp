@@ -18,15 +18,36 @@
 
 #include "hitfx.h"
 
-HitFX::HitFX(Vector3 position):
+HitFX::HitFX(Vector3 position, Substance substance):
     Effect(position, "HitFX")
 {
     rootNode_->SetPosition(position);
-    particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = MC->cache_->GetResource<ParticleEffect>("Particles/BloodFX.xml");
-    particleEmitter_->SetEffect(particleEffect);
+    switch (substance){
+    default: case Substance::Flesh: {
+        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
+        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/FleshHit.xml")};
+        particleEmitter_->SetEffect(particleEffect);
 
-    hit_sfx = MC->cache_->GetResource<Sound>("Samples/Hit.ogg");
-    hit_sfx->SetLooped(false);
+        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx->SetLooped(false);
+    } break;
+    case Substance::Rock: {
+        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
+        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/RockHit.xml")};
+        particleEmitter_->SetEffect(particleEffect);
+
+        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx->SetLooped(false);
+    } break;
+    case Substance::Metal: {
+        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
+        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/MetalHit.xml")};
+        particleEmitter_->SetEffect(particleEffect);
+
+        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Klang.ogg");
+        hit_sfx->SetLooped(false);
+    } break;
+    }
+
     PlaySample(hit_sfx);
 }

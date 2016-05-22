@@ -36,7 +36,7 @@ class HitFX : public Effect
 {
     URHO3D_OBJECT(HitFX, Effect);
 public:
-    HitFX(Vector3 position);
+    HitFX(Vector3 position, Substance substance = Substance::Flesh);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 private:
     Sound* hit_sfx;

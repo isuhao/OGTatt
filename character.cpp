@@ -31,8 +31,7 @@ Character::Character(Vector3 pos):
     //Set up graphics components
     bodyModel_ = rootNode_->CreateComponent<AnimatedModel>();
     bodyModel_->SetCastShadows(true);
-    for (int c = 0; c < 5; c++)
-    {
+    for (int c{0}; c < 5; ++c) {
         switch (c){
         case 0:{
             colors_.Push(LucKey::RandomSkinColor());
@@ -53,13 +52,13 @@ Character::Character(Vector3 pos):
         bodyModel_->SetMaterial(m, MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor{colors_[m]};
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor{diffColor*(1.0f-0.1f*m)};
+        Color specColor{diffColor * (1.0f-0.1f*m)};
         specColor.a_ = 23.0f - 4.0f * m;
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
     }
 
     if (hairStyle_){
-        hairModel_ = rootNode_->GetChild("Head", true)->CreateComponent<StaticModel>();
+        hairModel_ = rootNode_->GetChild("Head", true)->CreateComponent<AnimatedModel>();
         hairModel_->SetCastShadows(true);
 
         switch (hairStyle_){
@@ -77,12 +76,13 @@ Character::Character(Vector3 pos):
             hairModel_->SetModel(MC->cache_->GetResource<Model>("Models/Frotoad.mdl"));
                     break;
         }
+        if (hairStyle_ != HAIR_BALD) hairModel_->SetMorphWeight(0, Random());
 
         //Set color for hair model
         hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];
         hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor = diffColor*0.23f;
+        Color specColor{diffColor * 0.23f};
         specColor.a_ = 23.0f;
         hairModel_->GetMaterial()->SetShaderParameter("MatSpecColor", specColor);
     }
@@ -107,4 +107,9 @@ Character::Character(Vector3 pos):
 
     collisionShape_ = rootNode_->CreateComponent<CollisionShape>();
     collisionShape_->SetCylinder(0.4f, 1.0f);
+}
+
+Substance Character::GetSubstance()
+{
+    return Substance::Flesh;
 }

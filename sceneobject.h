@@ -23,6 +23,9 @@
 
 #include "mastercontrol.h"
 
+//Used for footsteps and bullet hits
+enum class Substance{Rock, Metal, Flesh};
+
 class SceneObject : public Object
 {
     URHO3D_OBJECT(SceneObject, Object);
@@ -30,17 +33,19 @@ public:
     SceneObject();
 
     Vector3 GetWorldPosition() {return rootNode_->GetWorldPosition();}
+    virtual Substance GetSubstance(Vector3 position = Vector3::ZERO){}
 protected:
     SharedPtr<Node> rootNode_;
     Vector<SharedPtr<SoundSource> > sampleSources_;
     bool destructable_;
     float randomizer_;
 
+    void Set(Vector3 position);
     void Disable();
     void Destroy();
-    void Set(Vector3 position);
 
     void PlaySample(Sound *sample, float gain = 0.3f);
+
 
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 };

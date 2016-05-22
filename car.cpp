@@ -24,6 +24,12 @@ Car::Car(Vector3 position, Quaternion rotation) :
     rootNode_->SetName("Car");
 }
 
+Substance Car::GetSubstance(Vector3 position)
+{
+    return Substance::Metal;
+}
+
+
 
 
 

@@ -40,8 +40,11 @@ Honti::Honti(Vector3 position, Quaternion rotation) :
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
-    collisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f),Vector3::RIGHT * 0.034f, Quaternion(9.0f, Vector3::FORWARD));
+    collisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f), Vector3::RIGHT * 0.034f /*only when parked*/, Quaternion(9.0f, Vector3::FORWARD));
+
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.08f));
+
+    SetupLights(1, 1, BoundingBox(Vector3(-1.0f, 0.5f, -0.5f), Vector3(1.0f, 0.5f, 0.5f)));
 }
 
 

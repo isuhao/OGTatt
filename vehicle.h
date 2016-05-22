@@ -44,8 +44,18 @@ protected:
     CollisionShape* collisionShape_;
     Node* particleNode_;
     ParticleEmitter* flameEmitter_;
+
+    Vector<Pair<SharedPtr<Node>,
+                SharedPtr<Light>>> headLights_;
+
+    Vector<Pair<SharedPtr<Node>,
+                SharedPtr<Light>>> tailLights_;
+
+    void SetupLights(int front, int rear, BoundingBox box);
 private:
     void Destroy();
+
+    void AddLight(Vector3 pos, bool head = true);
 };
 
 #endif // VEHICLE_H

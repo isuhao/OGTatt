@@ -33,7 +33,7 @@ Cookiejar::Cookiejar(Vector3 position, Quaternion rotation) :
     chassisModel_->SetMaterial(4, MC->cache_->GetResource<Material>("Materials/Taillight.xml"));
     chassisModel_->SetMaterial(5, MC->cache_->GetResource<Material>("Materials/Decal.xml"));
 
-    for (unsigned m = 0; m < chassisModel_->GetNumMorphs(); m++){
+    for (unsigned m{0}; m < chassisModel_->GetNumMorphs(); ++m){
         chassisModel_->SetMorphWeight(m, Random());
     }
 
@@ -47,6 +47,8 @@ Cookiejar::Cookiejar(Vector3 position, Quaternion rotation) :
     rigidBody_->SetAngularRestThreshold(0.1f);
     collisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f));
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
+
+    SetupLights(2, 2, BoundingBox(Vector3(-0.42f, 0.33f, -1.1f), Vector3(0.42f, 0.41f, 0.9f)));
 }
 
 

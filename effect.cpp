@@ -25,7 +25,9 @@
 #include "effect.h"
 
 Effect::Effect(Vector3 position, String name):
-    SceneObject()
+    SceneObject(),
+    age_{0.0f},
+    emitTime_{0.1f}
 {
     rootNode_->SetName(name);
     rootNode_->SetPosition(position);
@@ -37,10 +39,9 @@ Effect::Effect(Vector3 position, String name):
 
 void Effect::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 {
-    using namespace Update;
-    float timeStep = eventData[P_TIMESTEP].GetFloat();
+    float t{eventData[Update::P_TIMESTEP].GetFloat()};
 
-    age_ += timeStep;
+    age_ += t;
     if (age_ > emitTime_ + particleEmitter_->GetEffect()->GetMaxTimeToLive()){
         Disable();
     }

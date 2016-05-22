@@ -37,6 +37,7 @@ class Car : public Vehicle
     URHO3D_OBJECT(Car, Vehicle);
 public:
     Car(Vector3 position, Quaternion rotation = Quaternion::IDENTITY);
+    virtual Substance GetSubstance(Vector3 position = Vector3::ZERO);
 };
 
 #endif // CAR_H
