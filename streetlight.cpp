@@ -36,16 +36,17 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     rootNode_->SetName("StreetLight");
 
     rootNode_->SetPosition(pos);
-    rootNode_->SetRotation(rot);
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
     model_->SetModel(MC->GetModel("StreetLight"));
     model_->SetMaterial(0, MC->GetMaterial("Metal"));
+    model_->SetMaterial(1, MC->GetMaterial("Headlight"));
     model_->SetCastShadows(true);
 
     rootNode_->CreateComponent<RigidBody>();
     CollisionShape* collider = rootNode_->CreateComponent<CollisionShape>();
     collider->SetCylinder(0.1f, 2.0f);
+    collider->SetPosition(Vector3::UP);
 
     lightNode_ = rootNode_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));

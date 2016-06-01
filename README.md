@@ -1,5 +1,5 @@
 
-[:four_leaf_clover:] (http://www.luckeyproductions.nl/) ![Original Gangster Tattoo](https://raw.githubusercontent.com/LucKeyProductions/OGTatt/master/Vectors/OGTatt.png)
+[:four_leaf_clover:](http://www.luckeyproductions.nl/) ![Original Gangster Tattoo](https://raw.githubusercontent.com/LucKeyProductions/OGTatt/master/Vectors/OGTatt.png)
 # Respect is only the beginning
 
 ### Summary

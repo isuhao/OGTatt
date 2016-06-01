@@ -1,10 +1,34 @@
-- # Noocodex
-
-OG Tatt is a top-down urban shoot-em-up set in a world where respect is only the beginning.  
+**OG Tatt** is a top-down urban shoot-em-up set in a world where respect is only the beginning.  
 Players can play without joining an existing gang. Play on your own and create a gang with at least three people whenever you feel like it. You'll have to earn enough respect to get an HQ and to be mentioned.  
 HQs 
+ 
+# Gameplay
+
+If you decide to join a gang you can either fight other gangs in each city or smuggle warez to other HQs of your gang in other cities.
+
+## Controls
+
+* Keyboard
+   - `Enter`: Enter/Leave nearest vehicle on the most convenient side
+   - `]`: Specifically enter/leave nearest vehicle on the right side
+   - `[`: Specifically enter/leave nearest vehicle on the left side
+ 
+## UI
+
++ Ability to create animated avatar from _building blocks_
++ Chat as pop-up with avatar and message for people on-screen and.
+ 
+## Hand-to-Hand combat
+
++ Disarm
++ Counter
++ Grab/Chokehold (PvP: buttonbash to break neck/free)
+
+-----------------------
    
 ## World
+
+Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to get to another city by road. Traveling to another city the camera angle changes and it is like a highway racing game during which you'll see the environment change in accordance to the 
 
 ### Overview
 
@@ -14,23 +38,23 @@ HQs
 
 #### Western
 
-* Grunstatt (Dutch/German/Danish) | **Hemp**
-* Ånslo (Norwegian/Swedish/Finnish) | **Fish**
-* Noopolis (Italian/Greek/French) | **Wine**
-* Air Strip 1 (British/American) | **Telescreens**
+* **Grunstatt** (Dutch/German/Danish) | Hemp
+* **Ånslo** (Norwegian/Swedish/Finnish) | Fishballs
+* **Noopolis** (Italian/Greek/French) | Wine
+* **Airstrip 1** (British/American) | Telescreens
 
 #### Southern
 
-* Zombuntu (Savannah) | **Wildlife**
-* Agroban (Desert) | **Oil**
-* Axllotus (Jungle) | **Natives**
+* **Zombuntu** (Savannah) | Wildlife
+* **Agroban** (Desert) | Oil
+* **Axllotus** (Jungle) | Natives
 
 #### Eastern
 
-* Pingrad (Russian/North Korean) | **Communism**
-* Balkan (Eastern European) | 
-* Monkong (Chinese/Tibetan/Japanese) | **Pandas, robots and monks**
-* Sloompur (Australian/Indonesian/New Zealand) | **Giant squids, small islands**
+* **Pingrad** (Russian/North Korean) | Communism
+* **Balkan** (Eastern European) | 
+* **Monkong** (Chinese/Tibetan/Japanese) | Pandas, robots and monks
+* **Sloompur** (Australian/Indonesian/New Zealand) | Giant squids, small islands
 
 ### Vehicles
 
@@ -54,150 +78,10 @@ HQs
  
 ### Gangs
 
+For a list of built-in gangs see Gangs.md  
 Built-in gangs will include:
 
 + Emblem and colors (applied to HQ banners and vehicles)
 + Voices for both sexes
 + Limitations on clothing
 + Head quarters city block
-
------------------------
- 
-#### Lagoonies
-
-All these people became criminals overnight for sharing audio and decided to stop running. Now they are breaking all the other rules too.
-
-##### Emblem
-![cassette and crossbones](../Resources/Textures/Decals/Pirates.png)  
-purple
-
------------------------
- 
-#### X-Terminators
-
-These androids from the recent past just got an unholy update from future Martian prankster ghosts. It makes these machines highly annoyed by all stuff that moves. Being unable to turn off their cameras, some have "lost" an arm.
- 
-##### Emblem
-
-An angry looking robot posing as a red X.  
-grey
-
------------------------
- 
-#### Police Squad Now!
-
-Spotting targets is so much easier when you're dressed in blue. And these people know it. Also recruiting new goons works better with a catchy name.
-
-##### Emblem
-
-A stylized burning book of law.  
-blue
-
------------------------
- 
-#### Tourists
-
-Just enjoying their holiday in a country they love... no really!
-
-##### Emblem
-
-A camera and a pair of shades reflecting a mushroom cloud.  
-white
-
------------------------
- 
-#### Untied Morons o' Murky
-
-A Christian biker gang, all that's left of a sunken empire. Stupidity is their motto, blindness their creed and think they're better then most people because Moron starts with "more".
-
-##### Emblem
-
-UMoM's logo is a vertically striped heart behind a ribbon saying "MoM" under a five-pointed star enclosing a U with a Celtic cross in the background.  
-red
-
------------------------
-
-#### Chaos Squad
-
-Everything is magic if you look at it that way.
-
-##### Emblem
-
-![Chaosphere](../Resources/Textures/Decals/Chaotes.png)  
-grey
-
------------------------
-
-#### Obscurinati
-
-Having spent too much time in the dark these suits were cast back down to earth from their space thrones to fight for their life like any other mere mortal.
-
-##### Emblem
-
-Closed eye of providence  
-pink
-
------------------------
-
-#### Erisians
-
-Hail Eris! Whatever that means
-
-##### Emblem
-
-A golden apple inscribed with the number 23  
-orange
-
------------------------
-
-#### SubGenii
-
-Realizing they'll need to make some more noise if they want to reclaim the title of biggest religion, that's exactly what they'll do.
-
-##### Emblem
-
-"Bob"  
-dark red
-
------------------------
-
-#### Bio-Front
-
-Fight pollution, free animals, kill meat eaters.
-
-##### Emblem
-
-Boars head  
-bright Green
-
------------------------
-
-#### Association of Autonomous Astronauts
-
-Trying to get away from this place they ran into a little budget problem.
-
-##### Emblem
-
-AAA  
-silver
-
------------------------
-
-# Gameplay
-
-## Controls
-
-* Keyboard
-   - `Enter`: Enter/Leave nearest vehicle on the most convenient side
-   - `]`: Specifically enter/leave nearest vehicle on the right side
-   - `[`: Specifically enter/leave nearest vehicle on the left side
- 
-## UI
-
-+ Chat as pop-up with avatar and message for people on-screen and.
- 
-## Hand-to-Hand combat
-
-+ Disarm
-+ Counter
-+ Grab/Chokehold (PvP: buttonbash to break neck/free)

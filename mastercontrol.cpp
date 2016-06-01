@@ -80,7 +80,7 @@ void MasterControl::Start()
     musicSource_ = musicNode->CreateComponent<SoundSource>();
     musicSource_->SetSoundType(SOUND_MUSIC);
     musicSource_->SetGain(0.23f);
-    musicSource_->Play(music);
+//    musicSource_->Play(music);
 }
 void MasterControl::Stop()
 {
@@ -100,7 +100,7 @@ void MasterControl::SubscribeToEvents()
 void MasterControl::CreateConsoleAndDebugHud()
 {
     // Create console
-    Console* console = engine_->CreateConsole();
+    Console* console{engine_->CreateConsole()};
     console->SetDefaultStyle(defaultStyle_);
     console->GetBackground()->SetOpacity(0.8f);
 
@@ -241,6 +241,9 @@ bool MasterControl::PhysicsSphereCast(PODVector<RigidBody*> &hitResults, Vector3
 
 void MasterControl::Exit()
 {
+    File file(context_, "Resources/Test.xml", FILE_WRITE);
+    world.scene->SaveXML(file);
+
     engine_->Exit();
 }
 

@@ -85,9 +85,10 @@ r.position_ - r.body_->GetNode()->GetWorldPosition());
                         substance = Substance::Metal;
                     }
                     new HitFX(r.position_, substance);
-                    //Deal damage
+                    //Deal damage, asks for Component-based approach
 //                    unsigned hitID = r.body_->GetNode()->GetID();
                     Disable();
+                    return;
                 }
             }
         }
