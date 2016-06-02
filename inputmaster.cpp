@@ -51,7 +51,7 @@ void InputMaster::HandleKeyDown(StringHash eventType, VariantMap &eventData)
 
     switch (key){
     //Exit when ESC is pressed
-    case KEY_ESC: MC->Exit();
+    case KEY_ESCAPE: MC->Exit();
         break;
         //Take screenshot
     case KEY_9:

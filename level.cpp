@@ -90,8 +90,16 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
                                 info.modelName_ = tile->GetProperty("model");
                             }
 
-                            if (tile->HasProperty("material")){
-                                info.materialName_ = tile->GetProperty("material");
+                            if (tile->HasProperty("materials")){
+                                String materials_s{tile->GetProperty("materials")};
+                                Vector<String> materialNames{materials_s.Split(',')};
+                                for (String& s: materialNames){
+                                    s = s.Trimmed();
+                                    if (!s.Length()){
+                                        materialNames.Remove(s);
+                                    }
+                                }
+                                info.materialNames_ = materialNames;
                             }
 
                             AddTile(info);

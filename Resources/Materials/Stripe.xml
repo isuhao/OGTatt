@@ -1,0 +1,5 @@
+<material>
+	<technique name="Techniques/DiffAlphaMask.xml" />
+	<texture unit="diffuse" name="Resources/Textures/StripeDiffuse.png" />
+	<parameter name="MatDiffColor" value="1 1 1 1" />
+</material>

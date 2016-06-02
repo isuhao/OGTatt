@@ -33,16 +33,18 @@ Tile::Tile(TileInfo info, Level *level):
                                    LAYER_THICKNESS * static_cast<float>(info_.coords_.y_),
                                    static_cast<float>(-info_.coords_.z_)));
     if (info_.obstacle_){
+
         CollisionShape* collider{level_->rootNode_->CreateComponent<CollisionShape>()};
         collider->SetBox(Vector3::ONE, rootNode_->GetPosition());
     }
     if (info_.modelName_.Length()){
+
         StaticModel* model{rootNode_->CreateComponent<StaticModel>()};
         model->SetModel(MC->GetModel(info.modelName_));
         model->SetCastShadows(true);
 
-        if (info_.materialName_.Length()){
-            model->SetMaterial(MC->GetMaterial(info.materialName_));
-        }
+        if (info_.materialNames_.Size())
+            for (int s{0}; s < info_.materialNames_.Size(); ++s)
+                model->SetMaterial(s, MC->GetMaterial(info.materialNames_[s]));
     }
 }
