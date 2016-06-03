@@ -158,13 +158,13 @@ void MasterControl::CreateScene()
     planeObject->SetModel(GetModel("Plane"));
     planeObject->SetMaterial(GetMaterial("Invisible"));
 
-    //Create a directional light.
+    //Create a directional sky light.
     Node* lightNode{world.scene->CreateChild("DirectionalLight")};
     lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
     Light* light{lightNode->CreateComponent<Light>()};
     light->SetLightType(LIGHT_DIRECTIONAL);
     light->SetBrightness(0.1f);
-    light->SetColor(Color(1.0f, 0.9f, 0.666f));
+    light->SetColor(Color(0.666f, 0.9f, 1.0f));
     light->SetSpecularIntensity(0.0f);
 //    light->SetCastShadows(true);
 //    light->SetShadowIntensity(0.8f);
@@ -178,7 +178,7 @@ void MasterControl::CreateScene()
 
     new Level();
     world.player_ = new Player();
-    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-13.0f, 13.0f), 0.0f, Random(-13.0f, 13.0f)));
+    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
 //    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
 //    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
 }

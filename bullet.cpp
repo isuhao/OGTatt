@@ -18,13 +18,14 @@
 
 #include "bullet.h"
 
-Bullet::Bullet():
+Bullet::Bullet(Node* owner):
     SceneObject(),
+    owner_{owner},
     lifetime_{1.0f},
     damage_{0.25f}
 {
     rootNode_->SetName("Bullet");
-    rootNode_->SetScale(Vector3(1.0f, 1.0f, 0.1f));
+    rootNode_->SetScale(Vector3(1.5f, 1.5f, 5.0f));
     model_ = rootNode_->CreateComponent<StaticModel>();
     model_->SetModel(MC->GetModel("Bullet"));
     model_->SetMaterial(MC->GetMaterial("Bullet"));
@@ -44,10 +45,10 @@ void Bullet::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
     float timeStep = eventData[P_TIMESTEP].GetFloat();
 
     age_ += timeStep;
-    rootNode_->SetScale(Vector3(Max(1.75f - 10.0f*age_, 1.0f),
-                                Max(1.75f - 10.0f*age_, 1.0f),
-                                Min(Min(150.0f*age_, 7.0f), Max(7.0f-timeSinceHit_*42.0f, 0.1f))
-                                ));
+//    rootNode_->SetScale(Vector3(Max(1.75f - 10.0f*age_, 1.0f),
+//                                Max(1.75f - 10.0f*age_, 1.0f),
+//                                Min(Min(150.0f*age_, 7.0f), Max(7.0f-timeSinceHit_*42.0f, 0.1f))
+//                                ));
     if (age_ > lifetime_) {
         Disable();
     }
@@ -73,7 +74,7 @@ void Bullet::HitCheck(float timeStep) {
         Ray bulletRay(rootNode_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, rootNode_->GetDirection());
         if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
             for (PhysicsRaycastResult r : hitResults){
-                if (!r.body_->IsTrigger()){
+                if (!r.body_->IsTrigger() && r.body_->GetNode() != owner_){
                     r.body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * r.normal_,
 r.position_ - r.body_->GetNode()->GetWorldPosition());
                     Substance substance{Substance::Flesh};

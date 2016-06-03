@@ -25,6 +25,10 @@ Character::Character(Vector3 pos):
     health_{maxHealth_},
     hairStyle_{static_cast<Hair>(Random(static_cast<int>(HAIRSTYLES)))}
 {
+    //Reroll hair on bald
+    if (hairStyle_ == HAIR_BALD)
+        hairStyle_ = static_cast<Hair>(Random(static_cast<int>(HAIRSTYLES)));
+
     rootNode_->SetName("Character");
     rootNode_->SetPosition(pos);
 
@@ -80,7 +84,7 @@ Character::Character(Vector3 pos):
 
         //Set color for hair model
         hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
-        Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];
+        Color diffColor = colors_[4];
         hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
         Color specColor{diffColor * 0.23f};
         specColor.a_ = 23.0f;

@@ -37,13 +37,14 @@ class Bullet : public SceneObject
     friend class Player;
     URHO3D_OBJECT(Bullet, SceneObject);
 public:
-    Bullet();
+    Bullet(Node *owner);
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<StaticModel> model_;
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
     void HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData);
 private:
+    Node* owner_;
     double age_ = 0.0;
     double timeSinceHit_ = 0.0;
     double lifetime_;
