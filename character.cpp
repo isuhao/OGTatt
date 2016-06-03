@@ -58,11 +58,13 @@ Character::Character(Vector3 pos):
     }
 
     if (hairStyle_){
-        hairModel_ = rootNode_->GetChild("Head", true)->CreateComponent<AnimatedModel>();
+        Node* hairNode{rootNode_->GetChild("Head", true)->CreateChild("Hair")};
+        hairNode->SetScale(1.0f - (0.13f * !male_));
+        hairModel_ = hairNode->CreateComponent<AnimatedModel>();
         hairModel_->SetCastShadows(true);
 
         switch (hairStyle_){
-        default: case HAIR_BALD: hairModel_->SetModel(nullptr); break;
+        default: case HAIR_BALD: case HAIR_SHORT: hairModel_->SetModel(nullptr); break;
         case HAIR_MOHAWK:
             hairModel_->SetModel(MC->GetModel("Mohawk"));
             break;
@@ -75,12 +77,15 @@ Character::Character(Vector3 pos):
         case HAIR_FROTOAD:
             hairModel_->SetModel(MC->GetModel("Frotoad"));
                     break;
+        case HAIR_FLATTOP:
+            hairModel_->SetModel(MC->GetModel("Flattop"));
+            break;
         }
-        if (hairStyle_ != HAIR_BALD) hairModel_->SetMorphWeight(0, Random());
+        if (hairStyle_ != HAIR_BALD && hairStyle_ != HAIR_SHORT) hairModel_->SetMorphWeight(0, Random());
 
         //Set color for hair model
         hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
-        Color diffColor = hairStyle_ == 1 ? LucKey::RandomColor() : colors_[4];
+        Color diffColor = colors_[4];
         hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
         Color specColor{diffColor * 0.23f};
         specColor.a_ = 23.0f;

@@ -36,6 +36,7 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     rootNode_->SetName("StreetLight");
 
     rootNode_->SetPosition(pos);
+//    rootNode_->SetRotation(rot);
 
     StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
     model_->SetModel(MC->GetModel("StreetLight"));
@@ -60,12 +61,4 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     light_->SetCastShadows(true);
     light_->SetShadowBias(BiasParameters(0.00001f, 0.5f));
     light_->SetShadowCascade(CascadeParameters(0.23f, 2.0f, 3.0f, 5.0f, 0.5f));
-    light_->SetShadowResolution(0.5f);
-
-    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(StreetLight, HandleSceneUpdate));
-}
-
-void StreetLight::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
-{
-    light_->SetBrightness(MC->Sine(50.0f, 0.9666f*brightness_, brightness_));
 }

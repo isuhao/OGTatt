@@ -170,7 +170,7 @@ void MasterControl::CreateScene()
 //    light->SetShadowIntensity(0.8f);
 //    light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
 
-    //Set cascade splits at 10, 50, 200 world unitys, fade shadows at 80% of maximum shadow distance
+    //Set cascade splits at 10, 50, 200 world units, fade shadows at 80% of maximum shadow distance
 //    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
 
     //Create camera
@@ -241,8 +241,8 @@ bool MasterControl::PhysicsSphereCast(PODVector<RigidBody*> &hitResults, Vector3
 
 void MasterControl::Exit()
 {
-    File file(context_, "Resources/Test.xml", FILE_WRITE);
-    world.scene->SaveXML(file);
+//    File file(context_, "Resources/Test.xml", FILE_WRITE);
+//    world.scene->SaveXML(file);
 
     engine_->Exit();
 }
