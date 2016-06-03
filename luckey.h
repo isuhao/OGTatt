@@ -114,7 +114,7 @@ IntVector2 Scale(const IntVector2 lhs, const IntVector2 rhs);
 Vector2 Rotate(const Vector2 vec2, const float angle);
 Color RandomColor();
 Color RandomSkinColor();
-Color RandomHairColor();
+Color RandomHairColor(bool onlyNatural = false);
 
 float Sine(float x);
 float Cosine(float x);

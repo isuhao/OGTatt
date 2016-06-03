@@ -55,7 +55,7 @@ StreetLight::StreetLight(Vector3 pos, Quaternion rot):
     light_ = lightNode_->CreateComponent<Light>();
     light_->SetLightType(LIGHT_SPOT);
     light_->SetBrightness(brightness_);
-    light_->SetColor(Color(1.0f, 0.6f, 0.4f));
+    light_->SetColor(Color(1.0f, 0.9f, 0.23f));
     light_->SetRange(6.0f);
     light_->SetFov(130.0f);
     light_->SetCastShadows(true);

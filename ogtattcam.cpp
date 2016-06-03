@@ -126,8 +126,8 @@ void OGTattCam::HandleUpdate(StringHash eventType, VariantMap &eventData)
 //    if (input->GetKeyDown('Y')) camForce += Vector3::UP;
 //    if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
 
-    if (input->GetKeyDown('Y')) altitude_ += (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
-    if (input->GetKeyDown('R')) altitude_ -= (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
+    if (input->GetKeyDown('R')) altitude_ += (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
+    if (input->GetKeyDown('Y')) altitude_ -= (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * t;
 
     //Read joystick input
     /*JoystickState* joystickState = input->GetJoystickByIndex(0);

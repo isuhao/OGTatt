@@ -25,6 +25,10 @@ Character::Character(Vector3 pos):
     health_{maxHealth_},
     hairStyle_{static_cast<Hair>(Random(static_cast<int>(HAIRSTYLES)))}
 {
+    //Reroll hair on bald
+    if (hairStyle_ == HAIR_BALD)
+        hairStyle_ = static_cast<Hair>(Random(static_cast<int>(HAIRSTYLES)));
+
     rootNode_->SetName("Character");
     rootNode_->SetPosition(pos);
 
@@ -51,6 +55,12 @@ Character::Character(Vector3 pos):
     for (unsigned m{0}; m < bodyModel_->GetNumGeometries(); ++m){
         bodyModel_->SetMaterial(m, MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor{colors_[m]};
+        if (m == 4){
+            if (hairStyle_ == HAIR_BALD)
+                diffColor = colors_[0];
+            else if (hairStyle_ == HAIR_MOHAWK)
+                diffColor = LucKey::RandomHairColor(true);
+        }
         bodyModel_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
         Color specColor{diffColor * (1.0f-0.1f*m)};
         specColor.a_ = 23.0f - 4.0f * m;
@@ -81,15 +91,18 @@ Character::Character(Vector3 pos):
             hairModel_->SetModel(MC->GetModel("Flattop"));
             break;
         }
-        if (hairStyle_ != HAIR_BALD && hairStyle_ != HAIR_SHORT) hairModel_->SetMorphWeight(0, Random());
+        if (hairStyle_ != HAIR_BALD && hairStyle_ != HAIR_SHORT)
+        {
+            hairModel_->SetMorphWeight(0, Random());
 
-        //Set color for hair model
-        hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
-        Color diffColor = colors_[4];
-        hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor{diffColor * 0.23f};
-        specColor.a_ = 23.0f;
-        hairModel_->GetMaterial()->SetShaderParameter("MatSpecColor", specColor);
+            //Set color for hair model
+            hairModel_->SetMaterial(MC->cache_->GetTempResource<Material>("Materials/Basic.xml"));
+            Color diffColor = colors_[4];
+            hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
+            Color specColor{diffColor * 0.23f};
+            specColor.a_ = 23.0f;
+            hairModel_->GetMaterial()->SetShaderParameter("MatSpecColor", specColor);
+        }
     }
 
     animCtrl_ = rootNode_->CreateComponent<AnimationController>();

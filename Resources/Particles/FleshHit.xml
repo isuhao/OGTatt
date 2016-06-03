@@ -10,20 +10,20 @@
 	<emittertype value="Sphere" />
 	<emittersize value="0.01 0.01 0.01" />
 	<direction min="-1 -1 -1" max="1 0.5 1" />
-	<constantforce value="0 -10 0" />
+	<constantforce value="0 -5 0" />
 	<dampingforce value="0" />
 	<activetime value="0" />
 	<inactivetime value="0" />
 	<emissionrate min="400" max="400" />
 	<particlesize min="0.05 0.05" max="0.1 0.1" />
-	<timetolive min="0.12" max="0.14" />
-	<velocity min="1" max="5" />
+	<timetolive min="0.08" max="0.12" />
+	<velocity min="0.5" max="5" />
 	<rotation min="0" max="0" />
 	<rotationspeed min="-5" max="5" />
 	<sizedelta add="5" mul="2" />
 	<faceCameraMode value="Direction" />
 	<colorfade color="1 1 1 1" time="0" />
-	<colorfade color="0 0 0 0" time="0.23" />
+	<colorfade color="0 0 0 0" time="0.12" />
 	<texanim uv="0     0     0.5 0.333" time="0" />
 	<texanim uv="0.5   0     1   0.333" time="0.02" />
 	<texanim uv="0     0.333 0.5 0.666" time="0.04" />
