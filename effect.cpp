@@ -24,24 +24,32 @@
 
 #include "effect.h"
 
-Effect::Effect(Vector3 position, String name):
-    SceneObject(),
+Effect::Effect(Context* context):
+    SceneObject(context),
     age_{0.0f},
     emitTime_{0.1f}
 {
-    rootNode_->SetName(name);
-    rootNode_->SetPosition(position);
-    particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-
-    //Subscribe to update
-    SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(Effect, HandleSceneUpdate));
 }
 
-void Effect::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
+void Effect::OnNodeSet(Node *node)
 {
-    float t{eventData[Update::P_TIMESTEP].GetFloat()};
 
-    age_ += t;
+//    node_->SetName(name);
+//    node_->SetPosition(position);
+    particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
+}
+
+void Effect::Set(Vector3 position)
+{
+    SceneObject::Set(position);
+
+    age_ = 0.0f;
+    particleEmitter_->SetEmitting(true);
+}
+
+void Effect::Update(float timeStep)
+{
+    age_ += timeStep;
     if (age_ > emitTime_ + particleEmitter_->GetEffect()->GetMaxTimeToLive()){
         Disable();
     }

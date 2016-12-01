@@ -18,23 +18,30 @@
 
 #include "pedestrian.h"
 
-Pedestrian::Pedestrian(Vector3 pos):
-    Character(pos),
+void Pedestrian::RegisterObject(Context *context)
+{
+    context->RegisterFactory<Pedestrian>();
+}
+
+Pedestrian::Pedestrian(Context* context):
+    Character(context),
     sinceLastTurn_{0.0f},
     turnInterval_{1.0f},
     direction_{Vector3(Random(-1.0f, 1.0f), 0.0f, Random(-1.0f, 1.0f))},
     walkSpeed_{Random(100.0f, 160.0f)}
 {
-    rootNode_->SetName("Pedestrian");
-    rootNode_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
-
-    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Pedestrian, HandleUpdate));
 }
 
-void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)
+void Pedestrian::OnNodeSet(Node *node)
+{ (void)node;
+
+    Character::OnNodeSet(node_);
+
+    node_->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
+}
+
+void Pedestrian::Update(float timeStep)
 {
-    using namespace Update;
-    float timeStep{eventData[P_TIMESTEP].GetFloat()};
     sinceLastTurn_ += timeStep;
     if (sinceLastTurn_ > turnInterval_){
         sinceLastTurn_ = 0.0f;
@@ -67,18 +74,18 @@ void Pedestrian::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
     //Update rotation according to movement direction.
     Vector3 velocity{rigidBody_->GetLinearVelocity()};
-    Quaternion rotation{rootNode_->GetWorldRotation()};
+    Quaternion rotation{node_->GetWorldRotation()};
     Quaternion aimRotation{rotation};
-        aimRotation.FromLookRotation(velocity);
-        rootNode_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
+    aimRotation.FromLookRotation(velocity);
+    node_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
-        if (velocity.Length() > 0.1f){
-            animCtrl_->PlayExclusive("Models/WalkRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetSpeed("Models/WalkRelax.ani", velocity.Length() * 2.3f);
-            animCtrl_->SetStartBone("Models/WalkRelax.ani", "MasterBone");
-        }
-        else {
-            animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.15f);
-            animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
-        }
+    if (velocity.Length() > 0.1f){
+        animCtrl_->PlayExclusive("Models/WalkRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetSpeed("Models/WalkRelax.ani", velocity.Length() * 2.3f);
+        animCtrl_->SetStartBone("Models/WalkRelax.ani", "MasterBone");
+    }
+    else {
+        animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.15f);
+        animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
+    }
 }

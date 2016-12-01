@@ -19,9 +19,9 @@
 #include "deco.h"
 #include "tile.h"
 
-Deco::Deco(Tile* tile, String name):
-    SceneObject()
+Deco::Deco(Context* context):
+    SceneObject(context)
 {
-    rootNode_->SetParent(tile->rootNode_);
-    rootNode_->SetPosition(Vector3::ZERO);
+//    node_->SetParent(tile->rootNode_);
+//    node_->SetPosition(Vector3::ZERO);
 }

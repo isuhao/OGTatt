@@ -36,14 +36,17 @@ class Camera;
 
 using namespace Urho3D;
 
-class OGTattCam : public Object
+class OGTattCam : public LogicComponent
 {
-    URHO3D_OBJECT(OGTattCam, Object);
+    URHO3D_OBJECT(OGTattCam, LogicComponent);
     friend class MasterControl;
     friend class InputMaster;
     friend class Player;
 public:
-    OGTattCam();
+    OGTattCam(Context *context);
+    static void RegisterObject(Context *context);
+    virtual void OnNodeSet(Node *node);
+    virtual void Set(Vector3 position, int playerId);
 
     SharedPtr<Camera> camera_;
     SharedPtr<Viewport> viewport_;
@@ -51,11 +54,13 @@ public:
 
     Vector3 GetWorldPosition();
     Quaternion GetRotation();
+
+    int GetPlayerId() const { return playerId_; }
 private:
-    void HandleUpdate(StringHash eventType, VariantMap &eventData);
-    SharedPtr<Node> rootNode_;
+    void Update(float timeStep);
     SharedPtr<RigidBody> rigidBody_;
 
+    int playerId_;
     float altitude_;
     float yaw_, pitch_, roll_;
     float yawDelta_, pitchDelta_;

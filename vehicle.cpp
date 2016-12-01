@@ -19,22 +19,25 @@
 #include "vehicle.h"
 #include "explosion.h"
 
-Vehicle::Vehicle(Vector3 position, Quaternion rotation):
-    SceneObject()
+Vehicle::Vehicle(Context* context):
+    SceneObject(context)
 {
-    rootNode_->SetName("Vehicle");
-    rootNode_->SetPosition(position);
-    rootNode_->SetRotation(rotation);
-    chassisModel_ = rootNode_->CreateComponent<AnimatedModel>();
+}
+
+void Vehicle::OnNodeSet(Node *node)
+{
+//    node_->SetPosition(position);
+//    node_->SetRotation(rotation);
+    chassisModel_ = node_->CreateComponent<AnimatedModel>();
     chassisModel_->SetCastShadows(true);
 
-    rigidBody_ = rootNode_->CreateComponent<RigidBody>();
+    rigidBody_ = node_->CreateComponent<RigidBody>();
 
-    collisionShape_ = rootNode_->CreateComponent<CollisionShape>();
+    collisionShape_ = node_->CreateComponent<CollisionShape>();
 
-    particleNode_ = rootNode_->CreateChild("Fire");
+    particleNode_ = node_->CreateChild("Fire");
     flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
-    flameEmitter_->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter_->SetEffect(MC->CACHE->GetResource<ParticleEffect>("Particles/fire1.xml"));
     flameEmitter_->SetEmitting(false);
 
 //    decal_ = rootNode_->CreateComponent<DecalSet>();
@@ -54,7 +57,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
     if (front) {
         for (int f{0}; f < front; ++f){
             Pair<SharedPtr<Node>, SharedPtr<Light>> light;
-            light.first_ = rootNode_->CreateChild("HeadLight");
+            light.first_ = node_->CreateChild("HeadLight");
             light.first_->SetDirection(Vector3(0.0f, -0.23f, 0.666f));
             if (front == 1) {
                 light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
@@ -82,7 +85,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
     if (rear) {
         for (int r{0}; r < rear; ++r){
             Pair<SharedPtr<Node>, SharedPtr<Light>> light;
-            light.first_ = rootNode_->CreateChild("TailLight");
+            light.first_ = node_->CreateChild("TailLight");
             light.first_->SetDirection(Vector3(0.0f, -0.6f, -0.5f));
             if (front == 1) {
                 light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
@@ -110,7 +113,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
 
 void Vehicle::Destroy()
 {
-    new Explosion(rootNode_->GetPosition(), 1.0f);
+//    new Explosion(node_->GetPosition(), 1.0f);
     for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
         chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }

@@ -36,8 +36,10 @@ class Effect : public SceneObject
 {
     URHO3D_OBJECT(Effect, SceneObject);
 public:
-    Effect(Vector3 position, String name);
-    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
+    Effect(Context *context);
+    virtual void Update(float timeStep);
+    virtual void OnNodeSet(Node *node);
+    virtual void Set(Vector3 position);
 protected:
     SharedPtr<ParticleEmitter> particleEmitter_;
     float age_;

@@ -22,7 +22,7 @@
 #include <Urho3D/Urho3D.h>
 
 #include "mastercontrol.h"
-#include "sceneobject.h"
+#include "controllable.h"
 
 namespace Urho3D {
 class Drawable;
@@ -33,27 +33,43 @@ class Sprite;
 
 using namespace Urho3D;
 
-enum Hair{HAIR_BALD, HAIR_SHORT, HAIR_MOHAWK, HAIR_SEAGULL, HAIR_MUSTAIN, HAIR_FROTOAD, HAIR_FLATTOP, HAIRSTYLES};
+enum Hair{HAIR_BALD, HAIR_SHORT, HAIR_MOHAWK, HAIR_SEAGULL, HAIR_MUSTAIN, HAIR_FROTOAD, HAIR_FLATTOP, HAIR_ALL};
 
-class Character : public SceneObject
+class Character : public Controllable
 {
-    URHO3D_OBJECT(Character, SceneObject);
+    URHO3D_OBJECT(Character, Controllable);
 public:
-    Character(Vector3 pos);
+    Character(Context *context);
+    static void RegisterObject(Context *context);
+    virtual void OnNodeSet(Node *node);
+    virtual void Set(Vector3 position);
+    virtual void Update(float timeStep);
+
+    float GetHealth(){return health_;}
+    void Hit(float damage);
     Substance GetSubstance();
+
+    virtual void Think(float timeStep);
 protected:
-    AnimatedModel* bodyModel_;
     AnimatedModel* hairModel_;
 
     AnimationController* animCtrl_;
-    RigidBody* rigidBody_;
-    CollisionShape* collisionShape_;
     bool male_;
     Hair hairStyle_;
     Vector<Color> colors_;
 
-    float maxHealth_;
     float health_;
+    float maxHealth_;
+    int firstHitBy_ = 0;
+    int lastHitBy_ = 0;
+    int score_ = 0;
+
+    const float shotInterval_ = 0.1f;
+    float sinceLastShot_ = 0.0f;
+    Sound* shot_sfx;
+
+    float sinceLastTurn_;
+    float turnInterval_;
 };
 
 #endif // NPC_H

@@ -18,36 +18,56 @@
 
 #include "hitfx.h"
 
-HitFX::HitFX(Vector3 position, Substance substance):
-    Effect(position, "HitFX")
+void HitFX::RegisterObject(Context *context)
 {
-    rootNode_->SetPosition(position);
+    context->RegisterFactory<HitFX>();
+}
+
+HitFX::HitFX(Context* context):
+    Effect(context)
+//    Effect(position, "HitFX")
+{
+
+}
+
+void HitFX::OnNodeSet(Node* node)
+{
+    Effect::OnNodeSet(node_);
+}
+
+void HitFX::Set(Vector3 position, Substance substance)
+{
+
+    Effect::Set(position);
+
     switch (substance){
     default: case Substance::Flesh: {
-        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/FleshHit.xml")};
+        ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/FleshHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->CACHE->GetResource<Sound>("Samples/Thud.ogg");
         hit_sfx->SetLooped(false);
     } break;
     case Substance::Rock: {
-        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/RockHit.xml")};
+        ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/RockHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->CACHE->GetResource<Sound>("Samples/Thud.ogg");
         hit_sfx->SetLooped(false);
     } break;
     case Substance::Metal: {
-        particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-        ParticleEffect* particleEffect{MC->cache_->GetResource<ParticleEffect>("Particles/MetalHit.xml")};
+        ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/MetalHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = MC->cache_->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->CACHE->GetResource<Sound>("Samples/Thud.ogg");
         hit_sfx->SetLooped(false);
     } break;
     }
 
     PlaySample(hit_sfx, 0.13f);
+}
+
+void HitFX::Update(float timeStep)
+{
+    Effect::Update(timeStep);
 }

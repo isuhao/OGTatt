@@ -36,7 +36,7 @@ class Bike : public Vehicle
 {
     URHO3D_OBJECT(Bike, Vehicle);
 public:
-    Bike(Vector3 position, Quaternion rotation = Quaternion::IDENTITY);
+    Bike(Context *context);
 };
 
 #endif // BIKE_H

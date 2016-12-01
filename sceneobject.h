@@ -26,21 +26,21 @@
 //Used for footsteps and bullet hits
 enum class Substance{Rock, Metal, Flesh};
 
-class SceneObject : public Object
+class SceneObject : public LogicComponent
 {
     URHO3D_OBJECT(SceneObject, Object);
 public:
-    SceneObject();
+    SceneObject(Context* context);
 
-    Vector3 GetWorldPosition() {return rootNode_->GetWorldPosition();}
+    Vector3 GetWorldPosition() {return node_->GetWorldPosition();}
     virtual Substance GetSubstance(Vector3 position = Vector3::ZERO){}
+    virtual void Set(Vector3 position);
+    virtual void OnNodeSet(Node *node);
 protected:
-    SharedPtr<Node> rootNode_;
     Vector<SharedPtr<SoundSource> > sampleSources_;
     bool destructable_;
     float randomizer_;
 
-    void Set(Vector3 position);
     void Disable();
     void Destroy();
 

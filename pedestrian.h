@@ -37,9 +37,11 @@ class Pedestrian : public Character
 {
     URHO3D_OBJECT(Pedestrian, Character);
 public:
-    Pedestrian(Vector3 pos);
+    Pedestrian(Context *context);
+    static void RegisterObject(Context *context);
+    virtual void OnNodeSet(Node *node);
 private:
-    void HandleUpdate(StringHash eventType, VariantMap &eventData);
+    void Update(float timeStep);
 
     float sinceLastTurn_;
     float turnInterval_;

@@ -37,7 +37,7 @@ class Deco : public SceneObject
 {
     URHO3D_OBJECT(Deco, SceneObject);
 public:
-    Deco(Tile *tile, String name);
+    Deco(Context* context);
 protected:
 };
 

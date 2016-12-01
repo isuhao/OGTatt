@@ -29,27 +29,35 @@
 
 #include "streetlight.h"
 
-StreetLight::StreetLight(Vector3 pos, Quaternion rot):
-    SceneObject(),
+void StreetLight::RegisterObject(Context *context)
+{
+    context->RegisterFactory<StreetLight>();
+}
+
+StreetLight::StreetLight(Context* context):
+    SceneObject(context),
     brightness_{1.8f}
 {
-    rootNode_->SetName("StreetLight");
+}
 
-    rootNode_->SetPosition(pos);
+void StreetLight::OnNodeSet(Node *node)
+{
+    SceneObject::OnNodeSet(node_);
+//    node_->SetPosition(pos);
 //    rootNode_->SetRotation(rot);
 
-    StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
+    StaticModel* model_ = node_->CreateComponent<StaticModel>();
     model_->SetModel(MC->GetModel("StreetLight"));
     model_->SetMaterial(0, MC->GetMaterial("Metal"));
     model_->SetMaterial(1, MC->GetMaterial("Headlight"));
     model_->SetCastShadows(true);
 
-    rootNode_->CreateComponent<RigidBody>();
-    CollisionShape* collider = rootNode_->CreateComponent<CollisionShape>();
+    node_->CreateComponent<RigidBody>();
+    CollisionShape* collider = node_->CreateComponent<CollisionShape>();
     collider->SetCylinder(0.1f, 2.0f);
     collider->SetPosition(Vector3::UP);
 
-    lightNode_ = rootNode_->CreateChild("LightNode");
+    lightNode_ = node_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 2.3f, 0.5f));
     lightNode_->SetDirection(Vector3::DOWN);
     light_ = lightNode_->CreateComponent<Light>();

@@ -18,30 +18,31 @@
 
 #include "firepit.h"
 
-FirePit::FirePit(Tile* tile):
-    Deco(tile, "FirePit")
+FirePit::FirePit(Context* context):
+    Deco(context)
+//    Deco(tile, "FirePit")
 {
-    rootNode_->SetRotation(Quaternion(0.0f, randomizer_ * 360.0f, 0.0f));
+    node_->SetRotation(Quaternion(0.0f, randomizer_ * 360.0f, 0.0f));
 
-    StaticModel* model_ = rootNode_->CreateComponent<StaticModel>();
+    StaticModel* model_ = node_->CreateComponent<StaticModel>();
     model_->SetModel(MC->GetModel("FirePit"));
     model_->SetMaterial(0, MC->GetMaterial("Metal"));
     model_->SetMaterial(1, MC->GetMaterial("Darkness"));
     model_->SetMaterial(2, MC->GetMaterial("Amber"));
     model_->SetCastShadows(true);
 
-    rootNode_->CreateComponent<RigidBody>();
-    CollisionShape* collider = rootNode_->CreateComponent<CollisionShape>();
+    node_->CreateComponent<RigidBody>();
+    CollisionShape* collider = node_->CreateComponent<CollisionShape>();
     collider->SetCylinder(0.4f, 0.5f);
 
-    Node* particleNode = rootNode_->CreateChild("Fire");
+    Node* particleNode = node_->CreateChild("Fire");
     particleNode->SetPosition(Vector3::UP * 0.16f);
     ParticleEmitter* flameEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    flameEmitter->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter->SetEffect(MC->CACHE->GetResource<ParticleEffect>("Particles/fire1.xml"));
     ParticleEmitter* sparkEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    sparkEmitter->SetEffect(MC->cache_->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
+    sparkEmitter->SetEffect(MC->CACHE->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
 
-    lightNode_ = rootNode_->CreateChild("LightNode");
+    lightNode_ = node_->CreateChild("LightNode");
     light_ = lightNode_->CreateComponent<Light>();
     light_->SetColor(Color(1.0f, 0.6f, 0.4f));
     light_->SetRange(5.0f);

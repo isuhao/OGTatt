@@ -3,7 +3,7 @@
 All these people became criminals overnight for sharing audio and decided to stop running. Now they are breaking all the other rules too.
 
 ##### Emblem
-![cassette and crossbones](../Resources/Textures/Decals/Pirates.png)  
+![cassette and crossbones](../Resources/Textures/Decals/Lagoonies.png)  
 purple
 
 -----------------------
@@ -21,7 +21,8 @@ grey
  
 #### Police Squad Now!
 
-Spotting targets is so much easier when you're dressed in blue. And these people know it. Also recruiting new goons works better with a catchy name.
+Spotting targets is so much easier when you're dressed in blue. And these people know it. Also recruiting new goons works better with a catchy name.  
+They get money every time a bomb goes off.
 
 ##### Emblem
 
@@ -47,7 +48,7 @@ A Christian biker gang, all that's left of a sunken empire. Stupidity is their m
 
 ##### Emblem
 
-UMoM's logo is a vertically striped heart behind a ribbon saying "MoM" under a five-pointed star enclosing a U with a Celtic cross in the background.  
+![UMoM](../Resources/Textures/Decals/UMoM.png)  
 red
 
 -----------------------
@@ -58,7 +59,7 @@ Everything is magic if you look at it that way.
 
 ##### Emblem
 
-![Chaosphere](../Resources/Textures/Decals/Chaotes.png)  
+![Chaosphere](../Resources/Textures/Decals/ChaosSquad.png)  
 grey
 
 -----------------------

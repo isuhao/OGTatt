@@ -1,4 +1,4 @@
-**OG Tatt** is a top-down urban shoot-em-up set in a world where respect is only the beginning.  
+**OG Tatt** is a top-down urban shoot-em-up set in a world where respect is only the beginning. 
 Players can play without joining an existing gang. Play on your own and create a gang with at least three people whenever you feel like it. You'll have to earn enough respect to get an HQ and to be mentioned.  
 HQs 
  
@@ -62,6 +62,8 @@ Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to
    - Cars
    - Motorcycles
    - Tanks
+   - Boards
+
 * Water
    - Rowboats
    - Speedboats
@@ -69,19 +71,26 @@ Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to
 
 ### Weapons
 
-+ Pistol: Little Elvis
-+ SMG: Spitfire
-+ Mini-gun: Herzstark
-+ Flamethrower: Libertorch
-+ Rocket Launcher: Harab Shrapnels
-+ Explosive Drones: Freedom Delivery System
+Heavy weapons slow you down
+
++ Pistol: _Little Elvis_
++ SMG: _Spitfire_
++ Mini-gun: _Herzstark_
++ Flamethrower: _Libertorch_
++ Rocket Launcher: _Harab Shrapnels_
++ Explosive Drones: _Freedom Delivery System_
  
 ### Gangs
 
-For a list of built-in gangs see Gangs.md  
+For a list of built-in gangs see [Gangs.md](Gangs.md)
 Built-in gangs will include:
 
 + Emblem and colors (applied to HQ banners and vehicles)
 + Voices for both sexes
 + Limitations on clothing
 + Head quarters city block
+
+### Inspiration
+
+- The Matrix
+- Illuminatus Trilogy

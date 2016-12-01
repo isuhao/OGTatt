@@ -1,4 +1,4 @@
-/* OG Tatt
+/* KO
 // Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -20,33 +20,46 @@
 #define PLAYER_H
 
 #include <Urho3D/Urho3D.h>
+#include "mastercontrol.h"
 
-#include "character.h"
+class GUI3D;
+class Controllable;
 
-class Player : public Character
+class Player : public Object
 {
-    URHO3D_OBJECT(Player, SceneObject);
-    friend class OGTattCam;
+    URHO3D_OBJECT(Player, Object);
 public:
-    Player();
-    //SharedPtr<Text> scoreText_;
+    Player(int playerId, Context* context);
 
-    float GetHealth(){return health_;}
-    void Hit(float damage, int ownerID);
+    Vector3 GetPosition();
+    Controllable *GetControllable();
+
+    int GetPlayerId() const { return playerId_; }
     void AddScore(int points);
-    Vector3 GetLinearVelocity() {return rigidBody_->GetLinearVelocity();}
+    unsigned GetScore() const { return score_; }
+    unsigned GetFlightScore() const { return flightScore_; }
+    void Die();
+    void Respawn();
+    void ResetScore();
+
+    bool IsAlive() const noexcept { return alive_; }
+    bool IsHuman() const noexcept { return !autoPilot_; }
+    void EnterLobby();
+    void EnterPlay();
+
+//    GUI3D* gui3d_;
 private:
-    float health_ = 1.0f;
-    float initialHealth_ = 1.0f;
-    int firstHitBy_ = 0;
-    int lastHitBy_ = 0;
-    int score_ = 0;    
+    int playerId_;
+    bool autoPilot_;
+    bool alive_;
 
-    const float shotInterval_ = 0.1f;
-    float sinceLastShot_ = 0.0f;
-    Sound* shot_sfx;
+    unsigned score_;
+    unsigned flightScore_;
+    int multiplier_;
 
-    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
+
+    void SetScore(int points);
+    Vector3 Sniff(float playerFactor, bool taste);
 };
 
 #endif // PLAYER_H

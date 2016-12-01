@@ -33,15 +33,15 @@
 
 #include "pickup.h"
 
-Pickup::Pickup():
-    SceneObject()
+Pickup::Pickup(Context* context):
+    SceneObject(context)
 {
-    rootNode_->SetName("Pickup");
-    model_ = rootNode_->CreateComponent<StaticModel>();
-    rootNode_->SetScale(0.8);
+    node_->SetName("Pickup");
+    model_ = node_->CreateComponent<StaticModel>();
+    node_->SetScale(0.8);
 
 
-    rigidBody_ = rootNode_->CreateComponent<RigidBody>();
+    rigidBody_ = node_->CreateComponent<RigidBody>();
     rigidBody_->SetRestitution(0.666f);
     rigidBody_->SetMass(0.5f);
     rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
@@ -52,10 +52,10 @@ Pickup::Pickup():
     rigidBody_->SetLinearRestThreshold(0.0f);
     rigidBody_->SetAngularRestThreshold(0.0f);
 
-    CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
+    CollisionShape* collisionShape = node_->CreateComponent<CollisionShape>();
     collisionShape->SetSphere(1.5f);
 
-    Node* triggerNode = rootNode_->CreateChild("PickupTrigger");
+    Node* triggerNode = node_->CreateChild("PickupTrigger");
     triggerBody_ = triggerNode->CreateComponent<RigidBody>();
     triggerBody_->SetTrigger(true);
     triggerBody_->SetMass(0.0f);
@@ -63,13 +63,13 @@ Pickup::Pickup():
     CollisionShape* triggerShape = triggerNode->CreateComponent<CollisionShape>();
     triggerShape->SetSphere(2.5f);
 
-    particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
+    particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
 
-    particleEmitter_->SetEffect(MC->cache_->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
+    particleEmitter_->SetEffect(MC->CACHE->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
 
-    shot_sfx = MC->cache_->GetResource<Sound>("Samples/Pickup.ogg");
+    shot_sfx = MC->CACHE->GetResource<Sound>("Samples/Pickup.ogg");
     shot_sfx->SetLooped(false);
-    sampleSource_ = rootNode_->CreateComponent<SoundSource>();
+    sampleSource_ = node_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(0.6f);
     sampleSource_->SetSoundType(SOUND_EFFECT);
 
@@ -87,7 +87,7 @@ void Pickup::HandleTriggerStart(StringHash eventType, VariantMap &eventData)
     for (int i = 0; i < collidingBodies.Size(); i++) {
         RigidBody* collider = collidingBodies[i];
         if (collider->GetNode()->GetNameHash() == N_PLAYER) {
-            rootNode_->SetEnabled(false);
+            node_->SetEnabled(false);
         }
     }
 }
@@ -98,11 +98,11 @@ void Pickup::HandleSceneUpdate(StringHash eventType, VariantMap& eventData)
     float timeStep = eventData[P_TIMESTEP].GetFloat();
 
     //Emerge
-    if (rootNode_->GetPosition().y_ < -0.1f) {
-        rootNode_->Translate(Vector3::UP * timeStep * (0.25f - rootNode_->GetPosition().y_));
+    if (node_->GetPosition().y_ < -0.1f) {
+        node_->Translate(Vector3::UP * timeStep * (0.25f - node_->GetPosition().y_));
         //topRenderer.materials[1].color = randomColor * 0.25f;
     }
-    triggerBody_->SetPosition(rootNode_->GetPosition());
+    triggerBody_->SetPosition(node_->GetPosition());
     /*Vector3 pos = rootNode_->GetPosition();
     if (pos.y_ < 0.0) rootNode_->SetPosition(Vector3::UP*pow(pos.y_,2.0f)*timeStep+pos);
     if (pos.y_ > 0.0) rootNode_->SetPosition(Vector3::Scale(Vector3::ONE - Vector3::UP, pos));*/

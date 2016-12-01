@@ -36,9 +36,11 @@ class Frop : public SceneObject
 {
     URHO3D_OBJECT(Frop, SceneObject);
 public:
-    Frop(Vector3 pos, Quaternion rot, Vector3 scale);
+    Frop(Context *context);
+    static void RegisterObject(Context *context);
+    virtual void OnNodeSet(Node *node);
 private:
-    void HandleUpdate(StringHash eventType, VariantMap& eventData);
+    virtual void Update(float timeStep);
     StaticModel* fropModel_;
     Vector3 scale_;
 

@@ -18,31 +18,35 @@
 
 #include "frop.h"
 
-Frop::Frop(Vector3 pos, Quaternion rot, Vector3 scale) :
-    SceneObject(),
-    age_{0.0f},
-    scale_{scale}
+void Frop::RegisterObject(Context *context)
 {
-//    growthStart_ = Random(0.0f, 5.0f);
-    rootNode_->SetPosition(pos);
-    rootNode_->SetRotation(rot);
-    rootNode_->SetScale(scale * 4.2f);
+    context->RegisterFactory<Frop>();
+}
 
-//    float randomWidth{Random(2.0f,3.0f)};
-//    scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
-    fropModel_ = rootNode_->CreateComponent<StaticModel>();
+Frop::Frop(Context* context) :
+    SceneObject(context),
+    age_{0.0f}
+{
+}
+
+void Frop::OnNodeSet(Node *node)
+{
+    SceneObject::OnNodeSet(node_);
+
+    growthStart_ = Random(0.0f, 5.0f);
+    node_->SetScale(scale_ * 4.2f);
+
+    float randomWidth{Random(2.0f,3.0f)};
+    scale_ = Vector3(randomWidth, Random(0.5f,1.0f+randomWidth), randomWidth);
+    fropModel_ = node_->CreateComponent<StaticModel>();
     fropModel_->SetModel(MC->GetModel("Frop"));
     fropModel_->SetMaterial(MC->GetMaterial("Frop"));
     fropModel_->SetCastShadows(true);
-
-//    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Hemp, HandleUpdate));
 }
 
-void Frop::HandleUpdate(StringHash eventType, VariantMap &eventData)
+void Frop::Update(float timeStep)
 {
-    /*using namespace Update;
-    double timeStep = eventData[P_TIMESTEP].GetFloat();
     age_ += timeStep;
-    if (age_ > growthStart_ && rootNode_->GetScale().Length() < scale_.Length()-0.01f)
-        rootNode_->SetScale(rootNode_->GetScale()+(timeStep*(scale_ - rootNode_->GetScale())));*/
+    if (age_ > growthStart_ && node_->GetScale().Length() < scale_.Length()-0.01f)
+        node_->SetScale(node_->GetScale()+(timeStep*(scale_ - node_->GetScale())));
 }

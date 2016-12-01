@@ -18,26 +18,45 @@
 
 #include "muzzle.h"
 
-Muzzle::Muzzle(Vector3 position):
-    Effect(position, "Muzzle")
+
+void Muzzle::RegisterObject(Context *context)
 {
-    rootNode_->SetPosition(position);
-    particleEmitter_ = rootNode_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = MC->cache_->GetResource<ParticleEffect>("Particles/Muzzle.xml");
+    context->RegisterFactory<Muzzle>();
+}
+
+Muzzle::Muzzle(Context* context):
+    Effect(context)
+{
+}
+
+void Muzzle::OnNodeSet(Node *node)
+{
+    Effect::OnNodeSet(node_);
+//    node_->SetPosition(position);
+//    particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
+    ParticleEffect* particleEffect = MC->CACHE->GetResource<ParticleEffect>("Particles/Muzzle.xml");
     particleEmitter_->SetEffect(particleEffect);
 
-    Node* lightNode_ = rootNode_->CreateChild("LightNode");
+    Node* lightNode_ = node_->CreateChild("LightNode");
     lightNode_->SetPosition(Vector3(0.0f, 0.0f, 0.2f));
     light_ = lightNode_->CreateComponent<Light>();
     light_->SetRange(2.3f);
     light_->SetColor(Color(1.0f, 1.0f, 0.666f));
     light_->SetCastShadows(true);
-
-    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Muzzle, HandleUpdate));
 }
 
-void Muzzle::HandleUpdate(StringHash eventType, VariantMap &eventData)
+void Muzzle::Set(Vector3 position, Vector3 direction)
 {
+    Effect::Set(position);
+
+    node_->LookAt(node_->GetPosition() + direction);
+
+}
+
+void Muzzle::Update(float timeStep)
+{
+    Effect::Update(timeStep);
+
     light_->SetBrightness(Max(1.0f-age_*10.0f,0.0f));
 }
 

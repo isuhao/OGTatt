@@ -22,6 +22,7 @@
 #include <Urho3D/Urho3D.h>
 
 #include "luckey.h"
+#include "intvector3.h"
 
 namespace Urho3D {
 class Drawable;
@@ -81,23 +82,28 @@ public:
     static MasterControl* GetInstance();
 
     GameWorld world;
-    SharedPtr<ResourceCache> cache_;
-    SharedPtr<Graphics> graphics_;
 
-    // Setup before engine initialization. Modifies the engine paramaters.
+    Vector< SharedPtr<Player> > players_;
+    Vector< SharedPtr<Player> > GetPlayers() const;
+    Player* GetPlayer(int playerId) const;
+
+    Vector< SharedPtr<OGTattCam> > cameras_;
+    Vector< SharedPtr<OGTattCam> > GetCameras() const;
+    OGTattCam* GetCamera(int playerID) const;
+
+    Material* GetMaterial(String name) const;
+    Model* GetModel(String name) const;
+    Texture* GetTexture(String name) const;
+    Sound* GetMusic(String name) const;
+    Sound* GetSample(String name) const;
+
     virtual void Setup();
-    // Setup after engine initialization.
     virtual void Start();
-    // Cleanup after the main loop. Called by Application.
     virtual void Stop();
     void Exit();
 
     bool PhysicsRayCast(PODVector<PhysicsRaycastResult> &hitResults, Ray ray, float distance, unsigned collisionMask = M_MAX_UNSIGNED);
     bool PhysicsSphereCast(PODVector<RigidBody *> &hitResults, Vector3 center, float radius, unsigned collisionMask = M_MAX_UNSIGNED);
-
-    //Resource getters
-    Material* GetMaterial(String name) const { return cache_->GetResource<Material>("Materials/"+name+".xml"); }
-    Model* GetModel(String name) const { return cache_->GetResource<Model>("Models/"+name+".mdl"); }
 
     float Sine(const float freq, const float min, const float max, const float shift = 0.0f);
     float Cosine(const float freq, const float min, const float max, const float shift = 0.0f);
@@ -106,31 +112,21 @@ private:
 
     SoundSource* musicSource_;
     SharedPtr<UI> ui_;
-    SharedPtr<Renderer> renderer_;
     SharedPtr<XMLFile> defaultStyle_;
     SharedPtr<PhysicsWorld> physicsWorld_;
 
-    // Create console and debug HUD
     void CreateConsoleAndDebugHud();
 
-    // Construct the scene content.
     void CreateScene();
-    // Construct user interface elements.
     void CreateUI();
-    // Subscribe to application-wide logic update and post-render update events.
     void SubscribeToEvents();
 
-    // Handle scene update event to control camera's pitch and yaw.
     void HandleSceneUpdate(StringHash eventType, VariantMap& eventData);
-    // Handle the logic update event.
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
-    // Handle the post-render update event.
     void HandlePostRenderUpdate(StringHash eventType, VariantMap& eventData);
 
-    // Create a mushroom object at position.
-    void CreateDungeon(const Vector3 pos);
+    void CreateCity(const Vector3 pos);
     void UpdateCursor(float timeStep);
-    // Utility function to raycast to the cursor position. Return true if hit.
     bool CursorRayCast(double maxDistance, PODVector<RayQueryResult> &hitResults);
 
     // Pause flag

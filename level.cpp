@@ -28,6 +28,7 @@
 #include "cookiejar.h"
 #include "frop.h"
 #include "ogtattcam.h"
+#include "spawnmaster.h"
 
 namespace Urho3D {
 
@@ -47,7 +48,7 @@ Object(MC->GetContext())
     rootNode_->SetPosition(position);
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
 
-    TmxFile2D* tmxFile{MC->cache_->GetResource<TmxFile2D>("Maps/smallTest.tmx")};
+    TmxFile2D* tmxFile{MC->CACHE->GetResource<TmxFile2D>("Maps/smallTest.tmx")};
     if (tmxFile)
         InitializeFromMap(*tmxFile);
 //    else
@@ -57,7 +58,7 @@ Object(MC->GetContext())
 
 void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 {
-    XMLFile* xmlFile{MC->cache_->GetResource<XMLFile>(tmxFile.GetName())};
+    XMLFile* xmlFile{MC->CACHE->GetResource<XMLFile>(tmxFile.GetName())};
 
     float mapWidth{};
     float mapHeight{};
@@ -133,13 +134,13 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 
                 //Create objects
                 if (properties->HasProperty("streetlight")) {
-                    new StreetLight(pos, rot);
+                    SPAWN->Create<StreetLight>()->Set(pos);
                 } else if (properties->HasProperty("car")) {
-                    new Cookiejar(pos, rot);
+                    SPAWN->Create<Cookiejar>()->Set(pos);
                 } else if (properties->HasProperty("bike")) {
-                    new Honti(pos, rot);
+                    SPAWN->Create<Honti>()->Set(pos);
                 } else if (properties->HasProperty("frop")) {
-                    new Frop(pos, rot, Vector3(size.x_, size.y_, size.x_));
+                    SPAWN->Create<Frop>()->Set(pos);
                 }
             }
         }

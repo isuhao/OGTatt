@@ -18,10 +18,19 @@
 
 #include "cookiejar.h"
 
-Cookiejar::Cookiejar(Vector3 position, Quaternion rotation) :
-    Car(position, rotation)
+void Cookiejar::RegisterObject(Context *context)
 {
-    rootNode_->SetName("Cookiejar");
+    context->RegisterFactory<Cookiejar>();
+}
+
+Cookiejar::Cookiejar(Context* context) :
+    Car(context)
+{
+}
+
+void Cookiejar::OnNodeSet(Node *node)
+{
+    Car::OnNodeSet(node_);
 
     chassisModel_->SetModel(MC->GetModel("Cookiejar"));
     SharedPtr<Material> paint = MC->GetMaterial("Paint")->Clone();

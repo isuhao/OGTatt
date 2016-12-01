@@ -18,15 +18,17 @@
 
 #include "sceneobject.h"
 
-SceneObject::SceneObject():
-    Object(MC->GetContext()),
+SceneObject::SceneObject(Context *context):
+    LogicComponent(context),
     destructable_{false},
     randomizer_{Random()}
 {
-    rootNode_ = MC->world.scene->CreateChild("SceneObject");
+}
 
-    for (int i = 0; i < 3; i++){
-        sampleSources_.Push(SharedPtr<SoundSource>(rootNode_->CreateComponent<SoundSource>()));
+void SceneObject::OnNodeSet(Node *node)
+{
+    for (int i{0}; i < 3; ++i){
+        sampleSources_.Push(SharedPtr<SoundSource>(node_->CreateComponent<SoundSource>()));
         sampleSources_[i]->SetGain(0.3f);
         sampleSources_[i]->SetSoundType(SOUND_EFFECT);
     }
@@ -34,13 +36,13 @@ SceneObject::SceneObject():
 
 void SceneObject::Set(Vector3 position)
 {
-    rootNode_->SetPosition(position);
-    rootNode_->SetEnabledRecursive(true);
+    node_->SetPosition(position);
+    node_->SetEnabledRecursive(true);
 }
 
 void SceneObject::Disable()
 {
-    rootNode_->SetEnabledRecursive(false);
+    node_->SetEnabledRecursive(false);
 }
 
 void SceneObject::PlaySample(Sound* sample, float gain)

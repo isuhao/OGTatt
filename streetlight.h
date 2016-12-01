@@ -37,8 +37,10 @@ class StreetLight : public SceneObject
 {
     URHO3D_OBJECT(StreetLight, SceneObject);
 public:
-    StreetLight(Vector3 pos, Quaternion rot);
+    StreetLight(Context *context);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
+    virtual void OnNodeSet(Node *node);
+    static void RegisterObject(Context *context);
 private:
     Node* lightNode_;
     Light* light_;

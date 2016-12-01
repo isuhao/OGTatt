@@ -18,10 +18,19 @@
 
 #include "honti.h"
 
-Honti::Honti(Vector3 position, Quaternion rotation) :
-    Bike(position, rotation)
+void Honti::RegisterObject(Context *context)
 {
-    rootNode_->SetName("Honti");
+    context->RegisterFactory<Honti>();
+}
+
+Honti::Honti(Context* context) :
+    Bike(context)
+{
+}
+
+void Honti::OnNodeSet(Node *node)
+{
+    Bike::OnNodeSet(node_);
 
     chassisModel_->SetModel(MC->GetModel("Honti"));
     SharedPtr<Material> paint{MC->GetMaterial("Glass")->Clone()};

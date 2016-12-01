@@ -35,7 +35,7 @@ class Pickup : public SceneObject
 {
     URHO3D_OBJECT(Pickup, SceneObject);
 public:
-    Pickup();
+    Pickup(Context *context);
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<RigidBody> triggerBody_;

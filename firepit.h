@@ -38,7 +38,7 @@ class FirePit : public Deco
 {
     URHO3D_OBJECT(FirePit, Deco);
 public:
-    FirePit(Tile *tile);
+    FirePit(Context *context);
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
 private:
     Node* lightNode_;

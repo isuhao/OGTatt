@@ -18,10 +18,9 @@
 
 #include "car.h"
 
-Car::Car(Vector3 position, Quaternion rotation) :
-    Vehicle(position, rotation)
+Car::Car(Context* context) :
+    Vehicle(context)
 {
-    rootNode_->SetName("Car");
 }
 
 Substance Car::GetSubstance(Vector3 position)

@@ -37,7 +37,7 @@ class Explosion : public Effect
     friend class Enemy;
     URHO3D_OBJECT(Explosion, Effect);
 public:
-    Explosion(Vector3 position, float size, Color color = Color::WHITE);
+    Explosion(Context *context);
 
     void UpdateExplosion(StringHash eventType, VariantMap &eventData);
 protected:

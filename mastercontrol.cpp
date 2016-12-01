@@ -17,12 +17,21 @@
 */
 
 #include "inputmaster.h"
+#include "spawnmaster.h"
 #include "ogtattcam.h"
 #include "level.h"
 #include "player.h"
+#include "bullet.h"
+#include "muzzle.h"
+#include "hitfx.h"
 #include "cookiejar.h"
 #include "honti.h"
 #include "pedestrian.h"
+#include "character.h"
+#include "streetlight.h"
+#include "cookiejar.h"
+#include "honti.h"
+#include "frop.h"
 
 #include "mastercontrol.h"
 
@@ -58,13 +67,23 @@ void MasterControl::Setup()
 }
 void MasterControl::Start()
 {
-    new InputMaster();
-    cache_ = GetSubsystem<ResourceCache>();
-    graphics_ = GetSubsystem<Graphics>();
-    renderer_ = GetSubsystem<Renderer>();
+
+    context_->RegisterSubsystem(new InputMaster(context_));
+    context_->RegisterSubsystem(new SpawnMaster(context_));
+
+    OGTattCam::RegisterObject(context_);
+    Bullet::RegisterObject(context_);
+    Muzzle::RegisterObject(context_);
+    HitFX::RegisterObject(context_);
+    Pedestrian::RegisterObject(context_);
+    Character::RegisterObject(context_);
+    StreetLight::RegisterObject(context_);
+    Cookiejar::RegisterObject(context_);
+    Honti::RegisterObject(context_);
+    Frop::RegisterObject(context_);
 
     // Get default style
-    defaultStyle_ = cache_->GetResource<XMLFile>("UI/DefaultStyle.xml");
+    defaultStyle_ = CACHE->GetResource<XMLFile>("UI/DefaultStyle.xml");
     //Create console and debug HUD.
     CreateConsoleAndDebugHud();
     //Create the scene content
@@ -74,13 +93,11 @@ void MasterControl::Start()
     //Hook up to the frame update and render post-update events
     SubscribeToEvents();
 
-    Sound* music = cache_->GetResource<Sound>("Music/Huilende Rappers - Loop als een Piraatje.ogg");
-    music->SetLooped(true);
-    Node* musicNode = world.scene->CreateChild("Music");
+    Node* musicNode{ world.scene->CreateChild("Music") };
     musicSource_ = musicNode->CreateComponent<SoundSource>();
     musicSource_->SetSoundType(SOUND_MUSIC);
     musicSource_->SetGain(0.23f);
-//    musicSource_->Play(music);
+//    musicSource_->Play(GetMusic("Huilende Rappers - Loop als een Piraatje"));
 }
 void MasterControl::Stop()
 {
@@ -100,19 +117,19 @@ void MasterControl::SubscribeToEvents()
 void MasterControl::CreateConsoleAndDebugHud()
 {
     // Create console
-    Console* console{engine_->CreateConsole()};
+    Console* console{ engine_->CreateConsole() };
     console->SetDefaultStyle(defaultStyle_);
     console->GetBackground()->SetOpacity(0.8f);
 
     // Create debug HUD.
-    DebugHud* debugHud = engine_->CreateDebugHud();
+    DebugHud* debugHud{ engine_->CreateDebugHud() };
     debugHud->SetDefaultStyle(defaultStyle_);
 }
 
 void MasterControl::CreateUI()
 {
-    ResourceCache* cache = GetSubsystem<ResourceCache>();
-    UI* ui = GetSubsystem<UI>();
+    ResourceCache* cache{ GetSubsystem<ResourceCache>() };
+    UI* ui{ GetSubsystem<UI>() };
 
     //Create a Cursor UI element because we want to be able to hide and show it at will. When hidden, the mouse cursor will control the camera
     world.cursor.uiCursor = new Cursor(context_);
@@ -120,7 +137,7 @@ void MasterControl::CreateUI()
     ui->SetCursor(world.cursor.uiCursor);
 
     //Set starting position of the cursor at the rendering window center
-    world.cursor.uiCursor->SetPosition(graphics_->GetWidth()/2, graphics_->GetHeight()/2);
+    world.cursor.uiCursor->SetPosition(GRAPHICS->GetWidth()/2, GRAPHICS->GetHeight()/2);
 
     //Construct new Text object, set string to display and font to use
 //    Text* instructionText = ui->GetRoot()->CreateChild<Text>();
@@ -145,7 +162,7 @@ void MasterControl::CreateScene()
 
     //Create cursor
     world.cursor.sceneCursor = world.scene->CreateChild("Cursor");
-    world.cursor.sceneCursor->SetPosition(Vector3(0.0f,0.0f,0.0f));
+    world.cursor.sceneCursor->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
     //StaticModel* cursorObject = world.cursor.sceneCursor->CreateComponent<StaticModel>();
     //cursorObject->SetModel(GetModel("Cursor"));
     //cursorObject->SetMaterial(cache_->GetResource<Material>("Materials/glow.xml"));
@@ -154,14 +171,14 @@ void MasterControl::CreateScene()
     world.voidNode = world.scene->CreateChild("Void");
     //Location is set in update since the plane moves with the camera.
     world.voidNode->SetScale(Vector3(1000.0f, 1.0f, 1000.0f));
-    StaticModel* planeObject{world.voidNode->CreateComponent<StaticModel>()};
+    StaticModel* planeObject{ world.voidNode->CreateComponent<StaticModel>() };
     planeObject->SetModel(GetModel("Plane"));
     planeObject->SetMaterial(GetMaterial("Invisible"));
 
     //Create a directional sky light.
-    Node* lightNode{world.scene->CreateChild("DirectionalLight")};
+    Node* lightNode{ world.scene->CreateChild("DirectionalLight") };
     lightNode->SetDirection(Vector3(0.1f, -1.0f, -0.3f));
-    Light* light{lightNode->CreateComponent<Light>()};
+    Light* light{ lightNode->CreateComponent<Light>() };
     light->SetLightType(LIGHT_DIRECTIONAL);
     light->SetBrightness(0.1f);
     light->SetColor(Color(0.666f, 0.9f, 1.0f));
@@ -174,26 +191,58 @@ void MasterControl::CreateScene()
 //    light->SetShadowCascade(CascadeParameters(7.0f, 23.0f, 42.0f, 500.0f, 0.8f));
 
     //Create camera
-    world.camera = new OGTattCam();
 
     new Level();
-    world.player_ = new Player();
-    for (int p{0}; p < 100; ++p) new Pedestrian(Vector3(Random(-5.0f, 5.0f), 0.0f, Random(-5.0f, 5.0f)));
+
+    for (int p : {1, 2}){
+        players_.Push(SharedPtr<Player>(new Player(p, context_)));
+
+        OGTattCam* cam{ SPAWN->Create<OGTattCam>(false) };
+        cam->Set(Vector3(0.0f + 5.0f * p, 23.0f, -0.5f), p);
+        cameras_.Push(SharedPtr<OGTattCam>(cam));
+    }
+
+    for (int p{0}; p < 23; ++p){
+
+        Character* character{ GetSubsystem<SpawnMaster>()->Create<Character>() };
+        character->Set(Vector3(Random(-2.0f, 2.0f), 0.0f, Random(-5.0f, 5.0f)));
+
+        if (p == 0)
+            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);
+        else if (p == 1)
+            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2), character);
+    }
 //    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
 //    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
 }
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
+    //Temporary character switching
+    if (INPUT->GetKeyPress(KEY_TAB)) {
+        PODVector<Node*> characters{};
+        world.scene->GetChildrenWithComponent<Character>(characters, true);
 
+        PODVector<Node*> availableCharacters{};
+
+        for (Node* n : characters)
+            if (n->IsEnabled() && !n->GetComponent<Character>()->GetPlayer())
+                availableCharacters.Push(n);
+
+        if (availableCharacters.Size())
+        GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1),
+                                                      availableCharacters[Random(static_cast<int>(availableCharacters.Size()))]->GetComponent<Character>());
+        if (availableCharacters.Size() > 1)
+        GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2),
+                                                      availableCharacters[Random(static_cast<int>(availableCharacters.Size()))]->GetComponent<Character>());
+    }
 }
 
 void MasterControl::HandleSceneUpdate(StringHash eventType, VariantMap &eventData)
 {
-    using namespace Update;
-    float timeStep{eventData[P_TIMESTEP].GetFloat()};
-    world.voidNode->SetPosition(LucKey::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
-    UpdateCursor(timeStep);
+//    float timeStep{ eventData[Update::P_TIMESTEP].GetFloat() };
+//    world.voidNode->SetPosition(LucKey::Scale(world.camera->GetWorldPosition(), Vector3::ONE - Vector3::UP));
+//    UpdateCursor(timeStep);
 }
 
 void MasterControl::UpdateCursor(float timeStep)
@@ -218,8 +267,9 @@ void MasterControl::UpdateCursor(float timeStep)
 
 bool MasterControl::CursorRayCast(double maxDistance, PODVector<RayQueryResult> &hitResults)
 {
-    Ray cameraRay = world.camera->camera_->GetScreenRay(0.5f,0.5f);
+    Ray cameraRay{ world.camera->camera_->GetScreenRay(0.5f,0.5f) };
     RayOctreeQuery query(hitResults, cameraRay, RAY_TRIANGLE, maxDistance, DRAWABLE_GEOMETRY);
+
     world.scene->GetComponent<Octree>()->Raycast(query);
     if (hitResults.Size()) return true;
     else return false;
@@ -249,18 +299,67 @@ void MasterControl::Exit()
 
 float MasterControl::Sine(const float freq, const float min, const float max, const float shift)
 {
-    float phase{freq * world.scene->GetElapsedTime() + shift};
-    float add{0.5f * (min + max)};
+    float phase{ freq * world.scene->GetElapsedTime() + shift };
+    float add{ 0.5f * (min + max) };
     return LucKey::Sine(phase) * 0.5f * (max - min) + add;
 }
 float MasterControl::Cosine(const float freq, const float min, const float max, const float shift)
 {
-    float phase{freq * world.scene->GetElapsedTime() + shift};
-    float add{0.5f * (min + max)};
+    float phase{ freq * world.scene->GetElapsedTime() + shift };
+    float add{ 0.5f * (min + max) };
     return LucKey::Cosine(phase) * 0.5f * (max - min) + add;
 }
 
 void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData)
-{
+{ (void)eventType; (void)eventData;
     //world.scene->GetComponent<PhysicsWorld>()->DrawDebugGeometry(true);
+}
+
+Vector<SharedPtr<Player> > MasterControl::GetPlayers() const {
+    return players_;
+}
+Player* MasterControl::GetPlayer(int playerId) const
+{
+    for (Player* p : players_) {
+
+        if (p->GetPlayerId() == playerId)
+            return p;
+    }
+    return nullptr;
+}
+
+Vector<SharedPtr<OGTattCam> > MasterControl::GetCameras() const {
+    return cameras_;
+}
+OGTattCam* MasterControl::GetCamera(int playerId) const
+{
+    for (OGTattCam* c : cameras_) {
+
+        if (c->GetPlayerId() == playerId)
+            return c;
+    }
+    return nullptr;
+}
+
+Material* MasterControl::GetMaterial(String name) const
+{
+    return CACHE->GetResource<Material>("Materials/" + name + ".xml");
+}
+Model* MasterControl::GetModel(String name) const
+{
+    return CACHE->GetResource<Model>("Models/" + name + ".mdl");
+}
+Texture* MasterControl::GetTexture(String name) const
+{
+    return CACHE->GetResource<Texture>("Textures/" + name + ".png");
+}
+Sound* MasterControl::GetMusic(String name) const {
+    Sound* song{ CACHE->GetResource<Sound>("Music/"+name+".ogg") };
+    song->SetLooped(true);
+    return song;
+}
+Sound* MasterControl::GetSample(String name) const {
+    Sound* sample{ CACHE->GetResource<Sound>("Samples/"+name+".ogg") };
+    sample->SetLooped(false);
+    return sample;
 }

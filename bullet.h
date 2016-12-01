@@ -21,7 +21,6 @@
 
 #include <Urho3D/Urho3D.h>
 
-#include "hitfx.h"
 #include "sceneobject.h"
 
 namespace Urho3D {
@@ -37,19 +36,21 @@ class Bullet : public SceneObject
     friend class Player;
     URHO3D_OBJECT(Bullet, SceneObject);
 public:
-    Bullet(Node *owner);
+    Bullet(Context* context4);
+    static void RegisterObject(Context *context);
+    virtual void OnNodeSet(Node *node);
+    virtual void Update(float timeStep);
+    virtual void Set(Vector3 position, Vector3 direction);
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<StaticModel> model_;
-    void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
-    void HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData);
 private:
     Node* owner_;
-    double age_ = 0.0;
-    double timeSinceHit_ = 0.0;
-    double lifetime_;
+    float age_ = 0.0;
+    float timeSinceHit_ = 0.0;
+    float lifetime_;
     bool fading_ = false;
-    double damage_;
+    float damage_;
     void HitCheck(float timeStep);
     void Disable();
 };

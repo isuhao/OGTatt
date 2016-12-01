@@ -29,6 +29,7 @@ SOURCES += \
     hitfx.cpp \
     honti.cpp \
     inputmaster.cpp \
+    controllable.cpp \
     level.cpp \
     luckey.cpp \
     mastercontrol.cpp \
@@ -38,15 +39,13 @@ SOURCES += \
     pedestrian.cpp \
     pickup.cpp \
     player.cpp \
-    poolmaster.cpp \
-    poolobject.cpp \
+    spawnmaster.cpp \
     sceneobject.cpp \
     streetlight.cpp \
     tile.cpp \
     vehicle.cpp \
     wallcollider.cpp \
     character.cpp \
-    intvector3.cpp \
     frop.cpp
 
 HEADERS += \
@@ -62,6 +61,7 @@ HEADERS += \
     hitfx.h \
     honti.h \
     inputmaster.h \
+    controllable.h \
     level.h \
     luckey.h \
     mastercontrol.h \
@@ -71,8 +71,7 @@ HEADERS += \
     pedestrian.h \
     pickup.h \
     player.h \
-    poolmaster.h \
-    poolobject.h \
+    spawnmaster.h \
     sceneobject.h \
     streetlight.h \
     tile.h \
