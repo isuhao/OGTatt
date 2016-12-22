@@ -40,7 +40,7 @@ InputMaster::InputMaster(Context* context):
     keyBindingsPlayer_[1][KEY_S]      = PlayerInputAction::MOVE_DOWN;
     keyBindingsPlayer_[1][KEY_A]      = PlayerInputAction::MOVE_LEFT;
     keyBindingsPlayer_[1][KEY_D]      = PlayerInputAction::MOVE_RIGHT;
-    keyBindingsPlayer_[1][KEY_C]      = PlayerInputAction::RUN;
+    keyBindingsPlayer_[1][KEY_LSHIFT] = PlayerInputAction::RUN;
     keyBindingsPlayer_[1][KEY_KP_8]   = PlayerInputAction::FIRE_N;
     keyBindingsPlayer_[1][KEY_KP_5]   = PlayerInputAction::FIRE_S;
     keyBindingsPlayer_[1][KEY_KP_2]   = PlayerInputAction::FIRE_S;
@@ -55,7 +55,7 @@ InputMaster::InputMaster(Context* context):
     keyBindingsPlayer_[2][KEY_DOWN]   = PlayerInputAction::MOVE_DOWN;
     keyBindingsPlayer_[2][KEY_LEFT]   = PlayerInputAction::MOVE_LEFT;
     keyBindingsPlayer_[2][KEY_RIGHT]  = PlayerInputAction::MOVE_RIGHT;
-    keyBindingsPlayer_[2][KEY_LSHIFT] = PlayerInputAction::RUN;
+    keyBindingsPlayer_[2][KEY_RSHIFT] = PlayerInputAction::RUN;
 
     SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputMaster, HandleKeyDown));
     SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(InputMaster, HandleKeyUp));

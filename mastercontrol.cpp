@@ -106,12 +106,11 @@ void MasterControl::Stop()
 
 void MasterControl::SubscribeToEvents()
 {
-    //Subscribe scene update event.
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(MasterControl, HandleSceneUpdate));
-    //Subscribe HandleUpdate() function for processing update events
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(MasterControl, HandleUpdate));
-    //Subscribe scene update event.
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(MasterControl, HandleSceneUpdate));
+    SubscribeToEvent(E_POSTRENDERUPDATE, URHO3D_HANDLER(MasterControl, HandlePostRenderUpdate));
+
 }
 
 void MasterControl::CreateConsoleAndDebugHud()
@@ -202,7 +201,7 @@ void MasterControl::CreateScene()
         cameras_.Push(SharedPtr<OGTattCam>(cam));
     }
 
-    for (int p{0}; p < 23; ++p){
+    for (int p{0}; p < 42; ++p){
 
         Character* character{ GetSubsystem<SpawnMaster>()->Create<Character>() };
         character->Set(Vector3(Random(-2.0f, 2.0f), 0.0f, Random(-5.0f, 5.0f)));
@@ -310,11 +309,6 @@ float MasterControl::Cosine(const float freq, const float min, const float max, 
     return LucKey::Cosine(phase) * 0.5f * (max - min) + add;
 }
 
-void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData)
-{ (void)eventType; (void)eventData;
-    //world.scene->GetComponent<PhysicsWorld>()->DrawDebugGeometry(true);
-}
-
 Vector<SharedPtr<Player> > MasterControl::GetPlayers() const {
     return players_;
 }
@@ -362,4 +356,11 @@ Sound* MasterControl::GetSample(String name) const {
     Sound* sample{ CACHE->GetResource<Sound>("Samples/"+name+".ogg") };
     sample->SetLooped(false);
     return sample;
+}
+
+void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eventData)
+{ (void)eventType; (void)eventData;
+    return;
+
+    physicsWorld_->DrawDebugGeometry(false);
 }

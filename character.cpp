@@ -33,12 +33,14 @@ void Character::RegisterObject(Context *context)
 Character::Character(Context* context):
     Controllable(context),
     male_{static_cast<bool>(Random(2))},
+    alive_{true},
     maxHealth_{100.0f},
     hairStyle_{static_cast<Hair>(Random(HAIR_ALL))},
     sinceLastTurn_{},
     turnInterval_{}
 {
 }
+
 
 void Character::OnNodeSet(Node *node)
 {
@@ -60,11 +62,19 @@ void Character::OnNodeSet(Node *node)
 
     shot_sfx = MC->GetSample("Shot");
 
-    //Reroll hair on bald
-//    if (hairStyle_ == HAIR_BALD)
-//        hairStyle_ = static_cast<Hair>(Random(static_cast<int>(HAIR_ALL)));
-
     //Set up graphics components
+    CreateBody();
+
+    animCtrl_ = node_->CreateComponent<AnimationController>();
+    animCtrl_->PlayExclusive("Models/IdleRelax.ani", 1, true, 0.15f);
+    animCtrl_->SetSpeed("Models/IdleRelax.ani", 1.0f);
+    animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
+
+    collisionShape_->SetCylinder(0.4f, 1.0f);
+}
+
+void Character::CreateBody()
+{
     for (int c{0}; c < 5; ++c) {
         switch (c){
         case 0:{
@@ -81,6 +91,8 @@ void Character::OnNodeSet(Node *node)
         model_->SetModel(MC->GetModel("Male"));
     else
         model_->SetModel(MC->GetModel("Female"));
+
+    model_->SetMorphWeight(0, Random());
 
     for (unsigned m{0}; m < model_->GetNumGeometries(); ++m){
         model_->SetMaterial(m, MC->CACHE->GetTempResource<Material>("Materials/Basic.xml"));
@@ -129,18 +141,11 @@ void Character::OnNodeSet(Node *node)
             hairModel_->SetMaterial(CACHE->GetTempResource<Material>("Materials/Basic.xml"));
             Color diffColor = colors_[4];
             hairModel_->GetMaterial()->SetShaderParameter("MatDiffColor", diffColor);
-            Color specColor{diffColor * 0.23f};
-            specColor.a_ = 23.0f;
+            Color specColor{ diffColor * 0.23f };
+            specColor.a_ = 5.0f;
             hairModel_->GetMaterial()->SetShaderParameter("MatSpecColor", specColor);
         }
     }
-
-    animCtrl_ = node_->CreateComponent<AnimationController>();
-    animCtrl_->PlayExclusive("Models/IdleRelax.ani", 1, true, 0.1f);
-    animCtrl_->SetSpeed("Models/IdleRelax.ani", 1.0f);
-    animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
-
-    collisionShape_->SetCylinder(0.4f, 1.0f);
 }
 
 void Character::Set(Vector3 position)
@@ -151,6 +156,22 @@ void Character::Set(Vector3 position)
 
 void Character::Update(float timeStep)
 {
+    if (!alive_){
+        PODVector<RigidBody*> limbs{};
+        node_->GetComponents<RigidBody>(limbs, true);
+        for (RigidBody* r : limbs) {
+
+            if (r->IsActive())
+                return;
+        }
+        for (RigidBody* r : limbs) {
+
+            r->SetEnabled(false);
+        }
+
+        return;
+    }
+
     Controllable::Update(timeStep);
 
     //Orientation vectors
@@ -165,18 +186,18 @@ void Character::Update(float timeStep)
         }
     }
     //Movement values
-    float thrust{ 256.0 };
-    float maxSpeed{ 18.0 };
+    float thrust{ 256.0f };
+    float maxSpeed{ 18.0f };
 
     //Apply movement
     Vector3 force{ move_ * thrust * (1.0f + 0.666f * actions_[0]) * timeStep };
     rigidBody_->ApplyForce(force);
 
     //Update rotation according to direction of the player's movement.
-    Vector3 velocity = rigidBody_->GetLinearVelocity();
-    Vector3 lookDirection = velocity + 2.0f * aim_;
-    Quaternion rotation = node_->GetWorldRotation();
-    Quaternion aimRotation = rotation;
+    Vector3 velocity{ rigidBody_->GetLinearVelocity() };
+    Vector3 lookDirection{ velocity + 2.0f * aim_ };
+    Quaternion rotation{ node_->GetWorldRotation() };
+    Quaternion aimRotation{ rotation };
     aimRotation.FromLookRotation(lookDirection);
     node_->SetRotation(rotation.Slerp(aimRotation, 7.0f * timeStep * velocity.Length()));
 
@@ -187,9 +208,14 @@ void Character::Update(float timeStep)
         animCtrl_->SetSpeed("Models/WalkRelax.ani", velocity.Length() * 2.3f);
         animCtrl_->SetStartBone("Models/WalkRelax.ani", "MasterBone");
     }
-    else {
+    else if (health_ < maxHealth_){
 
-        animCtrl_->PlayExclusive("Models/IdleRelax.ani", 1, true, 0.15f);
+        animCtrl_->StopAll(0.23f);
+        animCtrl_->PlayExclusive("Models/IdleAlert.ani", 0, true, 0.15f);
+        animCtrl_->SetStartBone("Models/IdleAlert.ani", "MasterBone");
+    } else {
+        animCtrl_->StopAll(0.23f);
+        animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.1f);
         animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
     }
 
@@ -203,7 +229,7 @@ void Character::Update(float timeStep)
         {
             sinceLastShot_ = 0.0;
             Bullet* bullet{ SPAWN->Create<Bullet>() };
-            bullet->Set(node_->GetPosition() + Vector3::UP * bulletHeight + collisionShape_->GetSize().x_*0.5f * aim_, aim_);
+            bullet->Set(node_->GetPosition() + Vector3::UP * bulletHeight + collisionShape_->GetSize().x_ * 0.5f * aim_, aim_);
 
             Muzzle* muzzle{ SPAWN->Create<Muzzle>() };
             muzzle->Set(node_->GetPosition() + Vector3::UP * bulletHeight + 0.1f * aim_, aim_);
@@ -216,9 +242,122 @@ void Character::Hit(float damage)
 {
     health_ -= damage;
 
+    //Die
     if (health_ <= 0.0f){
-        Disable();
+        Die();
     }
+}
+void Character::Die()
+{
+    alive_ = false;
+    CreateRagdoll();
+}
+void Character::CreateRagdoll()
+{
+    animCtrl_->SetEnabled(false);
+
+    Vector3 velocity{ rigidBody_->GetLinearVelocity() };
+
+    node_->RemoveComponent<RigidBody>();
+    node_->RemoveComponent<CollisionShape>();
+
+    CreateRagdollBone("Chest", SHAPE_BOX,     Vector3(0.23f, 0.3f, 0.1f),  Vector3(0.0f, 0.05f, -0.05f), Quaternion::IDENTITY);
+    CreateRagdollBone("Neck",  SHAPE_CAPSULE, Vector3(0.08f, 0.1f, 0.08f), Vector3(0.0f, 0.0f, 0.0f),    Quaternion::IDENTITY);
+    CreateRagdollBone("Head",  SHAPE_CAPSULE, Vector3(0.13f, 0.2f, 0.13f), Vector3(0.0f, 0.05f, 0.0f),   Quaternion::IDENTITY);
+
+    CreateRagdollConstraint("Head", "Neck",  CONSTRAINT_CONETWIST, Vector3::UP, Vector3::UP, Vector2(45.0f, 45.0f), Vector2(-20.0f, -20.0f), true);
+    CreateRagdollConstraint("Neck", "Chest", CONSTRAINT_HINGE, Vector3::LEFT, Vector3::LEFT, Vector2(45.0f, 45.0f), Vector2(-20.0f, -20.0f), true);
+
+    CreateRagdollBone("UpperArm.L", SHAPE_CAPSULE, Vector3(0.11f, 0.23f, 0.11f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("UpperArm.R", SHAPE_CAPSULE, Vector3(0.11f, 0.23f, 0.11f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("LowerArm.L", SHAPE_CAPSULE, Vector3(0.1f, 0.2f, 0.1f), Vector3(0.0f, 0.1f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("LowerArm.R", SHAPE_CAPSULE, Vector3(0.1f, 0.2f, 0.1f), Vector3(0.0f, 0.1f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Hand.L",     SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Hand.R",     SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+
+    CreateRagdollConstraint("UpperArm.L", "Chest", CONSTRAINT_CONETWIST, Vector3::UP, Vector3::RIGHT, Vector2(60.0f, 90.0f), Vector2(-45.0f, -45.0f), true);
+    CreateRagdollConstraint("UpperArm.R", "Chest", CONSTRAINT_CONETWIST, Vector3::UP, Vector3::LEFT, Vector2(60.0f, 90.0f), Vector2(-45.0f, -45.0f), true);
+    CreateRagdollConstraint("LowerArm.L", "UpperArm.L", CONSTRAINT_HINGE, Vector3::FORWARD, Vector3::FORWARD, Vector2(120.0f, 120.0f), Vector2(0.0f, 0.0f), true);
+    CreateRagdollConstraint("LowerArm.R", "UpperArm.R", CONSTRAINT_HINGE, Vector3::FORWARD, Vector3::FORWARD, Vector2(120.0f, 120.0f), Vector2(0.0f, 0.0f), true);
+    CreateRagdollConstraint("Hand.L",     "LowerArm.L", CONSTRAINT_HINGE, Vector3::RIGHT, Vector3::RIGHT, Vector2(90.0f, 90.0f), Vector2(-45.0f, -45.0f), true);
+    CreateRagdollConstraint("Hand.R",     "LowerArm.R", CONSTRAINT_HINGE, Vector3::LEFT, Vector3::LEFT, Vector2(90.0f, 90.0f), Vector2(-45.0f, -45.0f), true);
+
+    CreateRagdollBone("Thigh.L",  SHAPE_CAPSULE, Vector3(0.13f, 0.23f, 0.13f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Thigh.R",  SHAPE_CAPSULE, Vector3(0.13f, 0.23f, 0.13f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Shin.L",   SHAPE_CAPSULE, Vector3(0.1f, 0.23f, 0.1f), Vector3(0.0f, 0.1f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Shin.R",   SHAPE_CAPSULE, Vector3(0.1f, 0.23f, 0.1f), Vector3(0.0f, 0.1f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Instep.L", SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Instep.R", SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Toes.L",   SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+    CreateRagdollBone("Toes.R",   SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
+
+    CreateRagdollConstraint("Thigh.L", "Chest",   CONSTRAINT_CONETWIST, Vector3::LEFT,      Vector3::RIGHT,   Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
+    CreateRagdollConstraint("Thigh.R", "Chest",   CONSTRAINT_CONETWIST, Vector3::RIGHT,      Vector3::LEFT,    Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
+    CreateRagdollConstraint("Shin.L", "Thigh.L",  CONSTRAINT_HINGE,     Vector3::LEFT, Vector3::LEFT, Vector2(120.0f, 120.0f),   Vector2(  0.0f,   0.0f), true);
+    CreateRagdollConstraint("Shin.R", "Thigh.R",  CONSTRAINT_HINGE,     Vector3::RIGHT, Vector3::RIGHT, Vector2(120.0f, 120.0f),   Vector2(  0.0f,   0.0f), true);
+    CreateRagdollConstraint("Instep.L", "Shin.L", CONSTRAINT_HINGE,     Vector3::RIGHT,   Vector3::RIGHT,   Vector2( 45.0f,  45.0f),   Vector2(-23.0f, -23.0f), true);
+    CreateRagdollConstraint("Instep.R", "Shin.R", CONSTRAINT_HINGE,     Vector3::LEFT,    Vector3::LEFT,    Vector2( 45.0f,  45.0f),   Vector2(-23.0f, -23.0f), true);
+    CreateRagdollConstraint("Toes.L", "Instep.L", CONSTRAINT_HINGE,     Vector3::RIGHT,   Vector3::RIGHT,   Vector2( 10.0f,  10.0f),   Vector2(-10.0f, -10.0f), true);
+    CreateRagdollConstraint("Toes.R", "Instep.R", CONSTRAINT_HINGE,     Vector3::LEFT,    Vector3::LEFT,    Vector2( 10.0f,  10.0f),   Vector2(-10.0f, -10.0f), true);
+
+    PODVector<RigidBody*> limbs{};
+    node_->GetComponents<RigidBody>(limbs, true);
+    for (RigidBody* r : limbs) {
+
+        r->SetLinearVelocity(velocity);
+    }
+}
+
+void Character::CreateRagdollBone(const String& boneName, ShapeType type, const Vector3& size, const Vector3& position,
+    const Quaternion& rotation)
+{
+    // Find the correct child scene node recursively
+    Node* boneNode{ node_->GetChild(boneName, true) };
+    if (!boneNode)
+        return;
+
+    RigidBody* body{ boneNode->CreateComponent<RigidBody>() };
+    // Set mass to make movable
+    body->SetMass(100.0f * size.x_ * size.y_ * size.z_);
+    // Set damping parameters to smooth out the motion
+    body->SetLinearDamping(0.5f);
+    body->SetAngularDamping(0.8f);
+    // Set rest thresholds to ensure the ragdoll rigid bodies come to rest to not consume CPU endlessly
+    body->SetLinearRestThreshold(4.2f);
+    body->SetAngularRestThreshold(23.0f);
+    body->SetFriction(0.42f);
+    body->ApplyImpulse(Vector3::UP* 5.0f);
+
+    CollisionShape* shape{ boneNode->CreateComponent<CollisionShape>() };
+    // We use either a box or a capsule shape for all of the bones
+    if (type == SHAPE_BOX)
+        shape->SetBox(size, position, rotation);
+    else
+        shape->SetCapsule(size.x_, size.y_, position, rotation);
+}
+
+void Character::CreateRagdollConstraint(const String& boneName, const String& parentName, ConstraintType type,
+    const Vector3& axis, const Vector3& parentAxis, const Vector2& highLimit, const Vector2& lowLimit,
+    bool disableCollision)
+{
+    Node* boneNode{ node_->GetChild(boneName, true) };
+    Node* parentNode{ node_->GetChild(parentName, true) };
+    if (!boneNode || !parentNode)
+        return;
+
+    Constraint* constraint{ boneNode->CreateComponent<Constraint>() };
+    constraint->SetConstraintType(type);
+    // Most of the constraints in the ragdoll will work better when the connected bodies don't collide against each other
+    constraint->SetDisableCollision(disableCollision);
+    // The connected body must be specified before setting the world position
+    constraint->SetOtherBody(parentNode->GetComponent<RigidBody>());
+    // Position the constraint at the child bone we are connecting
+    constraint->SetWorldPosition(boneNode->GetWorldPosition());
+    // Configure axes and limits
+    constraint->SetAxis(axis);
+    constraint->SetOtherAxis(parentAxis);
+    constraint->SetHighLimit(highLimit);
+    constraint->SetLowLimit(lowLimit);
 }
 
 Substance Character::GetSubstance()
@@ -257,5 +396,7 @@ void Character::Think(float timeStep)
         if (r!=4){
             move_ += Vector3(Random(-0.1f, 0.1f), 0.0f, Random(-0.1f, 0.1f));
         }
+
+        move_ *= 0.5f;
     }
 }

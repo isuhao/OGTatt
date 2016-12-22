@@ -48,6 +48,9 @@ Object(MC->GetContext())
     rootNode_->SetPosition(position);
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
 
+    CollisionShape* groundCollider{ rootNode_->CreateComponent<CollisionShape>() };
+    groundCollider->SetBox(Vector3(1000.0f, 2.0f, 1000.0f), Vector3::DOWN);
+
     TmxFile2D* tmxFile{MC->CACHE->GetResource<TmxFile2D>("Maps/smallTest.tmx")};
     if (tmxFile)
         InitializeFromMap(*tmxFile);

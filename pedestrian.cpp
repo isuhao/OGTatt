@@ -41,7 +41,7 @@ void Pedestrian::OnNodeSet(Node *node)
 }
 
 void Pedestrian::Update(float timeStep)
-{
+{/*
     sinceLastTurn_ += timeStep;
     if (sinceLastTurn_ > turnInterval_){
         sinceLastTurn_ = 0.0f;
@@ -87,5 +87,5 @@ void Pedestrian::Update(float timeStep)
     else {
         animCtrl_->PlayExclusive("Models/IdleRelax.ani", 0, true, 0.15f);
         animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
-    }
+    }*/
 }

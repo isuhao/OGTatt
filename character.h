@@ -58,6 +58,7 @@ protected:
     Hair hairStyle_;
     Vector<Color> colors_;
 
+    bool alive_;
     float health_;
     float maxHealth_;
     int firstHitBy_ = 0;
@@ -70,6 +71,12 @@ protected:
 
     float sinceLastTurn_;
     float turnInterval_;
+private:
+    void CreateBody();
+    void CreateRagdoll();
+    void Die();
+    void CreateRagdollBone(const String &boneName, ShapeType type, const Vector3 &size, const Vector3 &position, const Quaternion &rotation);
+    void CreateRagdollConstraint(const String &boneName, const String &parentName, ConstraintType type, const Vector3 &axis, const Vector3 &parentAxis, const Vector2 &highLimit, const Vector2 &lowLimit, bool disableCollision);
 };
 
 #endif // NPC_H
