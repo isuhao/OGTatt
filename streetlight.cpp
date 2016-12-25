@@ -67,6 +67,4 @@ void StreetLight::OnNodeSet(Node *node)
     light_->SetRange(6.0f);
     light_->SetFov(130.0f);
     light_->SetCastShadows(true);
-    light_->SetShadowBias(BiasParameters(0.00001f, 0.5f));
-    light_->SetShadowCascade(CascadeParameters(0.23f, 2.0f, 3.0f, 5.0f, 0.5f));
 }
