@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <material>
 	<technique name="Techniques/DiffAlpha.xml" quality="0" loddistance="0" />
-	<texture unit="diffuse" name="Resources/Textures/Pebbel.png" />
+	<texture unit="diffuse" name="Textures/Pebbel.png" />
 	<parameter name="MatDiffColor" value="0.8 0.8 0.7 1" />
 	<parameter name="MatSpecColor" value="0.1 0.1 0.1 1" />
 </material>

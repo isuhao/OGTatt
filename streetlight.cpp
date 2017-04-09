@@ -103,8 +103,7 @@ void StreetLight::HandleNodeCollisionStart(StringHash eventType, VariantMap& eve
             if (node_->GetUp().Angle(Vector3::UP) > 42.0f) {
                 RigidBody* rigidBody{ node_->GetComponent<RigidBody>() };
                 rigidBody->SetMass(2.3f);
-                rigidBody->SetFriction(1.0f);
-                rigidBody->ApplyTorqueImpulse(node_->GetUp() * LucKey::RandomSign() * Random(0.023f));
+                rigidBody->SetFriction(2.3f);
 
                 SwitchOff();
             }
