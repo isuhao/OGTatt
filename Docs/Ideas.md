@@ -32,7 +32,7 @@ Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a v
 
 ### Overview
 
-![Home](Globe.gif)
+![Home](Globe.png)
 
 ![Map](WorldMap.png)
 

@@ -202,10 +202,10 @@ void MasterControl::CreateScene()
 
     new Level();
 
-    for (int p{0}; p < 42; ++p){
+    for (int p{0}; p < 90; ++p){
 
         Character* character{ GetSubsystem<SpawnMaster>()->Create<Character>() };
-        character->Set(Vector3(Random(-2.0f, 2.0f), 0.0f, Random(-5.0f, 5.0f)));
+        character->Set(Vector3(Random(-23.0f, 23.0f), 0.0f, Random(-23.0f, 23.0f)));
 
 //        if (p == 0)
 //            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);

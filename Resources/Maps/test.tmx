@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="117" height="117" tilewidth="64" tileheight="64" backgroundcolor="#22a6fd" nextobjectid="164">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="117" height="117" tilewidth="64" tileheight="64" backgroundcolor="#22a6fd" nextobjectid="165">
  <tileset firstgid="1" source="Grunstatt.tsx"/>
  <layer name="Base" width="117" height="117">
   <data>
@@ -13718,7 +13718,6 @@
   <object id="38" gid="137" x="4266" y="5266" width="64" height="64" rotation="-270"/>
   <object id="69" gid="138" x="3809.33" y="4734.67" width="64" height="64" rotation="-270"/>
   <object id="70" gid="138" x="3810.67" y="4858.67" width="64" height="64" rotation="-270"/>
-  <object id="71" gid="138" x="3974.67" y="5088" width="64" height="64"/>
   <object id="72" gid="138" x="4105.33" y="5089.33" width="64" height="64"/>
   <object id="84" gid="139" x="3260.73" y="5376.97" width="64" height="64"/>
   <object id="85" gid="139" x="3163.76" y="5403.88" width="64" height="64"/>
@@ -13785,6 +13784,7 @@
   <object id="161" gid="138" x="6907.39" y="5222.91" width="64" height="64"/>
   <object id="162" gid="138" x="7164.97" y="5244.12" width="64" height="64"/>
   <object id="163" gid="138" x="7301.33" y="5689.58" width="64" height="64"/>
+  <object id="164" gid="138" x="3974.67" y="5088" width="64" height="64"/>
  </objectgroup>
  <layer name="SecondFloor" width="117" height="117">
   <data>
