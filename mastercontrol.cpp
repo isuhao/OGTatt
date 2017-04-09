@@ -58,8 +58,28 @@ void MasterControl::Setup()
     //Set custom window title and icon.
     engineParameters_["WindowTitle"] = "OG Tatt";
     engineParameters_["LogName"] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
-    engineParameters_["ResourcePaths"] = "Data;CoreData;Resources";
     engineParameters_["WindowIcon"] = "icon.png";
+
+    //Add resource paths
+    String resourcePaths{};
+
+    if (FILES->DirExists(FILES->GetAppPreferencesDir("luckey", "ogtatt")))
+        resourcePaths = FILES->GetAppPreferencesDir("luckey", "ogtatt");
+    else if (FILES->DirExists("Resources"))
+        resourcePaths = "Resources";
+    else if (FILES->DirExists("../OGTatt/Resources"))
+        resourcePaths = "../OGTatt/Resources";
+
+    resourceFolder_ = resourcePaths;
+    resourcePaths += ";";
+
+    if (FILES->DirExists("Data"))
+        resourcePaths += "Data;";
+    if (FILES->DirExists("CoreData"))
+        resourcePaths += "CoreData;";
+
+    engineParameters_[EP_RESOURCE_PATHS] = resourcePaths;
+
 //    engineParameters_["FullScreen"] = false;
 //    engineParameters_["Headless"] = false;
 //    engineParameters_["WindowWidth"] = 960;

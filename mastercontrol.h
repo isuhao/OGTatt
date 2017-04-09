@@ -80,8 +80,9 @@ public:
     MasterControl(Context* context);
     static MasterControl* GetInstance();
 
-    GameWorld world;
+    String GetResourceFolder() const { return resourceFolder_; }
 
+    GameWorld world;
     Vector< SharedPtr<Player> > players_;
     Vector< SharedPtr<Player> > GetPlayers() const;
     Player* GetPlayer(int playerId) const;
@@ -108,6 +109,7 @@ public:
     float Cosine(const float freq, const float min, const float max, const float shift = 0.0f);
 private:
     static MasterControl* instance_;
+    String resourceFolder_;
 
     SoundSource* musicSource_;
     SharedPtr<UI> ui_;

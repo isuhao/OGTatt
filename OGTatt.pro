@@ -85,3 +85,25 @@ HEADERS += \
 
 OTHER_FILES += \
     Docs/Ideas.txt
+
+unix {
+    isEmpty(DATADIR) {
+        DATADIR = ~/.local/share
+    }
+    DEFINES += DATADIR=\\\"$${DATADIR}/ogtatt\\\"
+
+    target.path = /usr/games/
+    INSTALLS += target
+
+    resources.path = $$DATADIR/luckey/ogtatt/
+    resources.files = Resources/*
+    INSTALLS += resources
+
+    icon.path = $$DATADIR/icons/
+    icon.files = ogtatt.svg
+    INSTALLS += icon
+
+    desktop.path = $$DATADIR/applications/
+    desktop.files = ogtatt.desktop
+    INSTALLS += desktop
+}
