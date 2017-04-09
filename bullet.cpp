@@ -95,11 +95,12 @@ void Bullet::HitCheck(float timeStep) {
     if (!fading_) {
         PODVector<PhysicsRaycastResult> hitResults;
         Ray bulletRay(node_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, node_->GetDirection());
-        if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length()*timeStep*1.5f, M_MAX_UNSIGNED)){
+        if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length() * timeStep * 1.5f, M_MAX_UNSIGNED)){
             for (PhysicsRaycastResult r : hitResults){
-                if (!r.body_->IsTrigger() && r.body_->GetNode() != owner_){
+                if (!r.body_->IsTrigger() && r.body_->GetNode() != owner_) {
+
                     r.body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * r.normal_,
-r.position_ - r.body_->GetNode()->GetWorldPosition());
+                                          r.position_ - r.body_->GetNode()->GetWorldPosition());
                     Substance substance{ Substance::Flesh };
                     if (r.body_->GetNode()->GetNameHash() == StringHash("Level")){
                         substance = Substance::Rock;

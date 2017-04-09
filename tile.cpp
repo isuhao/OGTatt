@@ -32,12 +32,12 @@ Tile::Tile(TileInfo info, Level *level):
     rootNode_->SetPosition(Vector3(static_cast<float>(info_.coords_.x_),
                                    LAYER_THICKNESS * static_cast<float>(info_.coords_.y_),
                                    static_cast<float>(-info_.coords_.z_)));
-    if (info_.obstacle_){
+    if (info_.obstacle_) {
 
         CollisionShape* collider{level_->rootNode_->CreateComponent<CollisionShape>()};
         collider->SetBox(Vector3::ONE, rootNode_->GetPosition());
     }
-    if (info_.modelName_.Length()){
+    if (info_.modelName_.Length()) {
 
         StaticModel* model{rootNode_->CreateComponent<StaticModel>()};
         model->SetModel(MC->GetModel(info.modelName_));

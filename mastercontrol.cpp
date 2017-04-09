@@ -97,7 +97,7 @@ void MasterControl::Start()
     musicSource_ = musicNode->CreateComponent<SoundSource>();
     musicSource_->SetSoundType(SOUND_MUSIC);
     musicSource_->SetGain(0.23f);
-//    musicSource_->Play(GetMusic("Huilende Rappers - Loop als een Piraatje"));
+    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
 }
 void MasterControl::Stop()
 {

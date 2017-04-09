@@ -53,7 +53,7 @@ void Character::OnNodeSet(Node *node)
     rigidBody_->SetFriction(0.0f);
     rigidBody_->SetRestitution(0.0f);
     rigidBody_->SetMass(1.0f);
-    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
+//    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
     rigidBody_->SetLinearDamping(0.95f);
     rigidBody_->SetAngularFactor(Vector3::UP);
     rigidBody_->SetLinearRestThreshold(0.01f);
@@ -70,7 +70,7 @@ void Character::OnNodeSet(Node *node)
     animCtrl_->SetSpeed("Models/IdleRelax.ani", 1.0f);
     animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
 
-    collisionShape_->SetCylinder(0.4f, 1.0f);
+    collisionShape_->SetCylinder(0.4f, 1.0f, Vector3::UP * 0.5f);
 }
 
 void Character::CreateBody()
@@ -323,10 +323,11 @@ void Character::CreateRagdollBone(const String& boneName, ShapeType type, const 
     body->SetLinearDamping(0.5f);
     body->SetAngularDamping(0.8f);
     // Set rest thresholds to ensure the ragdoll rigid bodies come to rest to not consume CPU endlessly
-    body->SetLinearRestThreshold(4.2f);
+    body->SetLinearRestThreshold(2.3f);
     body->SetAngularRestThreshold(23.0f);
     body->SetFriction(0.42f);
-    body->ApplyImpulse(Vector3::UP* 5.0f);
+    body->ApplyImpulse(Vector3::UP * 5.0f);
+    body->Activate();
 
     CollisionShape* shape{ boneNode->CreateComponent<CollisionShape>() };
     // We use either a box or a capsule shape for all of the bones
@@ -367,7 +368,7 @@ Substance Character::GetSubstance()
 
 void Character::Think(float timeStep)
 {
-    aim_ = Quaternion(Random(360.0f), Vector3::UP) * Vector3::FORWARD * !Random(23);
+//    aim_ = Quaternion(Random(360.0f), Vector3::UP) * Vector3::FORWARD * !Random(23);
 
     sinceLastTurn_ += timeStep;
     if (sinceLastTurn_ > turnInterval_){

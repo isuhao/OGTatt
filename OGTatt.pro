@@ -1,3 +1,5 @@
+TARGET = ogtatt
+
     LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
     -lpthread \
     -ldl \
@@ -10,6 +12,7 @@ QMAKE_CXXFLAGS += -std=c++11
 INCLUDEPATH += \
     ../OGTatt/Urho3D/include \
     ../OGTatt/Urho3D/include/Urho3D/ThirdParty \
+    ../OGTatt/Urho3D/include/Urho3D/ThirdParty/Bullet \
 
 TEMPLATE = app
 CONFIG += console
@@ -78,7 +81,6 @@ HEADERS += \
     vehicle.h \
     wallcollider.h \
     character.h \
-    intvector3.h \
     frop.h
 
 OTHER_FILES += \

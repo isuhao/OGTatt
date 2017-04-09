@@ -129,7 +129,7 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
                 Vector3 pos(scaleFactor * object->GetPosition().x_,
                             0.0f,
                             scaleFactor * object->GetPosition().y_);
-                pos += Vector3(-0.5f*mapWidth, 0.0f, -0.5f*mapHeight+1);
+                pos += Vector3(-0.5f * mapWidth, 0.0f, -0.5f * mapHeight + 1);
 
                 Quaternion rot{};   ///float TileMapObject2D::GetRotation()
                                     ///int TileMapObject2D::GetId()

@@ -46,15 +46,15 @@ void Cookiejar::OnNodeSet(Node *node)
         chassisModel_->SetMorphWeight(m, Random());
     }
 
-    rigidBody_->SetMass(25.0f);
-    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
-    rigidBody_->SetAngularFactor(Vector3::UP);
-    rigidBody_->SetFriction(0.42f);
-    rigidBody_->SetLinearDamping(0.9f);
-    rigidBody_->SetLinearRestThreshold(0.01f);
-    rigidBody_->SetAngularDamping(0.9f);
-    rigidBody_->SetAngularRestThreshold(0.1f);
-    collisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f));
+    chassisBody_->SetMass(25.0f);
+//    chassisBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
+//    chassisBody_->SetAngularFactor(Vector3::UP);
+    chassisBody_->SetFriction(0.42f);
+    chassisBody_->SetLinearDamping(0.9f);
+    chassisBody_->SetLinearRestThreshold(0.01f);
+    chassisBody_->SetAngularDamping(0.9f);
+    chassisBody_->SetAngularRestThreshold(0.1f);
+    chassisCollisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f));
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
 
     SetupLights(2, 2, BoundingBox(Vector3(-0.42f, 0.33f, -1.1f), Vector3(0.42f, 0.41f, 0.9f)));

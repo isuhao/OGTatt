@@ -22,7 +22,6 @@
 #include <Urho3D/Urho3D.h>
 
 #include "luckey.h"
-#include "intvector3.h"
 
 namespace Urho3D {
 class Drawable;
