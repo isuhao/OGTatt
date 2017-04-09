@@ -28,9 +28,11 @@ If you decide to join a gang you can either fight other gangs in each city or sm
    
 ## World
 
-Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to get to another city by road. Traveling to another city the camera angle changes and it is like a highway racing game during which you'll see the environment change in accordance to the 
+Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a vehicle to get to another city by road. Traveling to another city the camera angle changes and it is like a highway racing game during which you'll see the environment change in accordance with the climate and terrain.
 
 ### Overview
+
+![Home](Globe.gif)
 
 ![Map](WorldMap.png)
 
@@ -40,12 +42,12 @@ Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to
 
 * **Grunstatt** (Dutch/German/Danish) | Hemp
 * **Ånslo** (Norwegian/Swedish/Finnish) | Fishballs
-* **Noopolis** (Italian/Greek/French) | Wine
+* **Noopolis** (Italian/Greek/French) | Cheese 'n wine
 * **Airstrip 1** (British/American) | Telescreens
 
 #### Southern
 
-* **Zombuntu** (Savannah) | Wildlife
+* **Zombuntu** (Savannah) | Wildlife and witchcraft
 * **Agroban** (Desert) | Oil
 * **Axllotus** (Jungle) | Natives
 
@@ -71,24 +73,42 @@ Cities and HQs are loaded from TMX files. Most cities have You need a vehicle to
 
 ### Weapons
 
-Heavy weapons slow you down
+##### Light weapons
 
 + Pistol: _Little Elvis_
 + SMG: _Spitfire_
++ Molotov cocktail
+
+
+##### Heavy weapons
+
+Slow you down, only one allowed.
+
 + Mini-gun: _Herzstark_
 + Flamethrower: _Libertorch_
-+ Rocket Launcher: _Harab Shrapnels_
++ Rocket Launcher: _Deathfist_
 + Explosive Drones: _Freedom Delivery System_
  
 ### Gangs
 
 For a list of built-in gangs see [Gangs.md](Gangs.md)
+
 Built-in gangs will include:
 
 + Emblem and colors (applied to HQ banners and vehicles)
 + Voices for both sexes
 + Limitations on clothing
 + Head quarters city block
+
+### Shops
+
+- **Bonbon Ted** - chocolatier
+- **Fresh Meat** - butcher
+- **Them Apples** - grocery store
+- **Big Cheeze** - cheese store
+- **Hot Buns** - bakery
+
+- **Fish van** - fish van
 
 ### Inspiration
 

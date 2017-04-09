@@ -50,6 +50,7 @@ public:
     Substance GetSubstance();
 
     virtual void Think(float timeStep);
+    void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
 protected:
     AnimatedModel* hairModel_;
 

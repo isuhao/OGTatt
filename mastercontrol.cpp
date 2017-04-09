@@ -97,7 +97,7 @@ void MasterControl::Start()
     musicSource_ = musicNode->CreateComponent<SoundSource>();
     musicSource_->SetSoundType(SOUND_MUSIC);
     musicSource_->SetGain(0.23f);
-    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
+//    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
 }
 void MasterControl::Stop()
 {
@@ -191,9 +191,8 @@ void MasterControl::CreateScene()
 
     //Create camera
 
-    new Level();
 
-    for (int p : {1, 2}){
+    for (int p : {1}){
         players_.Push(SharedPtr<Player>(new Player(p, context_)));
 
         OGTattCam* cam{ SPAWN->Create<OGTattCam>(false) };
@@ -201,15 +200,17 @@ void MasterControl::CreateScene()
         cameras_.Push(SharedPtr<OGTattCam>(cam));
     }
 
+    new Level();
+
     for (int p{0}; p < 42; ++p){
 
         Character* character{ GetSubsystem<SpawnMaster>()->Create<Character>() };
         character->Set(Vector3(Random(-2.0f, 2.0f), 0.0f, Random(-5.0f, 5.0f)));
 
-        if (p == 0)
-            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);
-        else if (p == 1)
-            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2), character);
+//        if (p == 0)
+//            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);
+//        else if (p == 1)
+//            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2), character);
     }
 //    for (int c{1}; c <= 5 ; ++c) new Cookiejar(context_, this, 2.3f*Vector3::RIGHT*c);
 //    for (int h{0}; h < 5  ; ++h) new Honti(context_, this, 3.0f * Vector3::LEFT + Quaternion((360.0f * 0.2f) * h, Vector3::UP) * Vector3::RIGHT);
@@ -362,5 +363,5 @@ void MasterControl::HandlePostRenderUpdate(StringHash eventType, VariantMap &eve
 { (void)eventType; (void)eventData;
     return;
 
-    physicsWorld_->DrawDebugGeometry(false);
+    physicsWorld_->DrawDebugGeometry(true);
 }

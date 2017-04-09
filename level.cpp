@@ -51,7 +51,7 @@ Object(MC->GetContext())
     CollisionShape* groundCollider{ rootNode_->CreateComponent<CollisionShape>() };
     groundCollider->SetBox(Vector3(1000.0f, 2.0f, 1000.0f), Vector3::DOWN);
 
-    TmxFile2D* tmxFile{MC->CACHE->GetResource<TmxFile2D>("Maps/smallTest.tmx")};
+    TmxFile2D* tmxFile{MC->CACHE->GetResource<TmxFile2D>("Maps/test.tmx")};
     if (tmxFile)
         InitializeFromMap(*tmxFile);
 //    else
@@ -129,7 +129,7 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
                 Vector3 pos(scaleFactor * object->GetPosition().x_,
                             0.0f,
                             scaleFactor * object->GetPosition().y_);
-                pos += Vector3(-0.5f * mapWidth, 0.0f, -0.5f * mapHeight + 1);
+                pos += Vector3(-0.5f*mapWidth, 0.0f, -0.5f*mapHeight+1);
 
                 Quaternion rot{};   ///float TileMapObject2D::GetRotation()
                                     ///int TileMapObject2D::GetId()

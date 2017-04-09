@@ -56,14 +56,6 @@ void OGTattCam::OnNodeSet(Node *node)
 
     //Set an initial position for the camera scene node above the origin
     node_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
-    rigidBody_ = node_->CreateComponent<RigidBody>();
-    rigidBody_->SetAngularDamping(10.0f);
-    rigidBody_->SetLinearDamping(0.9f);
-    rigidBody_->SetUseGravity(false);
-//    CollisionShape* collisionShape = rootNode_->CreateComponent<CollisionShape>();
-//    collisionShape->SetSphere(0.1f);
-    rigidBody_->SetMass(1.0f);
-
 }
 
 void OGTattCam::Set(Vector3 position, int playerId)
@@ -81,10 +73,10 @@ void OGTattCam::SetupViewport()
     //Set up a viewport to the Renderer subsystem so that the 3D scene can be seen
     renderer->SetNumViewports(2);
     SharedPtr<Viewport> viewport(new Viewport(context_, MC->world.scene, camera_));
-    viewport->SetRect(IntRect((playerId_ == 2) * (GRAPHICS->GetWidth()/2),
-                              0,
-                              (GRAPHICS->GetWidth()/2) + ((playerId_ == 2) * (GRAPHICS->GetWidth()/2)),
-                              GRAPHICS->GetHeight()));
+//    viewport->SetRect(IntRect((playerId_ == 2) * (GRAPHICS->GetWidth()/2),
+//                              0,
+//                              (GRAPHICS->GetWidth()/2) + ((playerId_ == 2) * (GRAPHICS->GetWidth()/2)),
+//                              GRAPHICS->GetHeight()));
 
     //Add anti-asliasing and bloom
     effectRenderPath = viewport->GetRenderPath();
@@ -162,19 +154,19 @@ void OGTattCam::Update(float timeStep)
     if ( forceMultiplier < 8.0f && (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) ){
         forceMultiplier += 0.23f;
     } else forceMultiplier = pow(forceMultiplier, 0.75f);
-    rigidBody_->ApplyForce(forceMultiplier * camForce * timeStep);
+//    rigidBody_->ApplyForce(forceMultiplier * camForce * timeStep);
 
     //Prevent camera from going too low
     if (node_->GetPosition().y_ < 1.5f)
     {
         node_->SetPosition(Vector3(node_->GetPosition().x_, 1.5f, node_->GetPosition().z_));
-        rigidBody_->SetLinearVelocity(Vector3(rigidBody_->GetLinearVelocity().x_, 0.0f, rigidBody_->GetLinearVelocity().z_));
+//        rigidBody_->SetLinearVelocity(Vector3(rigidBody_->GetLinearVelocity().x_, 0.0f, rigidBody_->GetLinearVelocity().z_));
     }
 
 //    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
     node_->SetPosition(Vector3(0.5f * (targetPosition.x_ + node_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
-                                  0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetVelocity_.Length()),
+                                  0.5f * (targetPosition.y_ + altitude_ + 10.0f * smoothTargetVelocity_.Length()),
                                   0.5f * (targetPosition.z_ + node_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_ - 0.23f - 0.03f * smoothTargetVelocity_.Length()));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*

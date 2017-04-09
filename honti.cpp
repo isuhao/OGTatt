@@ -41,15 +41,15 @@ void Honti::OnNodeSet(Node *node)
     chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
     chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
 
-    chassisBody_->SetMass(5.0f);
+    rigidBody_->SetMass(5.0f);
 //    chassisBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
 //    chassisBody_->SetAngularFactor(Vector3::UP);
-    chassisBody_->SetFriction(0.42f);
-    chassisBody_->SetLinearDamping(0.9f);
-    chassisBody_->SetLinearRestThreshold(0.01f);
-    chassisBody_->SetAngularDamping(0.9f);
-    chassisBody_->SetAngularRestThreshold(0.1f);
-    chassisCollisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f), Vector3::RIGHT * 0.034f /*only when parked*/, Quaternion(9.0f, Vector3::FORWARD));
+    rigidBody_->SetFriction(0.42f);
+    rigidBody_->SetLinearDamping(0.9f);
+    rigidBody_->SetLinearRestThreshold(0.01f);
+    rigidBody_->SetAngularDamping(0.9f);
+    rigidBody_->SetAngularRestThreshold(0.1f);
+    chassisCollisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f), Vector3::UP * 0.33f + Vector3::RIGHT * 0.034f /*only when parked*/, Quaternion(9.0f, Vector3::FORWARD));
 
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.08f));
 

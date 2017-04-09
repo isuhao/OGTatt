@@ -71,6 +71,8 @@ void Character::OnNodeSet(Node *node)
     animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
 
     collisionShape_->SetCylinder(0.4f, 1.0f, Vector3::UP * 0.5f);
+
+    SubscribeToEvent(node_, E_NODECOLLISIONSTART, URHO3D_HANDLER(Character, HandleNodeCollisionStart));
 }
 
 void Character::CreateBody()
@@ -194,7 +196,7 @@ void Character::Update(float timeStep)
     rigidBody_->ApplyForce(force);
 
     //Update rotation according to direction of the player's movement.
-    Vector3 velocity{ rigidBody_->GetLinearVelocity() };
+    Vector3 velocity{ LucKey::Scale(rigidBody_->GetLinearVelocity(), Vector3(1.0f, 0.0f, 1.0f)) };
     Vector3 lookDirection{ velocity + 2.0f * aim_ };
     Quaternion rotation{ node_->GetWorldRotation() };
     Quaternion aimRotation{ rotation };
@@ -238,6 +240,24 @@ void Character::Update(float timeStep)
     }
 }
 
+void Character::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
+{
+    MemoryBuffer contacts{ eventData[NodeCollisionStart::P_CONTACTS].GetBuffer() };
+
+    while (!contacts.IsEof())
+    {
+        Vector3 contactPosition{ contacts.ReadVector3() };
+        Vector3 contactNormal{ contacts.ReadVector3() };
+        float contactDistance{ contacts.ReadFloat() };
+        float contactImpulse{ contacts.ReadFloat() };
+
+        if (contactImpulse > 2.35f){
+
+           Hit(contactImpulse * 10.0f);
+        }
+    }
+}
+
 void Character::Hit(float damage)
 {
     health_ -= damage;
@@ -261,12 +281,14 @@ void Character::CreateRagdoll()
     node_->RemoveComponent<RigidBody>();
     node_->RemoveComponent<CollisionShape>();
 
-    CreateRagdollBone("Chest", SHAPE_BOX,     Vector3(0.23f, 0.3f, 0.1f),  Vector3(0.0f, 0.05f, -0.05f), Quaternion::IDENTITY);
-    CreateRagdollBone("Neck",  SHAPE_CAPSULE, Vector3(0.08f, 0.1f, 0.08f), Vector3(0.0f, 0.0f, 0.0f),    Quaternion::IDENTITY);
-    CreateRagdollBone("Head",  SHAPE_CAPSULE, Vector3(0.13f, 0.2f, 0.13f), Vector3(0.0f, 0.05f, 0.0f),   Quaternion::IDENTITY);
+    CreateRagdollBone("Hips",  SHAPE_BOX,     Vector3(0.3f, 0.23f, 0.1f),  Vector3(0.0f, 0.05f, -0.05f), Quaternion::IDENTITY);
+    CreateRagdollBone("Chest", SHAPE_BOX,     Vector3(0.23f, 0.3f, 0.1f),  Vector3(0.0f, 0.0f,   0.0f),  Quaternion::IDENTITY);
+    CreateRagdollBone("Neck",  SHAPE_CAPSULE, Vector3(0.08f, 0.1f, 0.08f), Vector3(0.0f, 0.0f,   0.0f),  Quaternion::IDENTITY);
+    CreateRagdollBone("Head",  SHAPE_CAPSULE, Vector3(0.13f, 0.2f, 0.13f), Vector3(0.0f, 0.05f,  0.0f),  Quaternion::IDENTITY);
 
     CreateRagdollConstraint("Head", "Neck",  CONSTRAINT_CONETWIST, Vector3::UP, Vector3::UP, Vector2(45.0f, 45.0f), Vector2(-20.0f, -20.0f), true);
     CreateRagdollConstraint("Neck", "Chest", CONSTRAINT_HINGE, Vector3::LEFT, Vector3::LEFT, Vector2(45.0f, 45.0f), Vector2(-20.0f, -20.0f), true);
+    CreateRagdollConstraint("Chest", "Hips", CONSTRAINT_CONETWIST, Vector3::UP, Vector3::UP, Vector2(45.0f, 45.0f), Vector2(-20.0f, -20.0f), true);
 
     CreateRagdollBone("UpperArm.L", SHAPE_CAPSULE, Vector3(0.11f, 0.23f, 0.11f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
     CreateRagdollBone("UpperArm.R", SHAPE_CAPSULE, Vector3(0.11f, 0.23f, 0.11f), Vector3(0.0f, 0.07f, 0.0f), Quaternion::IDENTITY);
@@ -291,8 +313,8 @@ void Character::CreateRagdoll()
     CreateRagdollBone("Toes.L",   SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
     CreateRagdollBone("Toes.R",   SHAPE_BOX,     Vector3(0.1f, 0.1f, 0.07f), Vector3(0.0f, 0.05f, 0.0f), Quaternion::IDENTITY);
 
-    CreateRagdollConstraint("Thigh.L", "Chest",   CONSTRAINT_CONETWIST, Vector3::LEFT,      Vector3::RIGHT,   Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
-    CreateRagdollConstraint("Thigh.R", "Chest",   CONSTRAINT_CONETWIST, Vector3::RIGHT,      Vector3::LEFT,    Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
+    CreateRagdollConstraint("Thigh.L", "Hips",   CONSTRAINT_CONETWIST, Vector3::LEFT,      Vector3::RIGHT,   Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
+    CreateRagdollConstraint("Thigh.R", "Hips",   CONSTRAINT_CONETWIST, Vector3::RIGHT,      Vector3::LEFT,    Vector2( 45.0f,  10.0f),   Vector2(-45.0f, -10.0f), true);
     CreateRagdollConstraint("Shin.L", "Thigh.L",  CONSTRAINT_HINGE,     Vector3::LEFT, Vector3::LEFT, Vector2(120.0f, 120.0f),   Vector2(  0.0f,   0.0f), true);
     CreateRagdollConstraint("Shin.R", "Thigh.R",  CONSTRAINT_HINGE,     Vector3::RIGHT, Vector3::RIGHT, Vector2(120.0f, 120.0f),   Vector2(  0.0f,   0.0f), true);
     CreateRagdollConstraint("Instep.L", "Shin.L", CONSTRAINT_HINGE,     Vector3::RIGHT,   Vector3::RIGHT,   Vector2( 45.0f,  45.0f),   Vector2(-23.0f, -23.0f), true);

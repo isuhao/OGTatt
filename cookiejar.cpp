@@ -18,6 +18,8 @@
 
 #include "cookiejar.h"
 
+#include "inputmaster.h"
+
 void Cookiejar::RegisterObject(Context *context)
 {
     context->RegisterFactory<Cookiejar>();
@@ -33,31 +35,34 @@ void Cookiejar::OnNodeSet(Node *node)
     Car::OnNodeSet(node_);
 
     chassisModel_->SetModel(MC->GetModel("Cookiejar"));
+
     SharedPtr<Material> paint = MC->GetMaterial("Paint")->Clone();
     chassisModel_->SetMaterial(0, paint);
     paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
+
     chassisModel_->SetMaterial(1, MC->GetMaterial("Glass"));
     chassisModel_->SetMaterial(2, MC->GetMaterial("Darkness"));
     chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
     chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
     chassisModel_->SetMaterial(5, MC->GetMaterial("Decal"));
 
-    for (unsigned m{0}; m < chassisModel_->GetNumMorphs(); ++m){
-        chassisModel_->SetMorphWeight(m, Random());
-    }
+//    for (unsigned m{0}; m < chassisModel_->GetNumMorphs(); ++m){
+//        chassisModel_->SetMorphWeight(m, Random());
+//    }
 
-    chassisBody_->SetMass(25.0f);
-//    chassisBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
-//    chassisBody_->SetAngularFactor(Vector3::UP);
-    chassisBody_->SetFriction(0.42f);
-    chassisBody_->SetLinearDamping(0.9f);
-    chassisBody_->SetLinearRestThreshold(0.01f);
-    chassisBody_->SetAngularDamping(0.9f);
-    chassisBody_->SetAngularRestThreshold(0.1f);
-    chassisCollisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f));
+    rigidBody_->SetMass(50.0f);
+    rigidBody_->SetFriction(0.42f);
+    rigidBody_->SetLinearDamping(0.9f);
+    rigidBody_->SetLinearRestThreshold(0.01f);
+    rigidBody_->SetAngularDamping(0.9f);
+    rigidBody_->SetAngularRestThreshold(0.1f);
+
+    chassisCollisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f), Vector3::UP * 0.35f);
+
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
-
     SetupLights(2, 2, BoundingBox(Vector3(-0.42f, 0.33f, -1.1f), Vector3(0.42f, 0.41f, 0.9f)));
+
+    GetSubsystem<InputMaster>()->SetPlayerControl(MC->GetPlayer(1), this);
 }
 
 

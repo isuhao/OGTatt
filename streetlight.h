@@ -41,7 +41,11 @@ public:
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);
     virtual void OnNodeSet(Node *node);
     static void RegisterObject(Context *context);
+    void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
+    void SwitchOff();
+
 private:
+    StaticModel* model_;
     Node* lightNode_;
     Light* light_;
     float brightness_;

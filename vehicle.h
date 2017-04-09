@@ -22,7 +22,7 @@
 #include <Urho3D/Urho3D.h>
 #include <Bullet/BulletDynamics/Vehicle/btRaycastVehicle.h>
 
-#include "sceneobject.h"
+#include "controllable.h"
 
 namespace Urho3D {
 class Constraint;
@@ -44,9 +44,9 @@ const float MAX_WHEEL_ANGLE = 22.5f;
 //=============================================================================
 // Vehicle component, responsible for physical movement according to controls.
 //=============================================================================
-class Vehicle : public SceneObject
+class Vehicle : public Controllable
 {
-    URHO3D_OBJECT(Vehicle, SceneObject);
+    URHO3D_OBJECT(Vehicle, Controllable);
 public:
     Vehicle(Context *context);
     ~Vehicle();
@@ -65,33 +65,31 @@ public:
 protected:
     float steering_;
     // raycast vehicle
- btRaycastVehicle::btVehicleTuning	m_tuning;
- btVehicleRaycaster                  *m_vehicleRayCaster;
- btRaycastVehicle                    *m_vehicle;
+    btRaycastVehicle::btVehicleTuning  tuning_;
+    btVehicleRaycaster*                vehicleRayCaster_;
+    btRaycastVehicle*                  raycastVehicle_;
 
- // IDs of the wheel scene nodes for serialization.
- Vector<Node*>           m_vpNodeWheel;
+    Vector<Node*> wheelNodes_;
 
- float	m_fEngineForce;
- float	m_fBreakingForce;
+    float engineForce_;
+    float breakingForce_;
 
- float	m_fmaxEngineForce;
- float	m_fmaxBreakingForce;
+    float maxEngineForce_;
+    float maxBreakingForce_;
 
- float	m_fVehicleSteering;
- float	m_fsteeringIncrement;
- float	m_fsteeringClamp;
- float	m_fwheelRadius;
- float	m_fwheelWidth;
- float	m_fwheelFriction;
- float	m_fsuspensionStiffness;
- float	m_fsuspensionDamping;
- float	m_fsuspensionCompression;
- float	m_frollInfluence;
- float   m_fsuspensionRestLength;
+    float vehicleSteering_;
+    float steeringIncrement_;
+    float steeringClamp_;
+    float wheelRadius_;
+    float wheelWidth_;
+    float wheelFriction_;
+    float suspensionStiffness_;
+    float suspensionDamping_;
+    float suspensionCompression_;
+    float rollInfluence_;
+    float suspensionRestLength_;
 
     AnimatedModel* chassisModel_;
-    WeakPtr<RigidBody> chassisBody_;
     CollisionShape* chassisCollisionShape_;
     Node* particleNode_;
     ParticleEmitter* flameEmitter_;
