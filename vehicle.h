@@ -30,6 +30,8 @@ class Node;
 class RigidBody;
 }
 
+enum VehicleActions{ NITRO, HANDBREAK, HORN };
+
 using namespace Urho3D;
 //=============================================================================
 //=============================================================================
@@ -62,7 +64,12 @@ public:
 
     // Movement controls.
     Controls controls_;
+    void SetLightsEnabled(bool enabled);
 protected:
+    float initialDurability_;
+    float durability_;
+    bool functional_;
+
     float steering_;
     // raycast vehicle
     btRaycastVehicle::btVehicleTuning  tuning_;

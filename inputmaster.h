@@ -25,7 +25,7 @@
 #include "controllable.h"
 
 enum class MasterInputAction { UP, RIGHT, DOWN, LEFT, CONFIRM, CANCEL, PAUSE, MENU, SCREENSHOT };
-enum class PlayerInputAction { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RUN,
+enum class PlayerInputAction { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RUN, JUMP,
                                FIRE_N, FIRE_NE, FIRE_E, FIRE_SE,
                                FIRE_S, FIRE_SW, FIRE_W, FIRE_NW };
 

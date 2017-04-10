@@ -62,6 +62,8 @@ void Car::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
                 chassisModel_->SetMorphWeight(morphIndex, chassisModel_->GetMorphWeight(morphIndex)
                                               + contactImpulse * 0.001f);
             }
+
+            Hit(contactImpulse * 0.023f);
         }
     }
 }

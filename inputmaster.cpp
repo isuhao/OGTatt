@@ -41,6 +41,7 @@ InputMaster::InputMaster(Context* context):
     keyBindingsPlayer_[1][KEY_A]      = PlayerInputAction::MOVE_LEFT;
     keyBindingsPlayer_[1][KEY_D]      = PlayerInputAction::MOVE_RIGHT;
     keyBindingsPlayer_[1][KEY_LSHIFT] = PlayerInputAction::RUN;
+    keyBindingsPlayer_[1][KEY_SPACE]  = PlayerInputAction::JUMP;
     keyBindingsPlayer_[1][KEY_KP_8]   = PlayerInputAction::FIRE_N;
     keyBindingsPlayer_[1][KEY_KP_5]   = PlayerInputAction::FIRE_S;
     keyBindingsPlayer_[1][KEY_KP_2]   = PlayerInputAction::FIRE_S;
@@ -145,6 +146,7 @@ void InputMaster::HandleActions(const InputActions& actions)
 
             std::bitset<4>restActions{};
             restActions[0] = playerInputActions->Contains(PlayerInputAction::RUN);
+            restActions[1] = playerInputActions->Contains(PlayerInputAction::JUMP);
 
             controlled->SetActions(restActions);
         }

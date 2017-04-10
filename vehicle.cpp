@@ -28,13 +28,14 @@
 //=============================================================================
 Vehicle::Vehicle(Context* context):
     Controllable(context),
-    steering_( 0.0f )
+    steering_{0.0f},
+    functional_{true}
 {
     SetUpdateEventMask( USE_FIXEDUPDATE | USE_POSTUPDATE);
     engineForce_ = 0.0f;
     breakingForce_ = 0.0f;
 
-    maxEngineForce_ = 500.f;//this should be engine/velocity dependent
+    maxEngineForce_ = 235.f;//this should be engine/velocity dependent
     maxBreakingForce_ = 100.f;
 
     vehicleSteering_ = 0.0f;
@@ -42,7 +43,7 @@ Vehicle::Vehicle(Context* context):
     steeringClamp_ = 0.3f;
     wheelRadius_ = 0.2f;
     wheelWidth_ = 0.13f;
-    wheelFriction_ = 10;//BT_LARGE_FLOAT;
+    wheelFriction_ = 2.0f;//BT_LARGE_FLOAT;
     suspensionStiffness_ = 23.0f;//20.f;
     suspensionDamping_ = 2.0f;//2.3f;
     suspensionCompression_ = 2.0f;//4.4f;
@@ -75,7 +76,8 @@ void Vehicle::OnNodeSet(Node *node)
     rigidBody_ = node_->CreateComponent<RigidBody>();
     chassisCollisionShape_ = node_->CreateComponent<CollisionShape>();
 
-    rigidBody_->SetLinearDamping(0.1f); // Some air resistance
+    rigidBody_->SetFriction(0.42f);
+    rigidBody_->SetLinearDamping(0.2f);
     rigidBody_->SetAngularDamping(0.1f);
     rigidBody_->SetCollisionLayer(1);
 
@@ -153,14 +155,17 @@ void Vehicle::OnNodeSet(Node *node)
 
 void Vehicle::FixedUpdate(float timeStep)
 {
+
 //    controls_.Set(CTRL_FORWARD, move_.z_ > 0.0f);
 //    controls_.Set(CTRL_LEFT,    move_.x_ < 0.0f);
 //    controls_.Set(CTRL_RIGHT,   move_.x_ > 0.0f);
 //    controls_.Set(CTRL_BACK,    move_.z_ < 0.0f);
 
-    float newSteering = move_.x_ * (1.0f - 0.23f * Abs(move_.z_ * 0.23f));
+    float newSteering = move_.x_ * Pow(0.9f, rigidBody_->GetLinearVelocity().Length());
     float accelerator = move_.z_ > 0.0f ? move_.z_
-                                        : move_.z_ * 0.5f;
+                                        : move_.z_ * 0.666f;
+    if (!functional_)
+        newSteering = accelerator = 0.0f;
 
     // Read controls
 //    if (controls_.buttons_ & CTRL_LEFT)
@@ -185,10 +190,10 @@ void Vehicle::FixedUpdate(float timeStep)
 
     // Set front wheel angles
     vehicleSteering_ = steering_;
-    int wheelIndex = 0;
-    raycastVehicle_->setSteeringValue(vehicleSteering_, wheelIndex);
-    wheelIndex = 1;
-    raycastVehicle_->setSteeringValue(vehicleSteering_, wheelIndex);
+    for (int wheelIndex : { 0, 1 }){
+
+        raycastVehicle_->setSteeringValue(vehicleSteering_, wheelIndex);
+    }
 
     if ( newSteering != 0.0f || accelerator != 0.0f )
     {
@@ -196,14 +201,15 @@ void Vehicle::FixedUpdate(float timeStep)
     }
 
     // apply forces
-    engineForce_ = maxEngineForce_ * accelerator;
-    breakingForce_ = 0.f;
+    breakingForce_ = 42.0f * actions_[HANDBREAK];
+    engineForce_ = breakingForce_ == 0.0f ? maxEngineForce_ * accelerator
+                                          : 0.0f;
 
     // 2x wheel drive
-    for ( int i{2}; i < 4; ++i )
+    for ( int wheelIndex : { 2, 3 } )
     {
-        raycastVehicle_->applyEngineForce( engineForce_, i );
-//        m_vehicle->setBrake( m_fBreakingForce, i );
+            raycastVehicle_->applyEngineForce( engineForce_, wheelIndex );
+            raycastVehicle_->setBrake( breakingForce_, wheelIndex );
     }
 }
 //=============================================================================
@@ -229,10 +235,6 @@ void Vehicle::PostUpdate(float )
 //        pWheel->SetPosition(v3PosLS);
     }
     */
-}
-
-void Vehicle::Hit(float damage)
-{
 }
 
 void Vehicle::SetupLights(int front, int rear, BoundingBox box)
@@ -292,6 +294,28 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
     }
 }
 
+void Vehicle::SetLightsEnabled(bool enabled)
+{
+    for (Pair<SharedPtr<Node>, SharedPtr<Light>> headLight : headLights_) {
+        headLight.second_->SetEnabled(enabled);
+    }
+
+    for (Pair<SharedPtr<Node>, SharedPtr<Light>> tailLight : tailLights_) {
+        tailLight.second_->SetEnabled(enabled);
+    }
+}
+
+void Vehicle::Hit(float damage)
+{
+    durability_ -= damage;
+
+    if (durability_ < initialDurability_ * 0.25f)
+        flameEmitter_->SetEmitting(true);
+
+    if (durability_ <= 0.0f)
+        Destroy();
+}
+
 void Vehicle::Destroy()
 {
 //    new Explosion(node_->GetPosition(), 1.0f);
@@ -299,4 +323,7 @@ void Vehicle::Destroy()
         chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }
     flameEmitter_->SetEmitting(true);
+
+    functional_ = false;
+    SetLightsEnabled(false);
 }

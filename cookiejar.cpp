@@ -28,6 +28,7 @@ void Cookiejar::RegisterObject(Context *context)
 Cookiejar::Cookiejar(Context* context) :
     Car(context)
 {
+    durability_ = initialDurability_ = 100.0f;
 }
 
 void Cookiejar::OnNodeSet(Node *node)
@@ -51,11 +52,10 @@ void Cookiejar::OnNodeSet(Node *node)
 //        chassisModel_->SetMorphWeight(m, Random());
 //    }
 
-    rigidBody_->SetMass(50.0f);
-    rigidBody_->SetFriction(0.42f);
-    rigidBody_->SetLinearDamping(0.9f);
+    rigidBody_->SetMass(75.0f);
+//    rigidBody_->SetLinearDamping(0.9f);
     rigidBody_->SetLinearRestThreshold(0.01f);
-    rigidBody_->SetAngularDamping(0.9f);
+//    rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
 
     chassisCollisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f), Vector3::UP * 0.35f);
