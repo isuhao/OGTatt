@@ -42,7 +42,7 @@ Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a v
 
 * **Grunstatt** (Dutch/German/Danish) | Hemp
 * **Ånslo** (Norwegian/Swedish/Finnish) | Fishballs
-* **Noopolis** (Italian/Greek/French) | Cheese 'n wine
+* **Noopolis** (Italian/Greek/French) | Cheese, wine and philosophy
 * **Airstrip 1** (British/American) | Telescreens
 
 #### Southern

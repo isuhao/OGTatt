@@ -38,6 +38,8 @@ class Car : public Vehicle
 public:
     Car(Context* context);
     virtual Substance GetSubstance(Vector3 position = Vector3::ZERO);
+    void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
+    virtual void OnNodeSet(Node* node);
 };
 
 #endif // CAR_H

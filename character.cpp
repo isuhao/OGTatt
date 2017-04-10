@@ -158,13 +158,16 @@ void Character::Set(Vector3 position)
 
 void Character::Update(float timeStep)
 {
-    if (!alive_){
+    if (!alive_) {
+
         PODVector<RigidBody*> limbs{};
         node_->GetComponents<RigidBody>(limbs, true);
         for (RigidBody* r : limbs) {
 
-            if (r->IsActive())
+            if (r->IsActive()) {
+                r->SetGravityOverride(r->GetGravityOverride() * (1.0f + timeStep));
                 return;
+            }
         }
         for (RigidBody* r : limbs) {
 

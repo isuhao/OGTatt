@@ -31,8 +31,9 @@ Cookiejar::Cookiejar(Context* context) :
 }
 
 void Cookiejar::OnNodeSet(Node *node)
-{
-    Car::OnNodeSet(node_);
+{ if (!node) return;
+
+    Car::OnNodeSet(node);
 
     chassisModel_->SetModel(MC->GetModel("Cookiejar"));
 

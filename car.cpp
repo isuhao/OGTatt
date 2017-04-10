@@ -23,13 +23,45 @@ Car::Car(Context* context) :
 {
 }
 
+void Car::OnNodeSet(Node *node)
+{ if (!node) return;
+
+    Vehicle::OnNodeSet(node);
+
+    SubscribeToEvent(node_, E_NODECOLLISIONSTART, URHO3D_HANDLER(Car, HandleNodeCollisionStart));
+}
+
 Substance Car::GetSubstance(Vector3 position)
 {
     return Substance::Metal;
 }
 
+void Car::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
+{ (void)eventType;
 
+    MemoryBuffer contacts{ eventData[NodeCollisionStart::P_CONTACTS].GetBuffer() };
 
+    while (!contacts.IsEof())
+    {
+        Vector3 contactPosition{ contacts.ReadVector3() };
+        Vector3 contactNormal{ contacts.ReadVector3() };
+        float contactDistance{ contacts.ReadFloat() };
+        float contactImpulse{ contacts.ReadFloat() };
 
+        if (contactImpulse > 100.0f){
 
+            Vector3 localContactPos{ node_->GetRotation().Inverse() * (contactPosition - node_->GetPosition()) };
 
+            Vector3 carSize{ chassisCollisionShape_->GetSize() };
+            float carWidth{ carSize.x_ };
+            float carLength{ carSize.z_ };
+
+            if (localContactPos.z_ > carLength * 0.25f){
+                int morphIndex = Floor(3.0f * (localContactPos.x_ + carWidth * 0.5f) / carWidth);
+
+                chassisModel_->SetMorphWeight(morphIndex, chassisModel_->GetMorphWeight(morphIndex)
+                                              + contactImpulse * 0.001f);
+            }
+        }
+    }
+}
