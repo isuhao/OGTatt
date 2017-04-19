@@ -38,13 +38,16 @@ class Explosion : public Effect
     URHO3D_OBJECT(Explosion, Effect);
 public:
     Explosion(Context *context);
+    static void RegisterObject(Context* context);
 
-    void UpdateExplosion(StringHash eventType, VariantMap &eventData);
+    virtual void UpdateExplosion(StringHash eventType, VariantMap &eventData);
+    virtual void OnNodeSet(Node* node);
+    virtual void Set(Vector3 position);
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<Light> light_;
 private:
-    SharedPtr<Sound> shot_sfx;
+    SharedPtr<Sound> explode_sfx;
     SharedPtr<SoundSource> sampleSource_;
     float initialMass_;
     float initialBrightness_;

@@ -32,6 +32,7 @@
 #include "cookiejar.h"
 #include "honti.h"
 #include "frop.h"
+#include "explosion.h"
 
 #include "mastercontrol.h"
 
@@ -101,6 +102,8 @@ void MasterControl::Start()
     Cookiejar::RegisterObject(context_);
     Honti::RegisterObject(context_);
     Frop::RegisterObject(context_);
+    Explosion::RegisterObject(context_);
+
 
     // Get default style
     defaultStyle_ = CACHE->GetResource<XMLFile>("UI/DefaultStyle.xml");

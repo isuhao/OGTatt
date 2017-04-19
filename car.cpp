@@ -16,6 +16,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "spawnmaster.h"
+#include "explosion.h"
+
 #include "car.h"
 
 Car::Car(Context* context) :

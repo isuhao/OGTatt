@@ -18,6 +18,8 @@
 
 #include <Bullet/BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include "explosion.h"
+#include "player.h"
+#include "spawnmaster.h"
 
 #include "vehicle.h"
 //=============================================================================
@@ -79,6 +81,8 @@ void Vehicle::OnNodeSet(Node *node)
     rigidBody_->SetFriction(0.42f);
     rigidBody_->SetLinearDamping(0.2f);
     rigidBody_->SetAngularDamping(0.1f);
+    rigidBody_->SetLinearRestThreshold(0.01f);
+    rigidBody_->SetAngularRestThreshold(0.1f);
     rigidBody_->SetCollisionLayer(1);
 
     int rightIndex = 0;
@@ -130,22 +134,22 @@ void Vehicle::OnNodeSet(Node *node)
             //synchronize the wheels with the (interpolated) chassis worldtransform
             raycastVehicle_->updateWheelTransform(i,true);
 
-            btTransform transform = raycastVehicle_->getWheelTransformWS( i );
-            Vector3 v3Origin( transform.getOrigin() );
-            Quaternion( transform.getRotation() );
+            btTransform transform{ raycastVehicle_->getWheelTransformWS( i ) };
+            Vector3 v3Origin{ transform.getOrigin() };
+            Quaternion{ transform.getRotation() };
 
             // create wheel node
-            Node *wheelNode = GetScene()->CreateChild();
+            Node* wheelNode{ GetScene()->CreateChild() };
             wheelNodes_.Push( wheelNode );
 
             wheelNode->SetPosition( v3Origin );
-            btWheelInfo whInfo = raycastVehicle_->getWheelInfo( i );
-            Vector3 v3PosLS( whInfo.m_chassisConnectionPointCS);
+            btWheelInfo whInfo{ raycastVehicle_->getWheelInfo( i ) };
+            Vector3 v3PosLS{ whInfo.m_chassisConnectionPointCS };
 
             wheelNode->SetRotation( v3PosLS.x_ >= 0.0 ? Quaternion(0.0f, 0.0f, -90.0f) : Quaternion(0.0f, 0.0f, 90.0f) );
 //            wheelNode->SetScale(5.0f);
 
-            StaticModel *pWheel = wheelNode->CreateComponent<StaticModel>();
+            StaticModel* pWheel{ wheelNode->CreateComponent<StaticModel>() };
             pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
             pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/Asphalt.xml"));
 //            pWheel->SetCastShadows(true);
@@ -155,28 +159,21 @@ void Vehicle::OnNodeSet(Node *node)
 
 void Vehicle::FixedUpdate(float timeStep)
 {
+    float newSteering{};
+    float accelerator{};
 
-//    controls_.Set(CTRL_FORWARD, move_.z_ > 0.0f);
-//    controls_.Set(CTRL_LEFT,    move_.x_ < 0.0f);
-//    controls_.Set(CTRL_RIGHT,   move_.x_ > 0.0f);
-//    controls_.Set(CTRL_BACK,    move_.z_ < 0.0f);
+    newSteering = move_.x_ * Pow(0.9f, rigidBody_->GetLinearVelocity().Length());
+    accelerator = move_.z_ > 0.0f ? move_.z_
+                                  : move_.z_ * 0.666f;
 
-    float newSteering = move_.x_ * Pow(0.9f, rigidBody_->GetLinearVelocity().Length());
-    float accelerator = move_.z_ > 0.0f ? move_.z_
-                                        : move_.z_ * 0.666f;
+    if (Player* p{ GetPlayer() }) {
+        if (JoystickState* joystick{ INPUT->GetJoystick(p->GetPlayerId() - 1) }) {
+
+            accelerator = Clamp(joystick->GetAxisPosition(13), 0.0f, 1.0f) - Clamp(joystick->GetAxisPosition(12) * 0.5f, 0.0f, 1.0f);
+        }
+    }
     if (!functional_)
         newSteering = accelerator = 0.0f;
-
-    // Read controls
-//    if (controls_.buttons_ & CTRL_LEFT)
-//        newSteering = -1.0f;
-//    if (controls_.buttons_ & CTRL_RIGHT)
-//        newSteering = 1.0f;
-//    if (controls_.buttons_ & CTRL_FORWARD){
-//        accelerator = 1.0f;
-//        newSteering *= 0.5f;
-//    } else if (controls_.buttons_ & CTRL_BACK)
-//        accelerator = -0.5f;
 
     // When steering, wake up the wheel rigidbodies so that their orientation is updated
     if ( newSteering != 0.0f )
@@ -212,9 +209,7 @@ void Vehicle::FixedUpdate(float timeStep)
             raycastVehicle_->setBrake( breakingForce_, wheelIndex );
     }
 }
-//=============================================================================
-// sync wheels for rendering
-//=============================================================================
+
 void Vehicle::PostUpdate(float )
 {/* Freaky wheels
 
@@ -318,7 +313,8 @@ void Vehicle::Hit(float damage)
 
 void Vehicle::Destroy()
 {
-//    new Explosion(node_->GetPosition(), 1.0f);
+    SPAWN->Create<Explosion>()->Set(node_->GetPosition());
+
     for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
         chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }

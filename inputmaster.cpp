@@ -52,6 +52,8 @@ InputMaster::InputMaster(Context* context):
     keyBindingsPlayer_[1][KEY_KP_1]   = PlayerInputAction::FIRE_SW;
     keyBindingsPlayer_[1][KEY_KP_7]   = PlayerInputAction::FIRE_NW;
 
+    buttonBindingsPlayer_[1][SB_CROSS]   = PlayerInputAction::JUMP;
+
     keyBindingsPlayer_[2][KEY_UP]     = PlayerInputAction::MOVE_UP;
     keyBindingsPlayer_[2][KEY_DOWN]   = PlayerInputAction::MOVE_DOWN;
     keyBindingsPlayer_[2][KEY_LEFT]   = PlayerInputAction::MOVE_LEFT;
