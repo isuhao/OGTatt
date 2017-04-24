@@ -97,6 +97,7 @@ protected:
     float suspensionRestLength_;
 
     AnimatedModel* chassisModel_;
+    SharedPtr<Material> decalMaterial_;
     CollisionShape* chassisCollisionShape_;
     Node* particleNode_;
     ParticleEmitter* flameEmitter_;
@@ -108,8 +109,8 @@ protected:
                 SharedPtr<Light>>> tailLights_;
 
     void SetupLights(int front, int rear, BoundingBox box);
-private:
     void Destroy();
+private:
 
     void AddLight(Vector3 pos, bool head = true);
 };

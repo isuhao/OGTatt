@@ -46,7 +46,7 @@ void Cookiejar::OnNodeSet(Node *node)
     chassisModel_->SetMaterial(2, MC->GetMaterial("Darkness"));
     chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
     chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
-    chassisModel_->SetMaterial(5, MC->GetMaterial("Decal"));
+    chassisModel_->SetMaterial(5, decalMaterial_);
 
     rigidBody_->SetMass(70.0f);
 

@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <particleeffect>
-	<material name="Resources/Materials/Blood.xml" />
+	<material name="Materials/Blood.xml" />
 	<numparticles value="10" />
 	<updateinvisible enable="true" />
 	<relative enable="true" />
 	<scaled enable="true" />
 	<sorted enable="true" />
+	<fixedscreensize enable="false" />
 	<animlodbias value="0" />
 	<emittertype value="Sphere" />
 	<emittersize value="0.01 0.01 0.01" />
@@ -24,10 +25,10 @@
 	<faceCameraMode value="Direction" />
 	<colorfade color="1 1 1 1" time="0" />
 	<colorfade color="0 0 0 0" time="0.12" />
-	<texanim uv="0     0     0.5 0.333" time="0" />
-	<texanim uv="0.5   0     1   0.333" time="0.02" />
-	<texanim uv="0     0.333 0.5 0.666" time="0.04" />
-	<texanim uv="0.5   0.333 1   0.666" time="0.06" />
-	<texanim uv="0     0.666 0.5 1"     time="0.08" />
-	<texanim uv="0.666 0.5   1   1"     time="0.1" />
+	<texanim uv="0 0 0.5 0.333" time="0" />
+	<texanim uv="0.5 0 1 0.333" time="0.02" />
+	<texanim uv="0 0.333 0.5 0.666" time="0.04" />
+	<texanim uv="0.5 0.333 1 0.666" time="0.06" />
+	<texanim uv="0 0.666 0.5 1" time="0.08" />
+	<texanim uv="0.666 0.5 1 1" time="0.1" />
 </particleeffect>

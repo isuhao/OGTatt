@@ -10,22 +10,23 @@
 	<animlodbias value="0" />
 	<emittertype value="Sphere" />
 	<emittersize value="0.5 0 0.1" />
-	<direction min="0.1 0 0.1" max="0.1 0 0.1" />
+	<direction min="0.1 -0.75 0.1" max="0.1 1 0.1" />
 	<constantforce value="0 23 0" />
 	<dampingforce value="8" />
 	<activetime value="0" />
 	<inactivetime value="0" />
 	<emissionrate min="32" max="64" />
-	<particlesize min="0.1 0.08" max="0.13 0.23" />
+	<particlesize min="0.15 0.12" max="0.2 0.23" />
 	<timetolive min="0.333" max="0.333" />
 	<velocity min="0.42" max="0.5" />
 	<rotation min="0" max="360" />
 	<rotationspeed min="-500" max="500" />
-	<sizedelta add="-2.3" mul="4.2" />
+	<sizedelta add="-2.6" mul="3.5" />
 	<faceCameraMode value="Rotate XYZ" />
-	<colorfade color="0.8 0.8 1 1" time="0" />
-	<colorfade color="0.5 0.45 0.4 1" time="0.23" />
-	<colorfade color="0 0 0 1" time="0.333" />
+	<colorfade color="0 0 0 0" time="0" />
+	<colorfade color="0.8 0.8 1 1" time="0.05" />
+	<colorfade color="0.5 0.45 0.4 0.75" time="0.23" />
+	<colorfade color="0 0 0 0" time="0.333" />
 	<texanim uv="0 0.25 0 0" time="0" />
 	<texanim uv="0.25 0.5 0 0.25" time="0.1" />
 	<texanim uv="0.5 0.75 0 0.25" time="0.2" />

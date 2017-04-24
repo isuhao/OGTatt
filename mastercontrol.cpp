@@ -57,16 +57,16 @@ void MasterControl::Setup()
     SetRandomSeed(GetSubsystem<Time>()->GetSystemTime());
     // Modify engine startup parameters.
     //Set custom window title and icon.
-    engineParameters_["WindowTitle"] = "OG Tatt";
-    engineParameters_["LogName"] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
-    engineParameters_["WindowIcon"] = "icon.png";
+    engineParameters_[EP_WINDOW_TITLE] = "OG Tatt";
+    engineParameters_[EP_WINDOW_ICON] = "icon.png";
+    engineParameters_[EP_LOG_NAME] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
 
     //Add resource paths
     String resourcePaths{};
 
-    if (FILES->DirExists(FILES->GetAppPreferencesDir("luckey", "ogtatt")))
+    /*if (FILES->DirExists(FILES->GetAppPreferencesDir("luckey", "ogtatt")))
         resourcePaths = FILES->GetAppPreferencesDir("luckey", "ogtatt");
-    else if (FILES->DirExists("Resources"))
+    else*/ if (FILES->DirExists("Resources"))
         resourcePaths = "Resources";
     else if (FILES->DirExists("../OGTatt/Resources"))
         resourcePaths = "../OGTatt/Resources";

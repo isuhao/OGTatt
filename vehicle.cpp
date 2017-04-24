@@ -69,11 +69,13 @@ void Vehicle::OnNodeSet(Node *node)
 {
     particleNode_ = node_->CreateChild("Fire");
     flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
-    flameEmitter_->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter_->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/HoodFire.xml"));
     flameEmitter_->SetEmitting(false);
 
     chassisModel_ = node_->CreateComponent<AnimatedModel>();
     chassisModel_->SetCastShadows(true);
+
+    decalMaterial_ = MC->GetMaterial("Decal")->Clone();
 
     rigidBody_ = node_->CreateComponent<RigidBody>();
     chassisCollisionShape_ = node_->CreateComponent<CollisionShape>();
@@ -139,7 +141,7 @@ void Vehicle::OnNodeSet(Node *node)
             Quaternion{ transform.getRotation() };
 
             // create wheel node
-            Node* wheelNode{ GetScene()->CreateChild() };
+            Node* wheelNode{ node_->CreateChild() };
             wheelNodes_.Push( wheelNode );
 
             wheelNode->SetPosition( v3Origin );
@@ -147,11 +149,10 @@ void Vehicle::OnNodeSet(Node *node)
             Vector3 v3PosLS{ whInfo.m_chassisConnectionPointCS };
 
             wheelNode->SetRotation( v3PosLS.x_ >= 0.0 ? Quaternion(0.0f, 0.0f, -90.0f) : Quaternion(0.0f, 0.0f, 90.0f) );
-//            wheelNode->SetScale(5.0f);
 
             StaticModel* pWheel{ wheelNode->CreateComponent<StaticModel>() };
-            pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
-            pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/Asphalt.xml"));
+//            pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
+//            pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/TailLight.xml"));
 //            pWheel->SetCastShadows(true);
         }
     }
@@ -211,8 +212,7 @@ void Vehicle::FixedUpdate(float timeStep)
 }
 
 void Vehicle::PostUpdate(float )
-{/* Freaky wheels
-
+{
     for ( int i{0}; i < raycastVehicle_->getNumWheels(); ++i )
     {
         raycastVehicle_->updateWheelTransform(i, true);
@@ -221,7 +221,7 @@ void Vehicle::PostUpdate(float )
         Quaternion qRot{ ToQuaternion(transform.getRotation()) };
 
         Node* pWheel{ wheelNodes_[i] };
-        pWheel->SetPosition( v3Origin );
+        pWheel->SetWorldPosition( v3Origin + Vector3::UP );
 
         btWheelInfo whInfo = raycastVehicle_->getWheelInfo( i );
         Vector3 v3PosLS( whInfo.m_chassisConnectionPointCS );
@@ -229,7 +229,6 @@ void Vehicle::PostUpdate(float )
         pWheel->SetRotation( qRot * qRotator );
 //        pWheel->SetPosition(v3PosLS);
     }
-    */
 }
 
 void Vehicle::SetupLights(int front, int rear, BoundingBox box)
@@ -302,18 +301,25 @@ void Vehicle::SetLightsEnabled(bool enabled)
 
 void Vehicle::Hit(float damage)
 {
+    if (durability_ == 0.0f)
+        return;
+
     durability_ -= damage;
 
     if (durability_ < initialDurability_ * 0.25f)
         flameEmitter_->SetEmitting(true);
 
-    if (durability_ <= 0.0f)
+    if (durability_ <= 0.0f) {
         Destroy();
+        durability_ = 0.0f;
+    }
 }
 
 void Vehicle::Destroy()
 {
-    SPAWN->Create<Explosion>()->Set(node_->GetPosition());
+    SPAWN->Create<Explosion>()->Set(node_->GetPosition() + Vector3::UP * chassisModel_->GetBoundingBox().Size().y_);
+
+    chassisModel_->SetShadowMask(2);
 
     for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
         chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));

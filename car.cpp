@@ -17,7 +17,6 @@
 */
 
 #include "spawnmaster.h"
-#include "explosion.h"
 
 #include "car.h"
 
@@ -60,7 +59,7 @@ void Car::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
             float carLength{ carSize.z_ };
 
             if (localContactPos.z_ > carLength * 0.25f){
-                int morphIndex = Floor(3.0f * (localContactPos.x_ + carWidth * 0.5f) / carWidth);
+                int morphIndex{ Floor(3.0f * (localContactPos.x_ + carWidth * 0.5f) / carWidth) };
 
                 chassisModel_->SetMorphWeight(morphIndex, chassisModel_->GetMorphWeight(morphIndex)
                                               + contactImpulse * 0.001f);

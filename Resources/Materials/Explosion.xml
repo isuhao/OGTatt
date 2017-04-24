@@ -11,4 +11,5 @@
 	<cull value="ccw" />
 	<shadowcull value="ccw" />
 	<depthbias constant="0" slopescaled="0" />
+<bias value="-10"/>
 </material>

@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <particleeffect>
-	<material name="Resources/Materials/Pebbel.xml" />
+	<material name="Materials/Pebbel.xml" />
 	<numparticles value="5" />
 	<updateinvisible enable="true" />
 	<relative enable="true" />
 	<scaled enable="true" />
 	<sorted enable="true" />
+	<fixedscreensize enable="false" />
 	<animlodbias value="0" />
 	<emittertype value="Sphere" />
 	<emittersize value="0.02 0.02 0.02" />
@@ -21,4 +22,6 @@
 	<rotation min="0" max="360" />
 	<rotationspeed min="180" max="360" />
 	<sizedelta add="-0.5" mul="-1" />
+	<faceCameraMode value="Rotate XYZ" />
+	<color value="1 1 1 1" />
 </particleeffect>

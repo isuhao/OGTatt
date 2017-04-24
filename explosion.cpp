@@ -46,6 +46,8 @@ void Explosion::OnNodeSet(Node *node)
     light_ = node_->CreateComponent<Light>();
     light_->SetRange(13.0f);
     light_->SetColor(color);
+    light_->SetCastShadows(true);
+    light_->SetLightMask(1);
 
     ParticleEffect* particleEffect{ MC->CACHE->GetResource<ParticleEffect>("Particles/Explosion.xml") };
     Vector<ColorFrame> colorFrames;
@@ -82,7 +84,7 @@ void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)
     float timeStep{ eventData[Update::P_TIMESTEP].GetFloat() };
 
     rigidBody_->SetMass(Max(initialMass_ * ((0.1f - age_)/0.1f),0.01f));
-    light_->SetBrightness(Max(initialBrightness_*(0.32f - age_)/0.32f,0.0f));
+    light_->SetBrightness(Max(initialBrightness_ * (0.32f - age_)/0.32f,0.0f));
 
     if (node_->IsEnabled()) {
         PODVector<RigidBody*> hitResults;
@@ -90,7 +92,7 @@ void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)
         if (MC->PhysicsSphereCast(hitResults,node_->GetPosition(), radius, M_MAX_UNSIGNED)){
             for (unsigned i{0}; i < hitResults.Size(); ++i){
                 if (!hitResults[i]->IsTrigger()){
-                    hitResults[i]->ApplyForce((hitResults[i]->GetNode()->GetWorldPosition() - node_->GetWorldPosition()) * sqrt(radius-LucKey::Distance(node_->GetWorldPosition(), hitResults[i]->GetNode()->GetWorldPosition()))*timeStep*500.0f*rigidBody_->GetMass()
+                    hitResults[i]->ApplyForce((hitResults[i]->GetNode()->GetWorldPosition() - node_->GetWorldPosition()) * sqrt(radius - LucKey::Distance(node_->GetWorldPosition(), hitResults[i]->GetNode()->GetWorldPosition())) * timeStep * 235.0f * rigidBody_->GetMass()
                                 );
                     //Deal damage
 //                    unsigned hitID = hitResults[i]->GetNode()->GetID();

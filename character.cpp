@@ -56,8 +56,8 @@ void Character::OnNodeSet(Node *node)
 //    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
     rigidBody_->SetLinearDamping(0.95f);
     rigidBody_->SetAngularFactor(Vector3::UP);
-    rigidBody_->SetLinearRestThreshold(0.01f);
-    rigidBody_->SetAngularRestThreshold(0.1f);
+    rigidBody_->SetLinearRestThreshold(0.001f);
+    rigidBody_->SetAngularRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(1.0f);
 
     shot_sfx = MC->GetSample("Shot");
