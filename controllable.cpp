@@ -41,7 +41,7 @@ Controllable::Controllable(Context* context) : SceneObject(context),
         actionSince_[a] = 0.0f;
 }
 void Controllable::OnNodeSet(Node *node)
-{ (void)node;
+{ if (!node) return;
 
     SceneObject::OnNodeSet(node_);
 

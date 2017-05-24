@@ -22,8 +22,8 @@
 #include <Urho3D/Urho3D.h>
 #include "mastercontrol.h"
 
-class GUI3D;
 class Controllable;
+class Character;
 
 class Player : public Object
 {
@@ -42,6 +42,9 @@ public:
     void Respawn();
     void ResetScore();
 
+    void SetCharacter(Character* character) { character_ = character; }
+    Character* GetCharacter() const { return character_; }
+
     bool IsAlive() const noexcept { return alive_; }
     bool IsHuman() const noexcept { return !autoPilot_; }
     void EnterLobby();
@@ -53,10 +56,11 @@ private:
     bool autoPilot_;
     bool alive_;
 
+    Character* character_;
+
     unsigned score_;
     unsigned flightScore_;
     int multiplier_;
-
 
     void SetScore(int points);
     Vector3 Sniff(float playerFactor, bool taste);

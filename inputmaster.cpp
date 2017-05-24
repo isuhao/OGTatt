@@ -27,38 +27,46 @@ using namespace LucKey;
 InputMaster::InputMaster(Context* context):
     Object(context)
 {
-    keyBindingsMaster_[KEY_UP]     = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_UP)]    = MasterInputAction::UP;
-    keyBindingsMaster_[KEY_DOWN]   = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_DOWN)]  = MasterInputAction::DOWN;
-    keyBindingsMaster_[KEY_LEFT]   = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_LEFT)]  = MasterInputAction::LEFT;
-    keyBindingsMaster_[KEY_RIGHT]  = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_RIGHT)] = MasterInputAction::RIGHT;
-    keyBindingsMaster_[KEY_RETURN] = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_CROSS)]      = MasterInputAction::CONFIRM;
-    keyBindingsMaster_[KEY_ESCAPE] = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_CIRCLE)]     = MasterInputAction::CANCEL;
-    keyBindingsMaster_[KEY_P]      = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_START)]      = MasterInputAction::PAUSE;
-    keyBindingsMaster_[KEY_ESCAPE] = MasterInputAction::MENU;
+    keyBindingsMaster_[KEY_UP]     = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_UP)]    = MasterAction::UP;
+    keyBindingsMaster_[KEY_DOWN]   = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_DOWN)]  = MasterAction::DOWN;
+    keyBindingsMaster_[KEY_LEFT]   = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_LEFT)]  = MasterAction::LEFT;
+    keyBindingsMaster_[KEY_RIGHT]  = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_DPAD_RIGHT)] = MasterAction::RIGHT;
+    keyBindingsMaster_[KEY_RETURN] = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_CROSS)]      = MasterAction::CONFIRM;
+    keyBindingsMaster_[KEY_ESCAPE] = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_CIRCLE)]     = MasterAction::CANCEL;
+    keyBindingsMaster_[KEY_P]      = buttonBindingsMaster_[static_cast<int>(SixaxisButton::SB_START)]      = MasterAction::PAUSE;
+    keyBindingsMaster_[KEY_ESCAPE] = MasterAction::MENU;
 
-    keyBindingsPlayer_[1][KEY_W]      = PlayerInputAction::MOVE_UP;
-    keyBindingsPlayer_[1][KEY_S]      = PlayerInputAction::MOVE_DOWN;
-    keyBindingsPlayer_[1][KEY_A]      = PlayerInputAction::MOVE_LEFT;
-    keyBindingsPlayer_[1][KEY_D]      = PlayerInputAction::MOVE_RIGHT;
-    keyBindingsPlayer_[1][KEY_LSHIFT] = PlayerInputAction::RUN;
-    keyBindingsPlayer_[1][KEY_SPACE]  = PlayerInputAction::JUMP;
-    keyBindingsPlayer_[1][KEY_KP_8]   = PlayerInputAction::FIRE_N;
-    keyBindingsPlayer_[1][KEY_KP_5]   = PlayerInputAction::FIRE_S;
-    keyBindingsPlayer_[1][KEY_KP_2]   = PlayerInputAction::FIRE_S;
-    keyBindingsPlayer_[1][KEY_KP_4]   = PlayerInputAction::FIRE_W;
-    keyBindingsPlayer_[1][KEY_KP_6]   = PlayerInputAction::FIRE_E;
-    keyBindingsPlayer_[1][KEY_KP_9]   = PlayerInputAction::FIRE_NE;
-    keyBindingsPlayer_[1][KEY_KP_3]   = PlayerInputAction::FIRE_SE;
-    keyBindingsPlayer_[1][KEY_KP_1]   = PlayerInputAction::FIRE_SW;
-    keyBindingsPlayer_[1][KEY_KP_7]   = PlayerInputAction::FIRE_NW;
+    keyBindingsPlayer_[1][KEY_W]      = PlayerAction::MOVE_UP;
+    keyBindingsPlayer_[1][KEY_S]      = PlayerAction::MOVE_DOWN;
+    keyBindingsPlayer_[1][KEY_A]      = PlayerAction::MOVE_LEFT;
+    keyBindingsPlayer_[1][KEY_D]      = PlayerAction::MOVE_RIGHT;
+    keyBindingsPlayer_[1][KEY_LSHIFT] = PlayerAction::ACTION0;
+    keyBindingsPlayer_[1][KEY_SPACE]  = PlayerAction::ACTION1;
+    keyBindingsPlayer_[1][KEY_RETURN] = PlayerAction::ACTION2;
+    keyBindingsPlayer_[1][KEY_TAB]    = PlayerAction::ACTION3;
+    keyBindingsPlayer_[1][KEY_KP_8]   = PlayerAction::FIRE_N;
+    keyBindingsPlayer_[1][KEY_KP_5]   = PlayerAction::FIRE_S;
+    keyBindingsPlayer_[1][KEY_KP_2]   = PlayerAction::FIRE_S;
+    keyBindingsPlayer_[1][KEY_KP_4]   = PlayerAction::FIRE_W;
+    keyBindingsPlayer_[1][KEY_KP_6]   = PlayerAction::FIRE_E;
+    keyBindingsPlayer_[1][KEY_KP_9]   = PlayerAction::FIRE_NE;
+    keyBindingsPlayer_[1][KEY_KP_3]   = PlayerAction::FIRE_SE;
+    keyBindingsPlayer_[1][KEY_KP_1]   = PlayerAction::FIRE_SW;
+    keyBindingsPlayer_[1][KEY_KP_7]   = PlayerAction::FIRE_NW;
 
-    buttonBindingsPlayer_[1][SB_CROSS]   = PlayerInputAction::JUMP;
+    keyBindingsPlayer_[2][KEY_UP]     = PlayerAction::MOVE_UP;
+    keyBindingsPlayer_[2][KEY_DOWN]   = PlayerAction::MOVE_DOWN;
+    keyBindingsPlayer_[2][KEY_LEFT]   = PlayerAction::MOVE_LEFT;
+    keyBindingsPlayer_[2][KEY_RIGHT]  = PlayerAction::MOVE_RIGHT;
+    keyBindingsPlayer_[2][KEY_RSHIFT] = PlayerAction::ACTION0;
 
-    keyBindingsPlayer_[2][KEY_UP]     = PlayerInputAction::MOVE_UP;
-    keyBindingsPlayer_[2][KEY_DOWN]   = PlayerInputAction::MOVE_DOWN;
-    keyBindingsPlayer_[2][KEY_LEFT]   = PlayerInputAction::MOVE_LEFT;
-    keyBindingsPlayer_[2][KEY_RIGHT]  = PlayerInputAction::MOVE_RIGHT;
-    keyBindingsPlayer_[2][KEY_RSHIFT] = PlayerInputAction::RUN;
+    for (int p{1}; p <= 4; ++p) {
+
+        buttonBindingsPlayer_[p][SB_CROSS]    = PlayerAction::ACTION0; //Run / Nitro
+        buttonBindingsPlayer_[p][SB_CIRCLE]   = PlayerAction::ACTION1; //Jump / Handbrake
+        buttonBindingsPlayer_[p][SB_SQUARE]   = PlayerAction::ACTION2; //Enter/Leave vehicle
+        buttonBindingsPlayer_[p][SB_TRIANGLE] = PlayerAction::ACTION3; //Burp/Fart/Horn
+    }
 
     SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputMaster, HandleKeyDown));
     SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(InputMaster, HandleKeyUp));
@@ -75,7 +83,7 @@ void InputMaster::HandleUpdate(StringHash eventType, VariantMap &eventData)
     for (Player* p : MC->GetPlayers()){
 
         int pId{ p->GetPlayerId() };
-        Vector<PlayerInputAction> emptyActions{};
+        Vector<PlayerAction> emptyActions{};
         activeActions.player_[pId] = emptyActions;
     }
 
@@ -83,7 +91,7 @@ void InputMaster::HandleUpdate(StringHash eventType, VariantMap &eventData)
     for (int key : pressedKeys_){
         //Check for master key presses
         if (keyBindingsMaster_.Contains(key)){
-            MasterInputAction action{keyBindingsMaster_[key]};
+            MasterAction action{keyBindingsMaster_[key]};
             if (!activeActions.master_.Contains(action))
                 activeActions.master_.Push(action);
         }
@@ -92,7 +100,7 @@ void InputMaster::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
             int pId{ p->GetPlayerId() };
             if (keyBindingsPlayer_[pId].Contains(key)){
-                PlayerInputAction action{keyBindingsPlayer_[pId][key]};
+                PlayerAction action{keyBindingsPlayer_[pId][key]};
                 if (!activeActions.player_[pId].Contains(action))
                     activeActions.player_[pId].Push(action);
             }
@@ -104,7 +112,7 @@ void InputMaster::HandleUpdate(StringHash eventType, VariantMap &eventData)
         int pId{ p->GetPlayerId() };
         for (int button : pressedJoystickButtons_[pId-1])
             if (buttonBindingsPlayer_[pId].Contains(button)){
-                PlayerInputAction action{ buttonBindingsPlayer_[pId][button]};
+                PlayerAction action{ buttonBindingsPlayer_[pId][button]};
                 if (!activeActions.player_[pId].Contains(action))
                     activeActions.player_[pId].Push(action);
             }
@@ -117,16 +125,16 @@ void InputMaster::HandleUpdate(StringHash eventType, VariantMap &eventData)
 void InputMaster::HandleActions(const InputActions& actions)
 {
     //Handle master actions
-    for (MasterInputAction action : actions.master_){
+    for (MasterAction action : actions.master_){
         switch (action){
-        case MasterInputAction::UP:                 break;
-        case MasterInputAction::DOWN:               break;
-        case MasterInputAction::LEFT:               break;
-        case MasterInputAction::RIGHT:              break;
-        case MasterInputAction::CONFIRM:            break;
-        case MasterInputAction::CANCEL:             break;
-        case MasterInputAction::PAUSE:              break;
-        case MasterInputAction::MENU:               break;
+        case MasterAction::UP:                 break;
+        case MasterAction::DOWN:               break;
+        case MasterAction::LEFT:               break;
+        case MasterAction::RIGHT:              break;
+        case MasterAction::CONFIRM:            break;
+        case MasterAction::CANCEL:             break;
+        case MasterAction::PAUSE:              break;
+        case MasterAction::MENU:               break;
         default: break;
         }
     }
@@ -147,8 +155,10 @@ void InputMaster::HandleActions(const InputActions& actions)
             controlled->SetAim(GetAimFromActions(playerInputActions) + stickAim);
 
             std::bitset<4>restActions{};
-            restActions[0] = playerInputActions->Contains(PlayerInputAction::RUN);
-            restActions[1] = playerInputActions->Contains(PlayerInputAction::JUMP);
+            for (int a{0}; a < static_cast<int>(PlayerAction::RESTACTIONS); ++a) {
+
+                restActions[a] = playerInputActions->Contains(static_cast<PlayerAction>(a));
+            }
 
             controlled->SetActions(restActions);
         }
@@ -215,33 +225,32 @@ void InputMaster::HandleJoystickAxisMove(Urho3D::StringHash eventType, Urho3D::V
     axesPosition_[joystickId][axis] = position;
 }
 
-Vector3 InputMaster::GetMoveFromActions(Vector<PlayerInputAction>* actions)
+Vector3 InputMaster::GetMoveFromActions(Vector<PlayerAction>* actions)
 {
     return Vector3{Vector3::RIGHT *
-                (actions->Contains(PlayerInputAction::MOVE_RIGHT) -
-                 actions->Contains(PlayerInputAction::MOVE_LEFT))
+                (actions->Contains(PlayerAction::MOVE_RIGHT) -
+                 actions->Contains(PlayerAction::MOVE_LEFT))
 
                 + Vector3::FORWARD *
-                (actions->Contains(PlayerInputAction::MOVE_UP) -
-                 actions->Contains(PlayerInputAction::MOVE_DOWN))};
+                (actions->Contains(PlayerAction::MOVE_UP) -
+                 actions->Contains(PlayerAction::MOVE_DOWN))};
 }
-Vector3 InputMaster::GetAimFromActions(Vector<PlayerInputAction>* actions)
+Vector3 InputMaster::GetAimFromActions(Vector<PlayerAction>* actions)
 {
     return Vector3{ Vector3::RIGHT *
-                (actions->Contains(PlayerInputAction::FIRE_E) -
-                 actions->Contains(PlayerInputAction::FIRE_W))
+                (actions->Contains(PlayerAction::FIRE_E) -
+                 actions->Contains(PlayerAction::FIRE_W))
 
-                +   Vector3::FORWARD *
-                (actions->Contains(PlayerInputAction::FIRE_N) -
-                 actions->Contains(PlayerInputAction::FIRE_S))
-                + Quaternion(45.0f, Vector3::UP) *
-                   (Vector3::RIGHT *
-                (actions->Contains(PlayerInputAction::FIRE_SE) -
-                 actions->Contains(PlayerInputAction::FIRE_NW))
+                + Vector3::FORWARD *
+                (actions->Contains(PlayerAction::FIRE_N) -
+                 actions->Contains(PlayerAction::FIRE_S))
+                + Quaternion(45.0f, Vector3::UP) * (Vector3::RIGHT *
+                (actions->Contains(PlayerAction::FIRE_SE) -
+                 actions->Contains(PlayerAction::FIRE_NW))
 
-                +   Vector3::FORWARD *
-                (actions->Contains(PlayerInputAction::FIRE_NE) -
-                 actions->Contains(PlayerInputAction::FIRE_SW)))};
+                + Vector3::FORWARD *
+                (actions->Contains(PlayerAction::FIRE_NE) -
+                 actions->Contains(PlayerAction::FIRE_SW)))};
 }
 
 void InputMaster::SetPlayerControl(Player* player, Controllable* controllable)

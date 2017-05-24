@@ -23,7 +23,11 @@ Bike::Bike(Context* context):
 {
 }
 
+void Bike::OnNodeSet(Node *node)
+{ if (!node) return;
 
+    Vehicle::OnNodeSet(node);
 
-
-
+    rigidBody_->SetMass(10.0f);
+    maxEngineForce_ = 123.0f;
+}

@@ -40,6 +40,7 @@ public:
     virtual Substance GetSubstance(Vector3 position = Vector3::ZERO);
     void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
     virtual void OnNodeSet(Node* node);
+    virtual void Update(float timeStep);
 };
 
 #endif // CAR_H

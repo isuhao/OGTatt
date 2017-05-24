@@ -19,9 +19,13 @@
 #include "player.h"
 #include "bullet.h"
 #include "muzzle.h"
+#include "hitfx.h"
 #include "ogtattcam.h"
 #include "spawnmaster.h"
 #include "inputmaster.h"
+#include "vehicle.h"
+
+#include "cookiejar.h"
 
 #include "character.h"
 
@@ -43,17 +47,16 @@ Character::Character(Context* context):
 
 
 void Character::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
     Controllable::OnNodeSet(node_);
 
     node_->SetRotation(Quaternion(Random(360.0f), Vector3::UP));
 
     //Setup physics components
-    rigidBody_->SetMass(1.0f);
+    rigidBody_->SetMass(8.0f);
     rigidBody_->SetFriction(0.0f);
-    rigidBody_->SetRestitution(0.0f);
-    rigidBody_->SetMass(1.0f);
-//    rigidBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
+    rigidBody_->SetRestitution(0.5f);
     rigidBody_->SetLinearDamping(0.95f);
     rigidBody_->SetAngularFactor(Vector3::UP);
     rigidBody_->SetLinearRestThreshold(0.001f);
@@ -70,7 +73,7 @@ void Character::OnNodeSet(Node *node)
     animCtrl_->SetSpeed("Models/IdleRelax.ani", 1.0f);
     animCtrl_->SetStartBone("Models/IdleRelax.ani", "MasterBone");
 
-    collisionShape_->SetCylinder(0.4f, 1.0f, Vector3::UP * 0.5f);
+    collisionShape_->SetCylinder(0.4f, 0.9f, Vector3::UP * 0.45f);
 
     SubscribeToEvent(node_, E_NODECOLLISIONSTART, URHO3D_HANDLER(Character, HandleNodeCollisionStart));
 }
@@ -106,7 +109,7 @@ void Character::CreateBody()
                 diffColor = LucKey::RandomHairColor(true);
         }
         model_->GetMaterial(m)->SetShaderParameter("MatDiffColor", diffColor);
-        Color specColor{ diffColor * (1.0f-0.1f*m) };
+        Color specColor{ diffColor * (1.0f - 0.1f * m) };
         specColor.a_ = 23.0f - 4.0f * m;
         model_->GetMaterial(m)->SetShaderParameter("MatSpecColor", specColor);
     }
@@ -191,11 +194,11 @@ void Character::Update(float timeStep)
         }
     }
     //Movement values
-    float thrust{ 256.0f };
+    float thrust{ 2048.0f };
     float maxSpeed{ 18.0f };
 
     //Apply movement
-    Vector3 force{ move_ * thrust * (1.0f + 0.666f * actions_[0]) * timeStep };
+    Vector3 force{ move_ * thrust * (1.0f + 0.666f * actions_[RUN]) * timeStep };
     rigidBody_->ApplyForce(force);
 
     //Update rotation according to direction of the player's movement.
@@ -234,12 +237,23 @@ void Character::Update(float timeStep)
         {
             sinceLastShot_ = 0.0;
             Bullet* bullet{ SPAWN->Create<Bullet>() };
-            bullet->Set(node_->GetPosition() + Vector3::UP * bulletHeight + collisionShape_->GetSize().x_ * 0.5f * aim_, aim_);
+            bullet->Set(node_->GetPosition() + Vector3::UP * bulletHeight + collisionShape_->GetSize().x_ * 0.5f * aim_, aim_, node_);
 
             Muzzle* muzzle{ SPAWN->Create<Muzzle>() };
             muzzle->Set(node_->GetPosition() + Vector3::UP * bulletHeight + 0.1f * aim_, aim_);
             PlaySample(shot_sfx);
         }
+    }
+}
+
+void Character::HandleAction(int actionId)
+{
+    switch (actionId) {
+    case ENTER:
+        EnterNearestVehicle();
+        break;
+    default:
+        break;
     }
 }
 
@@ -257,6 +271,7 @@ void Character::HandleNodeCollisionStart(StringHash eventType, VariantMap& event
         if (contactImpulse > 2.35f){
 
            Hit(contactImpulse * 10.0f);
+           SPAWN->Create<HitFX>()->Set(contactPosition, Substance::Flesh);
         }
     }
 }
@@ -342,15 +357,13 @@ void Character::CreateRagdollBone(const String& boneName, ShapeType type, const 
         return;
 
     RigidBody* body{ boneNode->CreateComponent<RigidBody>() };
-    // Set mass to make movable
     body->SetMass(100.0f * size.x_ * size.y_ * size.z_);
-    // Set damping parameters to smooth out the motion
     body->SetLinearDamping(0.5f);
     body->SetAngularDamping(0.8f);
     // Set rest thresholds to ensure the ragdoll rigid bodies come to rest to not consume CPU endlessly
     body->SetLinearRestThreshold(2.3f);
-    body->SetAngularRestThreshold(23.0f);
-    body->SetFriction(0.42f);
+    body->SetAngularRestThreshold(5.0f);
+    body->SetFriction(0.96f);
     body->ApplyImpulse(Vector3::UP * 5.0f);
     body->Activate();
 
@@ -373,13 +386,9 @@ void Character::CreateRagdollConstraint(const String& boneName, const String& pa
 
     Constraint* constraint{ boneNode->CreateComponent<Constraint>() };
     constraint->SetConstraintType(type);
-    // Most of the constraints in the ragdoll will work better when the connected bodies don't collide against each other
     constraint->SetDisableCollision(disableCollision);
-    // The connected body must be specified before setting the world position
     constraint->SetOtherBody(parentNode->GetComponent<RigidBody>());
-    // Position the constraint at the child bone we are connecting
     constraint->SetWorldPosition(boneNode->GetWorldPosition());
-    // Configure axes and limits
     constraint->SetAxis(axis);
     constraint->SetOtherAxis(parentAxis);
     constraint->SetHighLimit(highLimit);
@@ -394,8 +403,8 @@ Substance Character::GetSubstance()
 void Character::Think(float timeStep)
 {
 //    aim_ = Quaternion(Random(360.0f), Vector3::UP) * Vector3::FORWARD * !Random(23);
-
     sinceLastTurn_ += timeStep;
+
     if (sinceLastTurn_ > turnInterval_){
         sinceLastTurn_ = 0.0f;
         turnInterval_ = Random(2.3f, 5.0f);
@@ -419,10 +428,22 @@ void Character::Think(float timeStep)
         default:
             break;
         }
-        if (r!=4){
+        if (r != 4){
             move_ += Vector3(Random(-0.1f, 0.1f), 0.0f, Random(-0.1f, 0.1f));
         }
 
         move_ *= 0.5f;
     }
+}
+
+void Character::EnterNearestVehicle()
+{
+     EnterVehicle(MC->GetNearestInstanceOf<Vehicle>(GetWorldPosition()));
+}
+void Character::EnterVehicle(Vehicle* vehicle)
+{
+    if (vehicle)
+        if (Player* player = GetPlayer())
+
+            GetSubsystem<InputMaster>()->SetPlayerControl(player, vehicle);
 }

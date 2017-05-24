@@ -48,7 +48,6 @@ protected:
     SharedPtr<Light> light_;
 private:
     SharedPtr<Sound> explode_sfx;
-    SharedPtr<SoundSource> sampleSource_;
     float initialMass_;
     float initialBrightness_;
 };

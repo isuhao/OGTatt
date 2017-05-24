@@ -40,16 +40,16 @@ public:
     static void RegisterObject(Context *context);
     virtual void OnNodeSet(Node *node);
     virtual void Update(float timeStep);
-    virtual void Set(Vector3 position, Vector3 direction);
+    virtual void Set(Vector3 position, Vector3 direction, Node* owner = nullptr);
 protected:
     SharedPtr<RigidBody> rigidBody_;
     SharedPtr<StaticModel> model_;
 private:
     Node* owner_;
-    float age_ = 0.0;
-    float timeSinceHit_ = 0.0;
+    float age_;
+    float timeSinceHit_;
     float lifetime_;
-    bool fading_ = false;
+    bool fading_;
     float damage_;
     void HitCheck(float timeStep);
     void Disable();

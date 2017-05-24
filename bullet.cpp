@@ -20,6 +20,7 @@
 #include "spawnmaster.h"
 #include "character.h"
 #include "streetlight.h"
+
 #include "honti.h"
 #include "cookiejar.h"
 
@@ -32,15 +33,19 @@ void Bullet::RegisterObject(Context *context)
 
 Bullet::Bullet(Context* context):
     SceneObject(context),
-//    owner_{owner},
+    owner_{nullptr},
+    age_{0.0f},
+    timeSinceHit_{0.0f},
     lifetime_{1.0f},
+    fading_{false},
     damage_{23.0f}
 {
 }
 
 void Bullet::OnNodeSet(Node *node)
-{
-    SceneObject::OnNodeSet(node_);
+{ if (!node) return;
+
+    SceneObject::OnNodeSet(node);
 
     node_->SetName("Bullet");
     node_->SetScale(Vector3(1.5f, 1.5f, 5.0f));
@@ -56,20 +61,24 @@ void Bullet::OnNodeSet(Node *node)
 void Bullet::Update(float timeStep)
 {
     age_ += timeStep;
+    if (fading_)
+        timeSinceHit_ += timeStep;
+
     node_->SetScale(Vector3(Max(1.75f - 10.0f * age_, 1.0f),
                                 Max(1.75f - 10.0f * age_, 1.0f),
-                                Min(Min(150.0f * age_, 7.0f), Max(7.0f - timeSinceHit_ * 42.0f, 0.1f))
+                                Min(Min(150.0f * age_, 7.0f), Max(7.0f - timeSinceHit_ * 420.0f, 0.1f))
                                 ));
-    if (age_ > lifetime_) {
+    if (age_ > lifetime_)
         Disable();
-    }
 
     if (timeStep > 0.0f && !fading_)
         HitCheck(timeStep);
 }
 
-void Bullet::Set(Vector3 position, Vector3 direction)
+void Bullet::Set(Vector3 position, Vector3 direction, Node* owner)
 {
+    owner_ = owner;
+
     age_ = 0.0f;
     timeSinceHit_ = 0.0f;
     fading_ = false;
@@ -88,35 +97,50 @@ void Bullet::Set(Vector3 position, Vector3 direction)
 void Bullet::Disable()
 {
     fading_ = true;
-    node_->SetEnabled(false);
+
+    if (node_->GetScale().x_ <= 0.0f) {
+
+        SceneObject::Disable();
+    }
 }
 
-void Bullet::HitCheck(float timeStep) {
-    if (!fading_) {
-        PODVector<PhysicsRaycastResult> hitResults;
-        Ray bulletRay(node_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, node_->GetDirection());
-        if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length() * timeStep * 1.5f, M_MAX_UNSIGNED)){
-            for (PhysicsRaycastResult r : hitResults){
-                if (!r.body_->IsTrigger() && r.body_->GetNode() != owner_) {
+void Bullet::HitCheck(float timeStep)
+{
+    PODVector<PhysicsRaycastResult> hitResults;
+    Ray bulletRay(node_->GetPosition() - rigidBody_->GetLinearVelocity() * timeStep, node_->GetDirection());
+    if (MC->PhysicsRayCast(hitResults, bulletRay, rigidBody_->GetLinearVelocity().Length() * timeStep * 1.5f, M_MAX_UNSIGNED)){
+        for (PhysicsRaycastResult r : hitResults) {
 
-                    r.body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * r.normal_,
-                                          r.position_ - r.body_->GetNode()->GetWorldPosition());
-                    Substance substance{ Substance::Flesh };
-                    if (r.body_->GetNode()->GetNameHash() == StringHash("Level")){
-                        substance = Substance::Rock;
-                    } else if (r.body_->GetNode()->HasComponent<StreetLight>() ||
-                               r.body_->GetNode()->HasComponent<Honti>() ||
-                               r.body_->GetNode()->HasComponent<Cookiejar>()) {
-                        substance = Substance::Metal;
-                    }
-                    SPAWN->Create<HitFX>()->Set(r.position_, substance);
+            Node* hitNode{ r.body_->GetNode() };
 
-                    if (r.body_->GetNode()->HasComponent<Character>())
-                        r.body_->GetNode()->GetComponent<Character>()->Hit(damage_);
+            if (!r.body_->IsTrigger() && hitNode != owner_) {
 
-                    Disable();
-                    return;
+                r.body_->ApplyImpulse(rigidBody_->GetLinearVelocity() * 0.023f - 0.23f * r.normal_,
+                                      r.position_ - hitNode->GetWorldPosition());
+
+                Substance substance{ Substance::Rock };
+                if (hitNode->GetNameHash() == StringHash("Level")){
+                    substance = Substance::Rock;
+                } else if (SceneObject* sceneObject = hitNode->GetDerivedComponent<SceneObject>()) {
+                    substance = sceneObject->GetSubstance();
+                } else if (SceneObject* sceneObject = hitNode->GetParent()->GetDerivedComponent<SceneObject>()) {
+                    substance = sceneObject->GetSubstance();
                 }
+                SPAWN->Create<HitFX>()->Set(r.position_, substance);
+
+                if (hitNode->HasComponent<Character>())
+                    hitNode->GetComponent<Character>()->Hit(damage_);
+
+                for (Component* c : hitNode->GetComponents()) {
+
+                    if (c->IsInstanceOf<Vehicle>()) {
+                        static_cast<Vehicle*>(c)->Hit(damage_);
+                        break;
+                    }
+                }
+
+                Disable();
+                return;
             }
         }
     }

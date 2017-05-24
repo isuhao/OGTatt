@@ -20,7 +20,7 @@
 #define VEHICLE_H
 
 #include <Urho3D/Urho3D.h>
-#include <Bullet/BulletDynamics/Vehicle/btRaycastVehicle.h>
+//#include <Bullet/BulletDynamics/Vehicle/btRaycastVehicle.h>
 
 #include "controllable.h"
 
@@ -33,53 +33,32 @@ class RigidBody;
 enum VehicleActions{ NITRO, HANDBREAK, HORN };
 
 using namespace Urho3D;
-//=============================================================================
-//=============================================================================
-const int CTRL_FORWARD = 1;
-const int CTRL_BACK = 2;
-const int CTRL_LEFT = 4;
-const int CTRL_RIGHT = 8;
-const float YAW_SENSITIVITY = 0.1f;
-const float ENGINE_POWER = 1.0f;
-const float DOWN_FORCE = 10.0f;
-const float MAX_WHEEL_ANGLE = 22.5f;
-//=============================================================================
-// Vehicle component, responsible for physical movement according to controls.
-//=============================================================================
+
 class Vehicle : public Controllable
 {
     URHO3D_OBJECT(Vehicle, Controllable);
 public:
     Vehicle(Context *context);
-    ~Vehicle();
     void Hit(float damage);
     virtual void OnNodeSet(Node *node);
 
-    // Initialize the vehicle. Create rendering and physics components. Called by the application.
-//    void Init();
-
-    // Handle physics world update. Called by LogicComponent base class.
     virtual void FixedUpdate(float timeStep);
-    virtual void PostUpdate(float timeStep);
 
-    // Movement controls.
-    Controls controls_;
     void SetLightsEnabled(bool enabled);
 protected:
+    HashSet<int> steerWheels_;
+    HashSet<int> driveWheels_;
+    HashSet<int> brakeWheels_;
+
     float initialDurability_;
     float durability_;
     bool functional_;
 
+    RaycastVehicle* raycastVehicle_;
+
     float steering_;
-    // raycast vehicle
-    btRaycastVehicle::btVehicleTuning  tuning_;
-    btVehicleRaycaster*                vehicleRayCaster_;
-    btRaycastVehicle*                  raycastVehicle_;
-
-    Vector<Node*> wheelNodes_;
-
     float engineForce_;
-    float breakingForce_;
+    float brakingForce_;
 
     float maxEngineForce_;
     float maxBreakingForce_;
@@ -96,9 +75,7 @@ protected:
     float rollInfluence_;
     float suspensionRestLength_;
 
-    AnimatedModel* chassisModel_;
     SharedPtr<Material> decalMaterial_;
-    CollisionShape* chassisCollisionShape_;
     Node* particleNode_;
     ParticleEmitter* flameEmitter_;
 

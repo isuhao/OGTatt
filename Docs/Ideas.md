@@ -88,6 +88,7 @@ Slow you down, only one allowed.
 + Flamethrower: _Libertorch_
 + Rocket Launcher: _Deathfist_
 + Explosive Drones: _Freedom Delivery System_
++ Electric arc: _Shocker_ (chains and revives fish)
  
 ### Gangs
 
@@ -108,9 +109,16 @@ Built-in gangs will include:
 - **Big Cheeze** - cheese store
 - **Hot Buns** - bakery
 
-- **Fish van** - fish van
+- **Fish van** (Western)
+- **Lumpia trike** (Eastern)
+- **Couche couche train** (Southern)
+
+### Brands and commercials
+Wulva - "Bil di papa"
 
 ### Inspiration
 
+- GTA2
+- Postal
 - The Matrix
 - Illuminatus Trilogy

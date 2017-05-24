@@ -62,8 +62,6 @@ private:
 
     int playerId_;
     float altitude_;
-    float yaw_, pitch_, roll_;
-    float yawDelta_, pitchDelta_;
     float forceMultiplier;
 
     Vector3 smoothTargetPosition_;

@@ -16,28 +16,23 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <Bullet/BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include "explosion.h"
 #include "player.h"
 #include "spawnmaster.h"
 
 #include "vehicle.h"
-//=============================================================================
-//=============================================================================
-#define CUBE_HALF_EXTENTS   0.42
-#define DELETE_NULL(x)      { if (x) delete x; x = NULL; }
-//=============================================================================
-//=============================================================================
+
 Vehicle::Vehicle(Context* context):
     Controllable(context),
+    raycastVehicle_{},
     steering_{0.0f},
     functional_{true}
 {
     SetUpdateEventMask( USE_FIXEDUPDATE | USE_POSTUPDATE);
     engineForce_ = 0.0f;
-    breakingForce_ = 0.0f;
+    brakingForce_ = 0.0f;
 
-    maxEngineForce_ = 235.f;//this should be engine/velocity dependent
+    maxEngineForce_ = 350.f;//this should be engine/velocity dependent
     maxBreakingForce_ = 100.f;
 
     vehicleSteering_ = 0.0f;
@@ -46,39 +41,27 @@ Vehicle::Vehicle(Context* context):
     wheelRadius_ = 0.2f;
     wheelWidth_ = 0.13f;
     wheelFriction_ = 2.0f;//BT_LARGE_FLOAT;
-    suspensionStiffness_ = 23.0f;//20.f;
-    suspensionDamping_ = 2.0f;//2.3f;
-    suspensionCompression_ = 2.0f;//4.4f;
+    suspensionStiffness_ = 42.0f;//20.f;
+    suspensionDamping_ = 2.3f;//2.3f;
+    suspensionCompression_ = 0.34f;//4.4f;
     rollInfluence_ = 0.01f;//1.0f;
     suspensionRestLength_ = 0.42f;//0.6
 
-    vehicleRayCaster_ = NULL;
-    raycastVehicle_ = NULL;
-
-    wheelNodes_.Clear();
-}
-
-Vehicle::~Vehicle()
-{
-    DELETE_NULL( vehicleRayCaster_ );
-    DELETE_NULL( raycastVehicle_ );
-    wheelNodes_.Clear();
 }
 
 void Vehicle::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
+    Controllable::OnNodeSet(node);
+
     particleNode_ = node_->CreateChild("Fire");
     flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
     flameEmitter_->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/HoodFire.xml"));
     flameEmitter_->SetEmitting(false);
 
-    chassisModel_ = node_->CreateComponent<AnimatedModel>();
-    chassisModel_->SetCastShadows(true);
-
     decalMaterial_ = MC->GetMaterial("Decal")->Clone();
 
-    rigidBody_ = node_->CreateComponent<RigidBody>();
-    chassisCollisionShape_ = node_->CreateComponent<CollisionShape>();
+    collisionShape_ = node_->CreateComponent<CollisionShape>();
 
     rigidBody_->SetFriction(0.42f);
     rigidBody_->SetLinearDamping(0.2f);
@@ -87,75 +70,38 @@ void Vehicle::OnNodeSet(Node *node)
     rigidBody_->SetAngularRestThreshold(0.1f);
     rigidBody_->SetCollisionLayer(1);
 
-    int rightIndex = 0;
-    int upIndex = 1;
-    int forwardIndex = 2;
-    PhysicsWorld *pPhysWorld = MC->world.scene->GetComponent<PhysicsWorld>();
-    btDynamicsWorld *pbtDynWorld = reinterpret_cast<btDynamicsWorld*>(pPhysWorld->GetWorld());
+    raycastVehicle_ = node_->CreateComponent<RaycastVehicle>();
+    raycastVehicle_->Init();
 
-    vehicleRayCaster_ = new btDefaultVehicleRaycaster( pbtDynWorld );
-    raycastVehicle_ = new btRaycastVehicle( tuning_, rigidBody_->GetBody(), vehicleRayCaster_ );
-    pbtDynWorld->addVehicle( raycastVehicle_ );
+    steerWheels_.Insert(0); steerWheels_.Insert(1);
+    driveWheels_.Insert(2); driveWheels_.Insert(3);
 
-    raycastVehicle_->setCoordinateSystem( rightIndex, upIndex, forwardIndex );
+    for (int w{0}; w < 4; ++w) {
 
-    float connectionHeight = 0.23f;//1.2f;
-    bool isFrontWheel=true;
-    btVector3 wheelDirectionCS0(0, -1, 0);
-    btVector3 wheelAxleCS(-0.5, 0, 0);
+        float x = (w % 2) ? -0.44f : 0.44f;
+        float y = 0.18f;
+        float z = (w / 2) ? -0.66f : 0.6f;
 
-    btVector3 connectionPointCS0(CUBE_HALF_EXTENTS - (0.3f * wheelWidth_), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius_);
-    raycastVehicle_->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength_, wheelRadius_, tuning_, isFrontWheel);
+        Node* wheelNode{ node_->CreateChild("Wheel") };
+        wheelNode->SetPosition(Vector3(x, y, z));
+        wheelNode->SetRotation(x < 0.0 ? Quaternion(0.0f, 0.0f, 0.0f) : Quaternion(0.0f, 0.0f, 180.0f));
+        raycastVehicle_->AddWheel(wheelNode,
+                                  Vector3(0.0f, -1.0f, 0.0f),
+                                  Vector3(-1.0f, 0.0f, 0.0f),
+                                  suspensionRestLength_, wheelRadius_, z > 0.0f);
 
-    connectionPointCS0 = btVector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth_), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius_);
-    raycastVehicle_->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength_, wheelRadius_, tuning_, isFrontWheel);
+        raycastVehicle_->SetWheelSuspensionStiffness(w, suspensionStiffness_);
+        raycastVehicle_->SetWheelDampingRelaxation(w, suspensionDamping_);
+        raycastVehicle_->SetWheelDampingCompression(w, suspensionCompression_);
+        raycastVehicle_->SetWheelFrictionSlip(w, wheelFriction_);
+        raycastVehicle_->SetWheelRollInfluence(w, rollInfluence_);
 
-    isFrontWheel = false;
-    connectionPointCS0 = btVector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth_), connectionHeight,-2 * CUBE_HALF_EXTENTS + wheelRadius_);
-    raycastVehicle_->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength_, wheelRadius_, tuning_, isFrontWheel);
-
-    connectionPointCS0 = btVector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth_), connectionHeight, -2 * CUBE_HALF_EXTENTS + wheelRadius_);
-    raycastVehicle_->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength_, wheelRadius_, tuning_, isFrontWheel);
-
-    for ( int i{0}; i < raycastVehicle_->getNumWheels(); i++ )
-    {
-        btWheelInfo& wheel{ raycastVehicle_->getWheelInfo( i ) };
-        wheel.m_suspensionStiffness = suspensionStiffness_;
-        wheel.m_wheelsDampingRelaxation = suspensionDamping_;
-        wheel.m_wheelsDampingCompression = suspensionCompression_;
-        wheel.m_frictionSlip = wheelFriction_;
-        wheel.m_rollInfluence = rollInfluence_;
+        StaticModel* pWheel{ wheelNode->CreateComponent<StaticModel>() };
+        pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
+        pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/Asphalt.xml"));
+        pWheel->SetCastShadows(true);
     }
-
-    if ( raycastVehicle_ )
-    {
-        raycastVehicle_->resetSuspension();
-
-        for ( int i{0}; i < raycastVehicle_->getNumWheels(); i++ )
-        {
-            //synchronize the wheels with the (interpolated) chassis worldtransform
-            raycastVehicle_->updateWheelTransform(i,true);
-
-            btTransform transform{ raycastVehicle_->getWheelTransformWS( i ) };
-            Vector3 v3Origin{ transform.getOrigin() };
-            Quaternion{ transform.getRotation() };
-
-            // create wheel node
-            Node* wheelNode{ node_->CreateChild() };
-            wheelNodes_.Push( wheelNode );
-
-            wheelNode->SetPosition( v3Origin );
-            btWheelInfo whInfo{ raycastVehicle_->getWheelInfo( i ) };
-            Vector3 v3PosLS{ whInfo.m_chassisConnectionPointCS };
-
-            wheelNode->SetRotation( v3PosLS.x_ >= 0.0 ? Quaternion(0.0f, 0.0f, -90.0f) : Quaternion(0.0f, 0.0f, 90.0f) );
-
-            StaticModel* pWheel{ wheelNode->CreateComponent<StaticModel>() };
-//            pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
-//            pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/TailLight.xml"));
-//            pWheel->SetCastShadows(true);
-        }
-    }
+    raycastVehicle_->ResetWheels();
 }
 
 void Vehicle::FixedUpdate(float timeStep)
@@ -168,30 +114,28 @@ void Vehicle::FixedUpdate(float timeStep)
                                   : move_.z_ * 0.666f;
 
     if (Player* p{ GetPlayer() }) {
+
         if (JoystickState* joystick{ INPUT->GetJoystick(p->GetPlayerId() - 1) }) {
 
             accelerator = Clamp(joystick->GetAxisPosition(13), 0.0f, 1.0f) - Clamp(joystick->GetAxisPosition(12) * 0.5f, 0.0f, 1.0f);
         }
     }
+
     if (!functional_)
         newSteering = accelerator = 0.0f;
 
     // When steering, wake up the wheel rigidbodies so that their orientation is updated
-    if ( newSteering != 0.0f )
-    {
+    if ( newSteering != 0.0f ) {
+
         steering_ = steering_ * 0.95f + newSteering * 0.05f;
-    }
-    else
-    {
+
+    } else {
+
         steering_ = steering_ * 0.8f + newSteering * 0.2f;
     }
 
     // Set front wheel angles
     vehicleSteering_ = steering_;
-    for (int wheelIndex : { 0, 1 }){
-
-        raycastVehicle_->setSteeringValue(vehicleSteering_, wheelIndex);
-    }
 
     if ( newSteering != 0.0f || accelerator != 0.0f )
     {
@@ -199,54 +143,55 @@ void Vehicle::FixedUpdate(float timeStep)
     }
 
     // apply forces
-    breakingForce_ = 42.0f * actions_[HANDBREAK];
-    engineForce_ = breakingForce_ == 0.0f ? maxEngineForce_ * accelerator
-                                          : 0.0f;
+    float handbrakingForce_ = 23.0f * actions_[HANDBREAK];
+    bool brake = Sign(accelerator) == 0.0f ? 0.0f
+                                           : Sign(accelerator) * (rigidBody_->GetRotation().Inverse() * rigidBody_->GetLinearVelocity()).z_ < -0.1f;
+    brakingForce_ = brake ? 10.0f
+                          : 0.0f;
+    engineForce_ = brakingForce_ == 0.0f ? maxEngineForce_ * accelerator
+                                         : 0.0f;
 
-    // 2x wheel drive
-    for ( int wheelIndex : { 2, 3 } )
-    {
-            raycastVehicle_->applyEngineForce( engineForce_, wheelIndex );
-            raycastVehicle_->setBrake( breakingForce_, wheelIndex );
-    }
-}
+    for ( int wheelIndex{0}; wheelIndex < raycastVehicle_->GetNumWheels(); ++wheelIndex) {
 
-void Vehicle::PostUpdate(float )
-{
-    for ( int i{0}; i < raycastVehicle_->getNumWheels(); ++i )
-    {
-        raycastVehicle_->updateWheelTransform(i, true);
-        btTransform transform = raycastVehicle_->getWheelTransformWS(i);
-        Vector3 v3Origin{ ToVector3(transform.getOrigin()) };
-        Quaternion qRot{ ToQuaternion(transform.getRotation()) };
+        float brakingForce{ brakingForce_ };
+        brakingForce *= raycastVehicle_->GetWheelSkidInfoCumulative(wheelIndex) > 0.9f;
 
-        Node* pWheel{ wheelNodes_[i] };
-        pWheel->SetWorldPosition( v3Origin + Vector3::UP );
+        if (steerWheels_.Contains(wheelIndex)) {
 
-        btWheelInfo whInfo = raycastVehicle_->getWheelInfo( i );
-        Vector3 v3PosLS( whInfo.m_chassisConnectionPointCS );
-        Quaternion qRotator = ( v3PosLS.x_ >= 0.0 ? Quaternion(0.0f, 0.0f, -90.0f) : Quaternion(0.0f, 0.0f, 90.0f) );
-        pWheel->SetRotation( qRot * qRotator );
-//        pWheel->SetPosition(v3PosLS);
+            raycastVehicle_->SetSteeringValue(wheelIndex, vehicleSteering_);
+        }
+        if (driveWheels_.Contains(wheelIndex)) {
+
+            raycastVehicle_->SetEngineForce(wheelIndex, engineForce_);
+            brakingForce += handbrakingForce_;
+        }
+
+
+        raycastVehicle_->SetBrake(wheelIndex, brakingForce);
     }
 }
 
 void Vehicle::SetupLights(int front, int rear, BoundingBox box)
 {
     if (front) {
-        for (int f{0}; f < front; ++f){
+        for (int f{0}; f < front; ++f) {
+
             Pair<SharedPtr<Node>, SharedPtr<Light>> nodeLightPair;
             nodeLightPair.first_ = node_->CreateChild("HeadLight");
             nodeLightPair.first_->SetDirection(Vector3(0.0f, -0.23f, 0.666f));
+
             if (front == 1) {
+
                 nodeLightPair.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
                                                   box.min_.y_,
                                                   box.max_.z_));
             } else {
+
                 nodeLightPair.first_->SetPosition(Vector3(box.min_.x_ + f * (box.Size().x_ / (front - 1)),
                                                   box.min_.y_,
                                                   box.max_.z_));
             }
+
             nodeLightPair.second_ = nodeLightPair.first_->CreateComponent<Light>();
             nodeLightPair.second_->SetLightType(LIGHT_SPOT);
             nodeLightPair.second_->SetColor(Color(1.0f, 0.9f, 0.8f));
@@ -260,20 +205,25 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
         }
     }
     if (rear) {
-        for (int r{0}; r < rear; ++r){
+        for (int r{0}; r < rear; ++r) {
+
             Pair<SharedPtr<Node>, SharedPtr<Light>> light;
             light.first_ = node_->CreateChild("TailLight");
             light.first_->SetDirection(Vector3(0.0f, -0.6f, -0.5f));
+
             if (front == 1) {
+
                 light.first_->SetPosition(Vector3(0.5f * (box.min_.x_ + box.max_.x_),
                                                   box.max_.y_,
                                                   box.min_.z_));
             } else {
+
                 light.first_->SetPosition(Vector3(box.min_.x_ + r * (box.Size().x_ / (rear - 1)),
                                                   box.max_.y_,
                                                   box.min_.z_));
                 light.first_->Rotate(Quaternion(30.0f - r * (60.0f / (rear - 1)), Vector3::UP), TS_WORLD);
             }
+
             light.second_ = light.first_->CreateComponent<Light>();
             light.second_->SetLightType(LIGHT_SPOT);
             light.second_->SetColor(Color::RED);
@@ -311,21 +261,21 @@ void Vehicle::Hit(float damage)
 
     if (durability_ <= 0.0f) {
         Destroy();
-        durability_ = 0.0f;
     }
 }
 
 void Vehicle::Destroy()
 {
-    SPAWN->Create<Explosion>()->Set(node_->GetPosition() + Vector3::UP * chassisModel_->GetBoundingBox().Size().y_);
+    SPAWN->Create<Explosion>()->Set(node_->GetPosition() + Vector3::UP * model_->GetBoundingBox().Size().y_);
 
-    chassisModel_->SetShadowMask(2);
+    model_->SetShadowMask(2);
 
-    for (unsigned i{0}; i < chassisModel_->GetNumGeometries(); ++i){
-        chassisModel_->SetMaterial(i, MC->GetMaterial("Darkness"));
+    for (unsigned i{0}; i < model_->GetNumGeometries(); ++i){
+        model_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }
     flameEmitter_->SetEmitting(true);
-
-    functional_ = false;
     SetLightsEnabled(false);
+
+    durability_ = 0.0f;
+    functional_ = false;
 }

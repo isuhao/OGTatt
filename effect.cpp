@@ -32,10 +32,10 @@ Effect::Effect(Context* context):
 }
 
 void Effect::OnNodeSet(Node *node)
-{
+{ if (!node) return;
 
-//    node_->SetName(name);
-//    node_->SetPosition(position);
+    SceneObject::OnNodeSet(node);
+
     particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
 }
 
@@ -50,7 +50,7 @@ void Effect::Set(Vector3 position)
 void Effect::Update(float timeStep)
 {
     age_ += timeStep;
-    if (age_ > emitTime_ + particleEmitter_->GetEffect()->GetMaxTimeToLive()){
+    if (age_ > emitTime_ + particleEmitter_->GetEffect()->GetMaxTimeToLive() && IsSilent()){
         Disable();
     }
     else if (age_ > emitTime_){

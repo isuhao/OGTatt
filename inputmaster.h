@@ -24,14 +24,15 @@
 #include "mastercontrol.h"
 #include "controllable.h"
 
-enum class MasterInputAction { UP, RIGHT, DOWN, LEFT, CONFIRM, CANCEL, PAUSE, MENU, SCREENSHOT };
-enum class PlayerInputAction { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RUN, JUMP,
-                               FIRE_N, FIRE_NE, FIRE_E, FIRE_SE,
-                               FIRE_S, FIRE_SW, FIRE_W, FIRE_NW };
+enum class MasterAction { UP, RIGHT, DOWN, LEFT, CONFIRM, CANCEL, PAUSE, MENU, SCREENSHOT };
+enum class PlayerAction { ACTION0, ACTION1, ACTION2, ACTION3, ACTION4, RESTACTIONS,
+                          MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT,
+                          FIRE_N, FIRE_NE, FIRE_E, FIRE_SE,
+                          FIRE_S, FIRE_SW, FIRE_W, FIRE_NW };
 
 struct InputActions {
-    Vector<MasterInputAction> master_;
-    HashMap<int, Vector<PlayerInputAction>> player_;
+    Vector<MasterAction> master_;
+    HashMap<int, Vector<PlayerAction>> player_;
 };
 
 class Player;
@@ -47,10 +48,10 @@ public:
     Vector<Controllable*>  GetControllables() { return controlledByPlayer_.Values(); }
 
 private:
-    HashMap<int, MasterInputAction> keyBindingsMaster_;
-    HashMap<int, MasterInputAction> buttonBindingsMaster_;
-    HashMap<int, HashMap<int, PlayerInputAction> > keyBindingsPlayer_;
-    HashMap<int, HashMap<int, PlayerInputAction> > buttonBindingsPlayer_;
+    HashMap<int, MasterAction> keyBindingsMaster_;
+    HashMap<int, MasterAction> buttonBindingsMaster_;
+    HashMap<int, HashMap<int, PlayerAction> > keyBindingsPlayer_;
+    HashMap<int, HashMap<int, PlayerAction> > buttonBindingsPlayer_;
 
     Vector<int> pressedKeys_;
     HashMap<int, Vector<LucKey::SixaxisButton> > pressedJoystickButtons_;
@@ -66,9 +67,9 @@ private:
     void HandleJoystickAxisMove(StringHash eventType, VariantMap& eventData);
 
     void HandleActions(const InputActions &actions);
-    void HandlePlayerAction(PlayerInputAction action, int playerId);
-    Vector3 GetMoveFromActions(Vector<PlayerInputAction>* actions);
-    Vector3 GetAimFromActions(Vector<PlayerInputAction>* actions);
+    void HandlePlayerAction(PlayerAction action, int playerId);
+    Vector3 GetMoveFromActions(Vector<PlayerAction>* actions);
+    Vector3 GetAimFromActions(Vector<PlayerAction>* actions);
     void Screenshot();
 
     void PauseButtonPressed();

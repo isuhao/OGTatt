@@ -28,34 +28,32 @@ void OGTattCam::RegisterObject(Context *context)
 OGTattCam::OGTattCam(Context* context):
     LogicComponent(context),
     altitude_{23.0f},
-    yaw_(0.0f), pitch_(88.0f), roll_{0.0f},
-    yawDelta_{0.0}, pitchDelta_{0.0},
-    forceMultiplier{1.0},
     smoothTargetPosition_{Vector3::ZERO},
     smoothTargetVelocity_{Vector3::ZERO}
 {
 }
 
 void OGTattCam::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
     float viewRange{500.0f};
 
     //Create the camera. Limit far clip distance to match the fog
     node_ = MC->world.scene->CreateChild("CamTrans");
+    node_->SetRotation(Quaternion(88.0f, 0.0f, 0.0f));
     camera_ = node_->CreateComponent<Camera>();
     camera_->SetFarClip(viewRange);
     camera_->SetNearClip(0.1f);
     camera_->SetFov(30.0f);
 
-    Zone* zone = node_->CreateComponent<Zone>();
+    Zone* zone{ node_->CreateComponent<Zone>() };
     zone->SetBoundingBox(BoundingBox(Vector3(-100.0f, -50.0f, -100.0f), Vector3(100.0f, 50.0f, 100.0f)));
     zone->SetAmbientColor(Color(0.13f, 0.23f, 0.8f));
     zone->SetFogColor(Color(0.42f, 0.3f, 0.23f, 1.0f));
     zone->SetFogStart(23.0f);
     zone->SetFogEnd(viewRange);
 
-    //Set an initial position for the camera scene node above the origin
-    node_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
+    SoundListener* listener{ node_->CreateComponent<SoundListener>() };
 }
 
 void OGTattCam::Set(Vector3 position, int playerId)
@@ -113,19 +111,8 @@ void OGTattCam::Update(float timeStep)
     //Mouse sensitivity as degrees per pixel
     const float MOUSE_SENSITIVITY{0.1f};
 
-    //Use this frame's mouse motion to adjust camera node yaw and pitch. Clamp the pitch between -90 and 90 degrees. Only move the camera when the cursor is hidden.
-    Input* input{GetSubsystem<Input>()};
-    IntVector2 mouseMove{input->GetMouseMove()};
-    yawDelta_ = 0.5f * (yawDelta_ + MOUSE_SENSITIVITY * mouseMove.x_);
-    pitchDelta_ = 0.5f * (pitchDelta_ + MOUSE_SENSITIVITY * mouseMove.y_);
-    yaw_ += node_->GetRotation().y_ + yawDelta_;
-    pitch_ += node_->GetRotation().x_ + pitchDelta_;
-    pitch_ = Clamp(pitch_, -89.0f, 89.0f);
-    //Construct new orientation for the camera scene node from yaw and pitch. Roll is fixed to zero
-    //rootNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
-
     //Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
-    Vector3 camForward{node_->GetDirection()};
+    Vector3 camForward{ node_->GetDirection() };
     camForward = LucKey::Scale(camForward, Vector3::ONE - Vector3::UP).Normalized();
 
     Vector3 camForce{};
@@ -136,8 +123,11 @@ void OGTattCam::Update(float timeStep)
 //    if (input->GetKeyDown('Y')) camForce += Vector3::UP;
 //    if (input->GetKeyDown('R') && rootNode_->GetPosition().y_ > 1.0f) camForce += Vector3::DOWN;
 
-    if (input->GetKeyDown('R')) altitude_ += (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * timeStep;
-    if (input->GetKeyDown('Y')) altitude_ -= (5.0f + (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) * 23.0f) * timeStep;
+    if (INPUT->GetKeyDown('R'))
+        altitude_ += (5.0f + (INPUT->GetKeyDown(KEY_LSHIFT)||INPUT->GetKeyDown(KEY_RSHIFT)) * 23.0f) * timeStep;
+
+    if (INPUT->GetKeyDown('Y'))
+        altitude_ -= (5.0f + (INPUT->GetKeyDown(KEY_LSHIFT)||INPUT->GetKeyDown(KEY_RSHIFT)) * 23.0f) * timeStep;
 
     //Read joystick input
     /*JoystickState* joystickState = input->GetJoystickByIndex(0);
@@ -151,8 +141,10 @@ void OGTattCam::Update(float timeStep)
 
     camForce = camForce.Normalized() * MOVE_SPEED;
 
-    if ( forceMultiplier < 8.0f && (input->GetKeyDown(KEY_LSHIFT)||input->GetKeyDown(KEY_RSHIFT)) ){
+    if ( forceMultiplier < 8.0f && (INPUT->GetKeyDown(KEY_LSHIFT) || INPUT->GetKeyDown(KEY_RSHIFT)) ) {
+
         forceMultiplier += 0.23f;
+
     } else forceMultiplier = pow(forceMultiplier, 0.75f);
 //    rigidBody_->ApplyForce(forceMultiplier * camForce * timeStep);
 

@@ -37,6 +37,7 @@ class Bike : public Vehicle
     URHO3D_OBJECT(Bike, Vehicle);
 public:
     Bike(Context *context);
+    void OnNodeSet(Node* node);
 };
 
 #endif // BIKE_H

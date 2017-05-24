@@ -26,22 +26,22 @@ void Honti::RegisterObject(Context *context)
 Honti::Honti(Context* context) :
     Bike(context)
 {
+    durability_ = initialDurability_ = 500.0f;
 }
 
 void Honti::OnNodeSet(Node *node)
 {
     Bike::OnNodeSet(node_);
 
-    chassisModel_->SetModel(MC->GetModel("Honti"));
+    model_->SetModel(MC->GetModel("Honti"));
     SharedPtr<Material> paint{MC->GetMaterial("Glass")->Clone()};
-    chassisModel_->SetMaterial(0, paint);
+    model_->SetMaterial(0, paint);
     paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
-    chassisModel_->SetMaterial(1, MC->GetMaterial("Glass"));
-    chassisModel_->SetMaterial(2, MC->GetMaterial("Darkness"));
-    chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
-    chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
+    model_->SetMaterial(1, MC->GetMaterial("Glass"));
+    model_->SetMaterial(2, MC->GetMaterial("Darkness"));
+    model_->SetMaterial(3, MC->GetMaterial("Headlight"));
+    model_->SetMaterial(4, MC->GetMaterial("Taillight"));
 
-    rigidBody_->SetMass(5.0f);
 //    chassisBody_->SetLinearFactor(Vector3::ONE - Vector3::UP);
 //    chassisBody_->SetAngularFactor(Vector3::UP);
     rigidBody_->SetFriction(0.42f);
@@ -49,7 +49,7 @@ void Honti::OnNodeSet(Node *node)
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(0.9f);
     rigidBody_->SetAngularRestThreshold(0.1f);
-    chassisCollisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f), Vector3::UP * 0.33f + Vector3::RIGHT * 0.034f /*only when parked*/, Quaternion(9.0f, Vector3::FORWARD));
+    collisionShape_->SetBox(Vector3(0.23f, 0.666f, 1.1f), Vector3::UP * 0.33f + Vector3::RIGHT * 0.034f /*only when parked*/, Quaternion(9.0f, Vector3::FORWARD));
 
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.08f));
 

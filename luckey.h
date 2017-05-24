@@ -22,11 +22,14 @@
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Audio/Audio.h>
 #include <Urho3D/Audio/Sound.h>
+#include <Urho3D/Audio/SoundListener.h>
 #include <Urho3D/Audio/SoundSource.h>
+#include <Urho3D/Audio/SoundSource3D.h>
 #include <Urho3D/Container/HashBase.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Core/StringUtils.h>
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Engine/Console.h>
 #include <Urho3D/Engine/DebugHud.h>
@@ -70,6 +73,7 @@
 #include <Urho3D/Physics/PhysicsEvents.h>
 #include <Urho3D/Physics/PhysicsUtils.h>
 #include <Urho3D/Physics/PhysicsWorld.h>
+#include <Urho3D/Physics/RaycastVehicle.h>
 #include <Urho3D/Physics/RigidBody.h>
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Resource/XMLFile.h>

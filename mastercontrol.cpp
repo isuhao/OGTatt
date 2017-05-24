@@ -121,6 +121,8 @@ void MasterControl::Start()
     musicSource_->SetSoundType(SOUND_MUSIC);
     musicSource_->SetGain(0.23f);
 //    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
+
+//    GetSubsystem<Audio>()->Stop(); ///////////////////////////////////////////////////////////////////////
 }
 void MasterControl::Stop()
 {
@@ -230,8 +232,8 @@ void MasterControl::CreateScene()
         Character* character{ GetSubsystem<SpawnMaster>()->Create<Character>() };
         character->Set(Vector3(Random(-23.0f, 23.0f), 0.0f, Random(-23.0f, 23.0f)));
 
-//        if (p == 0)
-//            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);
+        if (p == 0)
+            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1), character);
 //        else if (p == 1)
 //            GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2), character);
     }
@@ -255,9 +257,9 @@ void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
         if (availableCharacters.Size())
         GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1),
                                                       availableCharacters[Random(static_cast<int>(availableCharacters.Size()))]->GetComponent<Character>());
-        if (availableCharacters.Size() > 1)
-        GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2),
-                                                      availableCharacters[Random(static_cast<int>(availableCharacters.Size()))]->GetComponent<Character>());
+//        if (availableCharacters.Size() > 1)
+//        GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(2),
+//                                                      availableCharacters[Random(static_cast<int>(availableCharacters.Size()))]->GetComponent<Character>());
     }
 }
 

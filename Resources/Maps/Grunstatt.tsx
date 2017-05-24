@@ -478,13 +478,13 @@
  </tile>
  <tile id="78">
   <properties>
-   <property name="materials" value="Asphalt, Stripe"/>
+   <property name="materials" value="Asphalt"/>
    <property name="model" value="Road"/>
   </properties>
  </tile>
  <tile id="79">
   <properties>
-   <property name="materials" value="Asphalt, Stripe"/>
+   <property name="materials" value="Asphalt"/>
    <property name="model" value="Road"/>
   </properties>
  </tile>
@@ -574,13 +574,13 @@
  </tile>
  <tile id="94">
   <properties>
-   <property name="materials" value="Asphalt, Stripe"/>
+   <property name="materials" value="Asphalt"/>
    <property name="model" value="Road"/>
   </properties>
  </tile>
  <tile id="95">
   <properties>
-   <property name="materials" value="Asphalt, Stripe"/>
+   <property name="materials" value="Asphalt"/>
    <property name="model" value="Road"/>
   </properties>
  </tile>

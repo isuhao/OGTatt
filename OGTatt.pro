@@ -5,8 +5,6 @@ TARGET = ogtatt
     -ldl \
     -lGL
 
-DEFINES += URHO3D_COMPILE_QT
-
 QMAKE_CXXFLAGS += -std=c++11
 
 INCLUDEPATH += \

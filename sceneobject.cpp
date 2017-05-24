@@ -28,7 +28,7 @@ SceneObject::SceneObject(Context *context):
 void SceneObject::OnNodeSet(Node *node)
 {
     for (int i{0}; i < 3; ++i){
-        sampleSources_.Push(SharedPtr<SoundSource>(node_->CreateComponent<SoundSource>()));
+        sampleSources_.Push(SharedPtr<SoundSource3D>(node_->CreateComponent<SoundSource3D>()));
         sampleSources_[i]->SetGain(0.3f);
         sampleSources_[i]->SetSoundType(SOUND_EFFECT);
     }
@@ -47,11 +47,21 @@ void SceneObject::Disable()
 
 void SceneObject::PlaySample(Sound* sample, float gain)
 {
-    for (SoundSource* s : sampleSources_){
+    for (SoundSource3D* s : sampleSources_){
         if (!s->IsPlaying()){
             s->SetGain(gain);
             s->Play(sample);
             break;
         }
     }
+}
+
+bool SceneObject::IsSilent() const
+{
+    for (SoundSource* s : sampleSources_){
+        if (s->IsPlaying()){
+            return false;
+        }
+    }
+    return true;
 }

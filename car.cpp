@@ -33,6 +33,13 @@ void Car::OnNodeSet(Node *node)
     SubscribeToEvent(node_, E_NODECOLLISIONSTART, URHO3D_HANDLER(Car, HandleNodeCollisionStart));
 }
 
+void Car::Update(float timeStep)
+{
+    Controllable::Update(timeStep);
+
+//    node_->GetChild("Hood", true)->Rotate(Quaternion(timeStep * 50.0f, Vector3::RIGHT), TS_PARENT);
+}
+
 Substance Car::GetSubstance(Vector3 position)
 {
     return Substance::Metal;
@@ -54,15 +61,15 @@ void Car::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
 
             Vector3 localContactPos{ node_->GetRotation().Inverse() * (contactPosition - node_->GetPosition()) };
 
-            Vector3 carSize{ chassisCollisionShape_->GetSize() };
+            Vector3 carSize{ collisionShape_->GetSize() };
             float carWidth{ carSize.x_ };
             float carLength{ carSize.z_ };
 
             if (localContactPos.z_ > carLength * 0.25f){
                 int morphIndex{ Floor(3.0f * (localContactPos.x_ + carWidth * 0.5f) / carWidth) };
 
-                chassisModel_->SetMorphWeight(morphIndex, chassisModel_->GetMorphWeight(morphIndex)
-                                              + contactImpulse * 0.001f);
+                model_->SetMorphWeight(morphIndex, Clamp(model_->GetMorphWeight(morphIndex)
+                                              + contactImpulse * 0.01f, 0.0f, 1.0f));
             }
 
             Hit(contactImpulse * 0.023f);

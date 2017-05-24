@@ -28,7 +28,7 @@ void Cookiejar::RegisterObject(Context *context)
 Cookiejar::Cookiejar(Context* context) :
     Car(context)
 {
-    durability_ = initialDurability_ = 100.0f;
+    durability_ = initialDurability_ = 1000.0f;
 }
 
 void Cookiejar::OnNodeSet(Node *node)
@@ -36,29 +36,22 @@ void Cookiejar::OnNodeSet(Node *node)
 
     Car::OnNodeSet(node);
 
-    chassisModel_->SetModel(MC->GetModel("Cookiejar"));
+    model_->SetModel(MC->GetModel("Cookiejar"));
 
-    SharedPtr<Material> paint = MC->GetMaterial("Paint")->Clone();
-    chassisModel_->SetMaterial(0, paint);
+    SharedPtr<Material> paint{ MC->GetMaterial("Paint")->Clone() };
+    model_->SetMaterial(0, paint);
     paint->SetShaderParameter("MatDiffColor", LucKey::RandomColor());
 
-    chassisModel_->SetMaterial(1, MC->GetMaterial("Glass"));
-    chassisModel_->SetMaterial(2, MC->GetMaterial("Darkness"));
-    chassisModel_->SetMaterial(3, MC->GetMaterial("Headlight"));
-    chassisModel_->SetMaterial(4, MC->GetMaterial("Taillight"));
-    chassisModel_->SetMaterial(5, decalMaterial_);
+    model_->SetMaterial(1, MC->GetMaterial("Glass"));
+    model_->SetMaterial(2, MC->GetMaterial("Darkness"));
+    model_->SetMaterial(3, MC->GetMaterial("Headlight"));
+    model_->SetMaterial(4, MC->GetMaterial("Taillight"));
+    model_->SetMaterial(5, decalMaterial_);
 
     rigidBody_->SetMass(70.0f);
 
-    chassisCollisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.1f), Vector3::UP * 0.4f);
+    collisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.06f), Vector3::UP * 0.4f);
 
     particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
     SetupLights(2, 2, BoundingBox(Vector3(-0.42f, 0.33f, -1.1f), Vector3(0.42f, 0.41f, 0.9f)));
-
-    GetSubsystem<InputMaster>()->SetPlayerControl(MC->GetPlayer(1), this);
 }
-
-
-
-
-

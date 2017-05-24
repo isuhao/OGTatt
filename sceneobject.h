@@ -37,7 +37,7 @@ public:
     virtual void Set(Vector3 position);
     virtual void OnNodeSet(Node *node);
 protected:
-    Vector<SharedPtr<SoundSource> > sampleSources_;
+    Vector<SharedPtr<SoundSource3D> > sampleSources_;
     bool destructable_;
     float randomizer_;
 
@@ -45,6 +45,7 @@ protected:
     void Destroy();
 
     void PlaySample(Sound *sample, float gain = 0.3f);
+    bool IsSilent() const;
 
 
     void HandleSceneUpdate(StringHash eventType, VariantMap &eventData);

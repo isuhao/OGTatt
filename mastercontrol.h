@@ -107,6 +107,52 @@ public:
 
     float Sine(const float freq, const float min, const float max, const float shift = 0.0f);
     float Cosine(const float freq, const float min, const float max, const float shift = 0.0f);
+
+    template <class T> T* GetNearest(Vector3 location)
+    {
+        T* nearest{ nullptr };
+        float nearestDistance{M_INFINITY};
+
+        PODVector<T*> components{};
+        world.scene->GetComponents<T>(components, true);
+
+        for (T* c : components) {
+
+            Node* node{ static_cast<Component*>(c)->GetNode() };
+            float distance{ LucKey::Distance(node->GetWorldPosition(), location) };
+
+            if (distance < nearestDistance) {
+
+                nearest = c;
+                nearestDistance = distance;
+            }
+        }
+        return nearest;
+    }
+
+    template <class T> T* GetNearestInstanceOf(Vector3 location)
+    {
+        T* nearest{ nullptr };
+        float nearestDistance{M_INFINITY};
+
+        PODVector<T*> components{};
+        world.scene->GetDerivedComponents<T>(components, true);
+
+        for (T* c : components) {
+
+            Node* node{ static_cast<Component*>(c)->GetNode() };
+            float distance{ LucKey::Distance(node->GetWorldPosition(), location) };
+
+            if (distance < nearestDistance) {
+
+                nearest = c;
+                nearestDistance = distance;
+            }
+        }
+        return nearest;
+    }
+
+
 private:
     static MasterControl* instance_;
     String resourceFolder_;

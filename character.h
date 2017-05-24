@@ -30,10 +30,12 @@ class Node;
 class Scene;
 class Sprite;
 }
+class Vehicle;
 
 using namespace Urho3D;
 
 enum Hair{HAIR_BALD, HAIR_SHORT, HAIR_MOHAWK, HAIR_SEAGULL, HAIR_MUSTAIN, HAIR_FROTOAD, HAIR_FLATTOP, HAIR_ALL};
+enum Actions{RUN, JUMP, ENTER, BURP};
 
 class Character : public Controllable
 {
@@ -62,9 +64,6 @@ protected:
     bool alive_;
     float health_;
     float maxHealth_;
-    int firstHitBy_ = 0;
-    int lastHitBy_ = 0;
-    int score_ = 0;
 
     const float shotInterval_ = 0.1f;
     float sinceLastShot_ = 0.0f;
@@ -72,12 +71,17 @@ protected:
 
     float sinceLastTurn_;
     float turnInterval_;
+    void EnterVehicle(Vehicle* vehicle);
+    void EnterNearestVehicle();
 private:
     void CreateBody();
     void CreateRagdoll();
     void Die();
     void CreateRagdollBone(const String &boneName, ShapeType type, const Vector3 &size, const Vector3 &position, const Quaternion &rotation);
     void CreateRagdollConstraint(const String &boneName, const String &parentName, ConstraintType type, const Vector3 &axis, const Vector3 &parentAxis, const Vector2 &highLimit, const Vector2 &lowLimit, bool disableCollision);
+
+    void HandleAction(int actionId);
+
 };
 
 #endif // NPC_H
