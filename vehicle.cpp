@@ -143,7 +143,7 @@ void Vehicle::FixedUpdate(float timeStep)
     }
 
     // apply forces
-    float handbrakingForce_ = 23.0f * actions_[HANDBREAK];
+    float handbrakingForce_ = 23.0f * actions_[HANDBRAKE];
     bool brake = Sign(accelerator) == 0.0f ? 0.0f
                                            : Sign(accelerator) * (rigidBody_->GetRotation().Inverse() * rigidBody_->GetLinearVelocity()).z_ < -0.1f;
     brakingForce_ = brake ? 10.0f

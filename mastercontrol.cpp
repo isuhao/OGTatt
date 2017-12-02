@@ -64,9 +64,9 @@ void MasterControl::Setup()
     //Add resource paths
     String resourcePaths{};
 
-    /*if (FILES->DirExists(FILES->GetAppPreferencesDir("luckey", "ogtatt")))
-        resourcePaths = FILES->GetAppPreferencesDir("luckey", "ogtatt");
-    else*/ if (FILES->DirExists("Resources"))
+//    if (FILES->DirExists(FILES->GetAppPreferencesDir("luckey", "ogtatt")))
+//        resourcePaths = FILES->GetAppPreferencesDir("luckey", "ogtatt");
+    /*else*/ if (FILES->DirExists("Resources"))
         resourcePaths = "Resources";
     else if (FILES->DirExists("../OGTatt/Resources"))
         resourcePaths = "../OGTatt/Resources";

@@ -65,11 +65,8 @@ void OGTattCam::Set(Vector3 position, int playerId)
 
 void OGTattCam::SetupViewport()
 {
-    ResourceCache* cache = GetSubsystem<ResourceCache>();
-    Renderer* renderer = GetSubsystem<Renderer>();
-
     //Set up a viewport to the Renderer subsystem so that the 3D scene can be seen
-    renderer->SetNumViewports(2);
+    RENDERER->SetNumViewports(2);
     SharedPtr<Viewport> viewport(new Viewport(context_, MC->world.scene, camera_));
 //    viewport->SetRect(IntRect((playerId_ == 2) * (GRAPHICS->GetWidth()/2),
 //                              0,
@@ -78,14 +75,14 @@ void OGTattCam::SetupViewport()
 
     //Add anti-asliasing and bloom
     effectRenderPath = viewport->GetRenderPath();
-    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
+    effectRenderPath->Append(CACHE->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
     effectRenderPath->SetEnabled("FXAA3", true);
-    effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/BloomHDR.xml"));
+    effectRenderPath->Append(CACHE->GetResource<XMLFile>("PostProcess/BloomHDR.xml"));
     effectRenderPath->SetShaderParameter("BloomHDRThreshold", 0.8f);
     effectRenderPath->SetShaderParameter("BloomHDRMix", Vector2(0.88f, 0.5f));
     effectRenderPath->SetEnabled("BloomHDR", true);
 
-    renderer->SetViewport(playerId_ - 1, viewport);
+    RENDERER->SetViewport(playerId_ - 1, viewport);
 }
 
 Vector3 OGTattCam::GetWorldPosition()

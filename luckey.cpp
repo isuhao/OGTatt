@@ -76,7 +76,7 @@ Color LucKey::RandomHairColor(bool onlyNatural)
                           Random(0.23f, 0.86f));
     } else if (dyed && !grey){
         //Bright dye
-        hairColor.FromHSV(Random(6)*0.1666f,
+        hairColor.FromHSV(Random(6) * 0.1666f,
                           Random(0.6f, 0.9f),
                           Random(0.5f, 0.71f));
     } else if (dyed && grey){

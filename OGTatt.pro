@@ -1,6 +1,6 @@
 TARGET = ogtatt
 
-    LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
+    LIBS += \
     -lpthread \
     -ldl \
     -lGL

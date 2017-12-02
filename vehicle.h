@@ -30,7 +30,7 @@ class Node;
 class RigidBody;
 }
 
-enum VehicleActions{ NITRO, HANDBREAK, HORN };
+enum VehicleActions{ NITRO, HANDBRAKE, HORN };
 
 using namespace Urho3D;
 
