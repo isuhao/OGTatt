@@ -43,9 +43,9 @@ typedef struct TileInfo {
     Vector<String> materialNames_{};
 } TileInfo;
 
-enum TileElement {TE_CENTER = 0, TE_NORTH, TE_EAST, TE_SOUTH, TE_WEST, TE_NORTHWEST, TE_NORTHEAST, TE_SOUTHEAST, TE_SOUTHWEST, TE_LENGTH};
-enum CornerType {CT_NONE, CT_IN, CT_OUT, CT_TWEEN, CT_DOUBLE, CT_FILL};
-enum TileType {TT_SPACE, TT_EMPTY, TT_ENGINE};
+enum TileElement { TE_CENTER = 0, TE_NORTH, TE_EAST, TE_SOUTH, TE_WEST, TE_NORTHWEST, TE_NORTHEAST, TE_SOUTHEAST, TE_SOUTHWEST, TE_LENGTH };
+enum CornerType { CT_NONE, CT_IN, CT_OUT, CT_TWEEN, CT_DOUBLE, CT_FILL };
+enum TileType { TT_SPACE, TT_EMPTY, TT_ENGINE };
 
 class Level : public Object
 {

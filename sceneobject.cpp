@@ -26,7 +26,8 @@ SceneObject::SceneObject(Context *context):
 }
 
 void SceneObject::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
     for (int i{0}; i < 3; ++i){
         sampleSources_.Push(SharedPtr<SoundSource3D>(node_->CreateComponent<SoundSource3D>()));
         sampleSources_[i]->SetGain(0.3f);

@@ -33,7 +33,7 @@ Pedestrian::Pedestrian(Context* context):
 }
 
 void Pedestrian::OnNodeSet(Node *node)
-{ (void)node;
+{ if (!node) return;
 
     Character::OnNodeSet(node_);
 

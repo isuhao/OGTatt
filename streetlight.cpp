@@ -30,8 +30,9 @@ StreetLight::StreetLight(Context* context):
 }
 
 void StreetLight::OnNodeSet(Node *node)
-{
-    SceneObject::OnNodeSet(node_);
+{ if (!node) return;
+
+    SceneObject::OnNodeSet(node);
 //    node_->SetPosition(pos);
 //    rootNode_->SetRotation(rot);
 

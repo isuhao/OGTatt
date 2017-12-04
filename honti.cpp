@@ -30,8 +30,9 @@ Honti::Honti(Context* context) :
 }
 
 void Honti::OnNodeSet(Node *node)
-{
-    Bike::OnNodeSet(node_);
+{ if (!node) return;
+
+    Bike::OnNodeSet(node);
 
     model_->SetModel(MC->GetModel("Honti"));
     SharedPtr<Material> paint{MC->GetMaterial("Glass")->Clone()};

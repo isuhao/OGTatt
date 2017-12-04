@@ -30,7 +30,8 @@ Muzzle::Muzzle(Context* context):
 }
 
 void Muzzle::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
     Effect::OnNodeSet(node_);
 //    node_->SetPosition(position);
 //    particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
