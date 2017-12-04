@@ -44,7 +44,7 @@ Tile::Tile(Context* context, TileInfo info, Level *level):
         model->SetCastShadows(true);
 
         if (info_.materialNames_.Size())
-            for (int s{0}; s < info_.materialNames_.Size(); ++s)
+            for (unsigned s{0}; s < info_.materialNames_.Size(); ++s)
                 model->SetMaterial(s, MC->GetMaterial(info.materialNames_[s]));
     }
 }
