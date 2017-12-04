@@ -37,10 +37,10 @@ class WallCollider;
 struct TileInfo;
 
 typedef struct TileInfo {
-    IntVector3 coords_;
-    bool obstacle_;
-    String modelName_;
-    Vector<String> materialNames_;
+    IntVector3 coords_{};
+    bool obstacle_{};
+    String modelName_{};
+    Vector<String> materialNames_{};
 } TileInfo;
 
 enum TileElement {TE_CENTER = 0, TE_NORTH, TE_EAST, TE_SOUTH, TE_WEST, TE_NORTHWEST, TE_NORTHEAST, TE_SOUTHEAST, TE_SOUTHWEST, TE_LENGTH};
