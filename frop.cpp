@@ -30,7 +30,8 @@ Frop::Frop(Context* context) :
 }
 
 void Frop::OnNodeSet(Node *node)
-{
+{ if (!node) return;
+
     SceneObject::OnNodeSet(node_);
 
     growthStart_ = Random(0.0f, 5.0f);
