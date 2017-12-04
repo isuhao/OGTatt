@@ -21,7 +21,6 @@
 
 #include <Urho3D/Urho3D.h>
 
-#include "mastercontrol.h"
 #include "sceneobject.h"
 
 namespace Urho3D {

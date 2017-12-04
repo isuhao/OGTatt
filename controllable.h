@@ -27,6 +27,8 @@
 
 #define INPUTMASTER GetSubsystem<InputMaster>()
 
+class Player;
+
 class Controllable : public SceneObject
 {
     friend class InputMaster;

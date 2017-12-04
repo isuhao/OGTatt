@@ -28,7 +28,7 @@ enum class Substance{Rock, Metal, Flesh};
 
 class SceneObject : public LogicComponent
 {
-    URHO3D_OBJECT(SceneObject, Object);
+    URHO3D_OBJECT(SceneObject, LogicComponent);
 public:
     SceneObject(Context* context);
 

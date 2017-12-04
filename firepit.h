@@ -21,7 +21,6 @@
 
 #include <Urho3D/Urho3D.h>
 
-#include "mastercontrol.h"
 #include "deco.h"
 #include "tile.h"
 

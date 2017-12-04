@@ -100,7 +100,7 @@ void Character::CreateBody()
     model_->SetMorphWeight(0, Random());
 
     for (unsigned m{0}; m < model_->GetNumGeometries(); ++m){
-        model_->SetMaterial(m, MC->CACHE->GetTempResource<Material>("Materials/Basic.xml"));
+        model_->SetMaterial(m, CACHE->GetTempResource<Material>("Materials/Basic.xml"));
         Color diffColor{ colors_[m] };
         if (m == 4){
             if (hairStyle_ == HAIR_BALD)

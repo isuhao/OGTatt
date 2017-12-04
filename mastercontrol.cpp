@@ -38,18 +38,10 @@
 
 URHO3D_DEFINE_APPLICATION_MAIN(MasterControl);
 
-MasterControl* MasterControl::instance_ = NULL;
-
-MasterControl* MasterControl::GetInstance()
-{
-    return MasterControl::instance_;
-}
-
 MasterControl::MasterControl(Context *context):
     Application(context),
     paused_(false)
 {
-    instance_ = this;
 }
 
 void MasterControl::Setup()
@@ -59,7 +51,7 @@ void MasterControl::Setup()
     //Set custom window title and icon.
     engineParameters_[EP_WINDOW_TITLE] = "OG Tatt";
     engineParameters_[EP_WINDOW_ICON] = "icon.png";
-    engineParameters_[EP_LOG_NAME] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs")+"OGTatt.log";
+    engineParameters_[EP_LOG_NAME] = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs") + "ogtatt.log";
 
     //Add resource paths
     String resourcePaths{};
@@ -89,6 +81,7 @@ void MasterControl::Setup()
 void MasterControl::Start()
 {
 
+    context_->RegisterSubsystem(this);
     context_->RegisterSubsystem(new InputMaster(context_));
     context_->RegisterSubsystem(new SpawnMaster(context_));
 
@@ -225,7 +218,7 @@ void MasterControl::CreateScene()
         cameras_.Push(SharedPtr<OGTattCam>(cam));
     }
 
-    new Level();
+    new Level(context_);
 
     for (int p{0}; p < 90; ++p){
 

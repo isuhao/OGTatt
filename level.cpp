@@ -18,8 +18,6 @@
 
 #include <fstream>
 
-#include "Urho3D/Urho2D/Drawable2D.h"
-
 #include "level.h"
 #include "tile.h"
 #include "wallcollider.h"
@@ -38,14 +36,11 @@ namespace Urho3D {
     }
 }
 
-Level::Level(Vector3 position):
-Object(MC->GetContext())
+Level::Level(Context* context): Object(context)
 {
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Level, HandleUpdate));
     rootNode_ = MC->world.scene->CreateChild("Level");
-//    MC->platformMap_[rootNode_->GetID()] = WeakPtr<Dungeon>(this);
 
-    rootNode_->SetPosition(position);
     rigidBody_ = rootNode_->CreateComponent<RigidBody>();
 
     Node* groundNode{ rootNode_->CreateChild("Ground") };
@@ -53,7 +48,7 @@ Object(MC->GetContext())
     CollisionShape* groundCollider{ groundNode->CreateComponent<CollisionShape>() };
     groundCollider->SetBox(Vector3(1000.0f, 2.0f, 1000.0f), Vector3::DOWN);
 
-    TmxFile2D* tmxFile{MC->CACHE->GetResource<TmxFile2D>("Maps/test.tmx")};
+    TmxFile2D* tmxFile{ CACHE->GetResource<TmxFile2D>("Maps/smallTest.tmx") };
     if (tmxFile)
         InitializeFromMap(*tmxFile);
 //    else
@@ -63,53 +58,58 @@ Object(MC->GetContext())
 
 void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 {
-    XMLFile* xmlFile{MC->CACHE->GetResource<XMLFile>(tmxFile.GetName())};
-
     float mapWidth{};
     float mapHeight{};
 
     int nthTileLayer{0};
 
-    for (unsigned i{0}; i < tmxFile.GetNumLayers(); ++i){
-        const TmxLayer2D* layer{tmxFile.GetLayer(i)};
+    for (unsigned i{0}; i < tmxFile.GetNumLayers(); ++i) {
+
+        const TmxLayer2D* layer{ tmxFile.GetLayer(i) };
+        if (!layer)
+            return;
+
         if (mapWidth < layer->GetWidth())
             mapWidth = layer->GetWidth();
         if (mapHeight < layer->GetHeight())
             mapHeight = layer->GetHeight();
 
-        if (!layer)
-            return;
+
         if (layer->GetType() == LT_TILE_LAYER){
 
-            const TmxTileLayer2D& tileLayer{*static_cast<const TmxTileLayer2D*>(layer)};
+            const TmxTileLayer2D* tileLayer{ static_cast<const TmxTileLayer2D*>(layer) };
 
-            for (int y{0}; y < tileLayer.GetHeight(); ++y) {
-                for (int x{0}; x < tileLayer.GetWidth(); ++x) {
-                    if (Tile2D* tile{tileLayer.GetTile(x, y)}) {
-                        if (tile->HasProperty("model")){
+            for (int y{0}; y < tileLayer->GetHeight(); ++y) {
+                for (int x{0}; x < tileLayer->GetWidth(); ++x) {
 
-                            TileInfo info{};
-                            info.coords_ = IntVector3(x, nthTileLayer, y);
-                            info.obstacle_ = tile->HasProperty("obstacle");
+                    Tile2D* tile{ tileLayer->GetTile(x, y) };
 
-                            if (tile->HasProperty("model")){
-                                info.modelName_ = tile->GetProperty("model");
-                            }
+                    if (tile && tile->HasProperty("model")) {
 
-                            if (tile->HasProperty("materials")){
-                                String materials_s{tile->GetProperty("materials")};
-                                Vector<String> materialNames{materials_s.Split(',')};
-                                for (String& s: materialNames){
-                                    s = s.Trimmed();
-                                    if (!s.Length()){
-                                        materialNames.Remove(s);
-                                    }
-                                }
-                                info.materialNames_ = materialNames;
-                            }
+                        TileInfo info{};
+                        info.coords_ = IntVector3(x, nthTileLayer, y);
+                        info.obstacle_ = tile->HasProperty("obstacle");
 
-                            AddTile(info);
+                        if (tile->HasProperty("model")) {
+
+                            info.modelName_ = tile->GetProperty("model");
                         }
+
+                        if (tile->HasProperty("materials")) {
+
+                            String materials_s{ tile->GetProperty("materials") };
+                            Vector<String> materialNames{ materials_s.Split(',') };
+
+                            for (String& s: materialNames){
+                                s = s.Trimmed();
+                                if (!s.Length()){
+                                    materialNames.Remove(s);
+                                }
+                            }
+                            info.materialNames_ = materialNames;
+                        }
+
+                        AddTile(info);
                     }
                 }
             }
@@ -117,13 +117,15 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 
         } else if (layer->GetType() == LT_OBJECT_GROUP){
 
-            const TmxObjectGroup2D& objectGroup{*static_cast<const TmxObjectGroup2D*>(layer)};
+            const TmxObjectGroup2D* objectGroup{ static_cast<const TmxObjectGroup2D*>(layer) };
 
-            for (unsigned i{0}; i < objectGroup.GetNumObjects(); ++i) { ///Vector<TileMapObject2D*> TmxObjectGroup2D::GetObjects()
-                TileMapObject2D* object{objectGroup.GetObject(i)};
+            for (unsigned i{0}; i < objectGroup->GetNumObjects(); ++i) { ///Vector<TileMapObject2D*> TmxObjectGroup2D::GetObjects()
 
-                int gid{object->GetTileGid()};
-                PropertySet2D* properties{tmxFile.GetTilePropertySet(gid)};
+                TileMapObject2D* object{ objectGroup->GetObject(i) };
+
+                int gid{ object->GetTileGid() };
+                PropertySet2D* properties{ tmxFile.GetTilePropertySet(gid) };
+
                 if (!properties)
                     continue;
 
@@ -158,7 +160,7 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
 void Level::AddTile(TileInfo info)
 {
 //    tileMap_[info.coords_] = new Tile(info, this);
-    new Tile(info, this);
+    new Tile(context_, info, this);
 }
 
 /*

@@ -22,8 +22,8 @@
 #include "firepit.h"
 #include "streetlight.h"
 
-Tile::Tile(TileInfo info, Level *level):
-    Object(MC->GetContext()),
+Tile::Tile(Context* context, TileInfo info, Level *level):
+    Object(context),
     info_{info}
 {
     level_ = level;

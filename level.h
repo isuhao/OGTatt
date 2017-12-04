@@ -52,7 +52,7 @@ class Level : public Object
     URHO3D_OBJECT(Level, Object);
     friend class InputMaster;
 public:
-    Level(Vector3 position = Vector3::ZERO);
+    Level(Context* context);
 
     Node* rootNode_;
 

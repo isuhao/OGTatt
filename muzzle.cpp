@@ -34,7 +34,7 @@ void Muzzle::OnNodeSet(Node *node)
     Effect::OnNodeSet(node_);
 //    node_->SetPosition(position);
 //    particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
-    ParticleEffect* particleEffect = MC->CACHE->GetResource<ParticleEffect>("Particles/Muzzle.xml");
+    ParticleEffect* particleEffect = CACHE->GetResource<ParticleEffect>("Particles/Muzzle.xml");
     particleEmitter_->SetEffect(particleEffect);
 
     Node* lightNode_ = node_->CreateChild("LightNode");

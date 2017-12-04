@@ -16,21 +16,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <Urho3D/Urho3D.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Scene/SceneEvents.h>
-#include <Urho3D/Physics/CollisionShape.h>
-#include <Urho3D/Physics/PhysicsEvents.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
-#include <Urho3D/Graphics/ParticleEffect.h>
-#include <Urho3D/Audio/Sound.h>
-#include <Urho3D/Audio/SoundSource.h>
-
 #include "pickup.h"
 
 Pickup::Pickup(Context* context):
@@ -65,9 +50,9 @@ Pickup::Pickup(Context* context):
 
     particleEmitter_ = node_->CreateComponent<ParticleEmitter>();
 
-    particleEmitter_->SetEffect(MC->CACHE->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
+    particleEmitter_->SetEffect(CACHE->GetTempResource<ParticleEffect>("Particles/Shine.xml"));
 
-    shot_sfx = MC->CACHE->GetResource<Sound>("Samples/Pickup.ogg");
+    shot_sfx = CACHE->GetResource<Sound>("Samples/Pickup.ogg");
     shot_sfx->SetLooped(false);
     sampleSource_ = node_->CreateComponent<SoundSource>();
     sampleSource_->SetGain(0.6f);
@@ -86,7 +71,7 @@ void Pickup::HandleTriggerStart(StringHash eventType, VariantMap &eventData)
 
     for (int i = 0; i < collidingBodies.Size(); i++) {
         RigidBody* collider = collidingBodies[i];
-        if (collider->GetNode()->GetNameHash() == N_PLAYER) {
+        if (collider->GetNode()->HasTag("Player")) {
             node_->SetEnabled(false);
         }
     }

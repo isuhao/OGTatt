@@ -104,7 +104,6 @@ class SpawnMaster;
 #define RENDERER GetSubsystem<Renderer>()
 #define AUDIO GetSubsystem<Audio>()
 
-#define MC MasterControl::GetInstance()
 #define SPAWN GetSubsystem<SpawnMaster>()
 
 namespace Urho3D {

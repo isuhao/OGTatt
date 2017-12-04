@@ -38,9 +38,9 @@ FirePit::FirePit(Context* context):
     Node* particleNode = node_->CreateChild("Fire");
     particleNode->SetPosition(Vector3::UP * 0.16f);
     ParticleEmitter* flameEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    flameEmitter->SetEffect(MC->CACHE->GetResource<ParticleEffect>("Particles/fire1.xml"));
+    flameEmitter->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/fire1.xml"));
     ParticleEmitter* sparkEmitter = particleNode->CreateComponent<ParticleEmitter>();
-    sparkEmitter->SetEffect(MC->CACHE->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
+    sparkEmitter->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/fire_sparks.xml"));
 
     lightNode_ = node_->CreateChild("LightNode");
     light_ = lightNode_->CreateComponent<Light>();

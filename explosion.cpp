@@ -16,8 +16,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "explosion.h"
 #include "hitfx.h"
+
+#include "explosion.h"
 
 void Explosion::RegisterObject(Context *context)
 {
@@ -49,7 +50,7 @@ void Explosion::OnNodeSet(Node *node)
     light_->SetCastShadows(true);
     light_->SetLightMask(1);
 
-    ParticleEffect* particleEffect{ MC->CACHE->GetResource<ParticleEffect>("Particles/Explosion.xml") };
+    ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/Explosion.xml") };
     Vector<ColorFrame> colorFrames;
     colorFrames.Push(ColorFrame(Color(0.0f, 0.0f, 0.0f, 0.0f), 0.0f));
     Color mixColor{ 0.5f * (color + particleEffect->GetColorFrame(1)->color_) };
@@ -59,7 +60,7 @@ void Explosion::OnNodeSet(Node *node)
     particleEffect->SetColorFrames(colorFrames);
     particleEmitter_->SetEffect(particleEffect);
 
-    explode_sfx = MC->CACHE->GetResource<Sound>("Samples/Explode.ogg");
+    explode_sfx = CACHE->GetResource<Sound>("Samples/Explode.ogg");
     explode_sfx->SetLooped(false);
 
     SubscribeToEvent(E_POSTUPDATE, URHO3D_HANDLER(Explosion, UpdateExplosion));

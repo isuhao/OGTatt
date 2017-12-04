@@ -18,7 +18,6 @@
 
 #include "player.h"
 
-#include "mastercontrol.h"
 #include "inputmaster.h"
 
 Player::Player(int playerId, Context* context): Object(context),

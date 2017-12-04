@@ -1,16 +1,15 @@
 TARGET = ogtatt
 
-    LIBS += \
+    LIBS += ../OGTatt/Urho3D/lib/libUrho3D.a \
     -lpthread \
     -ldl \
     -lGL
 
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 -O2
 
 INCLUDEPATH += \
     ../OGTatt/Urho3D/include \
     ../OGTatt/Urho3D/include/Urho3D/ThirdParty \
-    ../OGTatt/Urho3D/include/Urho3D/ThirdParty/Bullet \
 
 TEMPLATE = app
 CONFIG += console
@@ -35,7 +34,6 @@ SOURCES += \
     luckey.cpp \
     mastercontrol.cpp \
     muzzle.cpp \
-    objectpool.cpp \
     ogtattcam.cpp \
     pedestrian.cpp \
     pickup.cpp \
@@ -67,7 +65,6 @@ HEADERS += \
     luckey.h \
     mastercontrol.h \
     muzzle.h \
-    objectpool.h \
     ogtattcam.h \
     pedestrian.h \
     pickup.h \

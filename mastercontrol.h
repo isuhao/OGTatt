@@ -56,18 +56,12 @@ typedef struct HitInfo
     Drawable* drawable_;
 } HitInfo;
 
-namespace {
-StringHash const N_PLAYER = StringHash("Player");
-StringHash const N_VOID = StringHash("Void");
-StringHash const N_CURSOR = StringHash("Cursor");
-StringHash const N_TILEPART = StringHash("TilePart");
-StringHash const N_SLOT = StringHash("Slot");
-}
+enum JoyStickButton {JB_SELECT, JB_LEFTSTICK, JB_RIGHTSTICK, JB_START,
+                     JB_DPAD_UP, JB_DPAD_RIGHT, JB_DPAD_DOWN, JB_DPAD_LEFT,
+                     JB_L2, JB_R2, JB_L1, JB_R1,
+                     JB_TRIANGLE, JB_CIRCLE, JB_CROSS, JB_SQUARE};
 
-
-enum JoyStickButton {JB_SELECT, JB_LEFTSTICK, JB_RIGHTSTICK, JB_START, JB_DPAD_UP, JB_DPAD_RIGHT, JB_DPAD_DOWN, JB_DPAD_LEFT, JB_L2, JB_R2, JB_L1, JB_R1, JB_TRIANGLE, JB_CIRCLE, JB_CROSS, JB_SQUARE};
-
-#define MC MasterControl::GetInstance()
+#define MC GetSubsystem<MasterControl>()
 
 class MasterControl : public Application
 {
@@ -78,7 +72,6 @@ class MasterControl : public Application
 public:
     // Constructor.
     MasterControl(Context* context);
-    static MasterControl* GetInstance();
 
     String GetResourceFolder() const { return resourceFolder_; }
 
@@ -154,7 +147,6 @@ public:
 
 
 private:
-    static MasterControl* instance_;
     String resourceFolder_;
 
     SoundSource* musicSource_;
