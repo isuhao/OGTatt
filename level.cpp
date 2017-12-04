@@ -157,7 +157,7 @@ void Level::InitializeFromMap(const TmxFile2D& tmxFile)
                                  0.5f * mapHeight));
 }
 
-void Level::AddTile(TileInfo info)
+void Level::AddTile(const TileInfo& info)
 {
 //    tileMap_[info.coords_] = new Tile(info, this);
     new Tile(context_, info, this);

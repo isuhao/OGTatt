@@ -43,7 +43,7 @@ class Tile : public Object
     friend class Deco;
     URHO3D_OBJECT(Tile, Object);
 public:
-    Tile(Context* context, const TileInfo info, Level *level);
+    Tile(Context* context, const TileInfo& info, Level *level);
 
     IntVector3 GetCoords() const { return info_.coords_; }
 private:

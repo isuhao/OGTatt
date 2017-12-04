@@ -36,7 +36,7 @@ class Tile;
 class WallCollider;
 struct TileInfo;
 
-typedef struct TileInfo{
+typedef struct TileInfo {
     IntVector3 coords_;
     bool obstacle_;
     String modelName_;
@@ -66,7 +66,7 @@ public:
 
 //    void AddColliders();
 
-    void AddTile(TileInfo info);
+    void AddTile(const TileInfo& info);
 private:
     RigidBody* rigidBody_;
 //    HashMap<IntVector3, SharedPtr<Tile> > tileMap_;

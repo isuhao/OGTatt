@@ -22,16 +22,15 @@
 #include "firepit.h"
 #include "streetlight.h"
 
-Tile::Tile(Context* context, TileInfo info, Level *level):
+Tile::Tile(Context* context, const TileInfo& info, Level *level):
     Object(context),
-    info_{info}
+    info_{info},
+    level_{level}
 {
-    level_ = level;
 
     rootNode_ = level_->rootNode_->CreateChild("Tile");
-    rootNode_->SetPosition(Vector3(static_cast<float>(info_.coords_.x_),
-                                   LAYER_THICKNESS * static_cast<float>(info_.coords_.y_),
-                                   static_cast<float>(-info_.coords_.z_)));
+    rootNode_->SetPosition(Vector3(info.coords_) * Vector3(1.0f, LAYER_THICKNESS, -1.0f));
+
     if (info_.obstacle_) {
 
         CollisionShape* collider{level_->rootNode_->CreateComponent<CollisionShape>()};
