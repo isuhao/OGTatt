@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <particleeffect>
 	<material name="Materials/Blood.xml" />
-	<numparticles value="10" />
+	<numparticles value="23" />
 	<updateinvisible enable="true" />
 	<relative enable="true" />
 	<scaled enable="true" />

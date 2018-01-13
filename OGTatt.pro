@@ -45,7 +45,8 @@ SOURCES += \
     vehicle.cpp \
     wallcollider.cpp \
     character.cpp \
-    frop.cpp
+    frop.cpp \
+    animatedbillboardset.cpp
 
 HEADERS += \
     bike.h \
@@ -76,7 +77,8 @@ HEADERS += \
     vehicle.h \
     wallcollider.h \
     character.h \
-    frop.h
+    frop.h \
+    animatedbillboardset.h
 
 OTHER_FILES += \
     Docs/Ideas.txt

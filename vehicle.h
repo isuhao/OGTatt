@@ -20,6 +20,7 @@
 #define VEHICLE_H
 
 #include <Urho3D/Urho3D.h>
+#include "animatedbillboardset.h"
 //#include <Bullet/BulletDynamics/Vehicle/btRaycastVehicle.h>
 
 #include "controllable.h"
@@ -42,6 +43,7 @@ public:
     void Hit(float damage);
     virtual void OnNodeSet(Node *node);
 
+    virtual void Update(float timeStep);
     virtual void FixedUpdate(float timeStep);
 
     void SetLightsEnabled(bool enabled);
@@ -78,6 +80,7 @@ protected:
     SharedPtr<Material> decalMaterial_;
     Node* particleNode_;
     ParticleEmitter* flameEmitter_;
+    AnimatedBillboardSet* flames_;
 
     Vector<Pair<SharedPtr<Node>,
                 SharedPtr<Light>>> headLights_;

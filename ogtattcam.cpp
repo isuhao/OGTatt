@@ -78,8 +78,8 @@ void OGTattCam::SetupViewport()
     effectRenderPath->Append(CACHE->GetResource<XMLFile>("PostProcess/FXAA3.xml"));
     effectRenderPath->SetEnabled("FXAA3", true);
     effectRenderPath->Append(CACHE->GetResource<XMLFile>("PostProcess/BloomHDR.xml"));
-    effectRenderPath->SetShaderParameter("BloomHDRThreshold", 0.8f);
-    effectRenderPath->SetShaderParameter("BloomHDRMix", Vector2(0.88f, 0.5f));
+    effectRenderPath->SetShaderParameter("BloomHDRThreshold", 0.75f);
+    effectRenderPath->SetShaderParameter("BloomHDRMix", Vector2(1.0f, 0.05f));
     effectRenderPath->SetEnabled("BloomHDR", true);
 
     RENDERER->SetViewport(playerId_ - 1, viewport);
@@ -154,9 +154,9 @@ void OGTattCam::Update(float timeStep)
 
 //    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
-    node_->SetPosition(Vector3(0.5f * (targetPosition.x_ + node_->GetPosition().x_) + 0.5f * smoothTargetVelocity_.x_,
-                                  0.5f * (targetPosition.y_ + altitude_ + 10.0f * smoothTargetVelocity_.Length()),
-                                  0.5f * (targetPosition.z_ + node_->GetPosition().z_) + 0.5f * smoothTargetVelocity_.z_ - 0.23f - 0.03f * smoothTargetVelocity_.Length()));
+    node_->SetPosition(Vector3(0.5f * (targetPosition.x_ + node_->GetPosition().x_) + 0.23f * smoothTargetVelocity_.x_,
+                               0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetVelocity_.Length()),
+                               0.5f * (targetPosition.z_ + node_->GetPosition().z_) + 0.23f * smoothTargetVelocity_.z_ - 0.23f - 0.03f * smoothTargetVelocity_.Length()));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*
     Quaternion camRot = rootNode_->GetWorldRotation();

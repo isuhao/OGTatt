@@ -270,8 +270,11 @@ void Character::HandleNodeCollisionStart(StringHash eventType, VariantMap& event
 
         if (contactImpulse > 2.35f){
 
-           Hit(contactImpulse * 10.0f);
-           SPAWN->Create<HitFX>()->Set(contactPosition, Substance::Flesh);
+            float damage{contactImpulse * 10.0f};
+            Hit(damage);
+            HitFX* splat{ SPAWN->Create<HitFX>() };
+            splat->Set(contactPosition, Substance::Flesh);
+            splat->GetNode()->SetScale(Clamp(Sqrt(damage) * 0.034f, 1.0f, 10.0f));
         }
     }
 }
@@ -363,7 +366,7 @@ void Character::CreateRagdollBone(const String& boneName, ShapeType type, const 
     // Set rest thresholds to ensure the ragdoll rigid bodies come to rest to not consume CPU endlessly
     body->SetLinearRestThreshold(2.3f);
     body->SetAngularRestThreshold(5.0f);
-    body->SetFriction(0.96f);
+    body->SetFriction(1.1f);
     body->ApplyImpulse(Vector3::UP * 5.0f);
     body->Activate();
 

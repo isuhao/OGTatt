@@ -29,5 +29,16 @@ void Bike::OnNodeSet(Node *node)
     Vehicle::OnNodeSet(node);
 
     rigidBody_->SetMass(10.0f);
-    maxEngineForce_ = 123.0f;
+    maxEngineForce_ = 88.0f;
+}
+
+void Bike::Update(float timeStep)
+{
+    Vehicle::Update(timeStep);
+
+    if (Node* forkNode = node_->GetChild("RootBone", true))
+        forkNode->SetRotation(Quaternion(0.0f, 180.0f, raycastVehicle_->GetSteeringValue(0) * (rigidBody_->GetLinearVelocity().Length() + 1.0f) * 5.0f));
+
+    if (Node* forkNode = node_->GetChild("ForkBone", true))
+        forkNode->SetRotation(Quaternion(200.0f, raycastVehicle_->GetSteeringValue(0) * 42.0f, 0.0f));
 }

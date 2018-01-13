@@ -77,12 +77,13 @@ Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a v
 
 + Pistol: _Little Elvis_
 + SMG: _Spitfire_
++ Gyrojet: _Fracker_
 + Molotov cocktail
 
 
 ##### Heavy weapons
 
-Slow you down, only one allowed.
+Slows you down somewhat, only one allowed.
 
 + Mini-gun: _Herzstark_
 + Flamethrower: _Libertorch_

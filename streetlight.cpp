@@ -56,8 +56,8 @@ void StreetLight::OnNodeSet(Node *node)
     light_->SetLightType(LIGHT_SPOT);
     light_->SetBrightness(brightness_);
     light_->SetColor(Color(1.0f, 0.9f, 0.23f));
-    light_->SetRange(6.0f);
-    light_->SetFov(130.0f);
+    light_->SetRange(3.4f);
+    light_->SetFov(120.0f);
     light_->SetCastShadows(true);
 
     SubscribeToEvent(node_, E_NODECOLLISIONSTART, URHO3D_HANDLER(StreetLight, HandleNodeCollisionStart));

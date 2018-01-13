@@ -52,6 +52,6 @@ void Cookiejar::OnNodeSet(Node *node)
 
     collisionShape_->SetBox(Vector3(1.16f, 0.7f, 2.06f), Vector3::UP * 0.4f);
 
-    particleNode_->SetPosition(Vector3(0.023f, 0.5f, 0.9f));
+    particleNode_->SetPosition(Vector3(0.023f, 0.5f, 1.0f));
     SetupLights(2, 2, BoundingBox(Vector3(-0.42f, 0.33f, -1.1f), Vector3(0.42f, 0.41f, 0.9f)));
 }

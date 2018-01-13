@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<particleeffect>
+	<material name="Materials/Flame2.xml" />
+	<numparticles value="5" />
+	<updateinvisible enable="false" />
+	<relative enable="true" />
+	<scaled enable="true" />
+	<sorted enable="true" />
+	<fixedscreensize enable="false" />
+	<animlodbias value="0" />
+	<emittertype value="Box" />
+	<emittersize value="0.666 0 0.1" />
+	<direction min="-1 0 -1" max="1 0 1" />
+	<constantforce value="0 0 0" />
+	<dampingforce value="10" />
+	<activetime value="0" />
+	<inactivetime value="0" />
+	<emissionrate min="5" max="42" />
+	<particlesize min="0.23 0.23" max="0.75 0.5" />
+	<timetolive min="9.45" max="9.5" />
+	<velocity min="0" max="1" />
+	<rotation min="0" max="0" />
+	<rotationspeed min="0" max="0" />
+	<sizedelta add="0" mul="1" />
+	<faceCameraMode value="Rotate XYZ" />
+	<colorfade color="0 0 0 1" time="0" />
+	<colorfade color="1 1 1 1" time="0.25" />
+	<colorfade color="1 1 1 1" time="9.2" />
+	<colorfade color="0 0 0 1" time="9.45" />
+<texanim uv="0 0 0.0625 0.083" time="0" />
+<texanim uv="0.0625 0 0.125 0.083" time="0.034" />
+<texanim uv="0.125 0 0.1875 0.083" time="0.068" />
+<texanim uv="0.1875 0 0.25 0.083" time="0.102" />
+<texanim uv="0.25 0 0.3125 0.083" time="0.136" />
+<texanim uv="0.3125 0 0.375 0.083" time="0.17" />
+<texanim uv="0.375 0 0.4375 0.083" time="0.204" />
+<texanim uv="0.4375 0 0.5 0.083" time="0.238" />
+<texanim uv="0.5 0 0.5625 0.083" time="0.272" />
+<texanim uv="0.5625 0 0.625 0.083" time="0.306" />
+<texanim uv="0.625 0 0.6875 0.083" time="0.34" />
+<texanim uv="0.6875 0 0.75 0.083" time="0.374" />
+<texanim uv="0.75 0 0.8125 0.083" time="0.408" />
+<texanim uv="0.8125 0 0.875 0.083" time="0.442" />
+<texanim uv="0.875 0 0.9375 0.083" time="0.476" />
+<texanim uv="0.9375 0 1 0.083" time="0.51" />
+<texanim uv="0 0.083 0.0625 0.166" time="0.544" />
+<texanim uv="0.0625 0.083 0.125 0.166" time="0.578" />
+<texanim uv="0.125 0.083 0.1875 0.166" time="0.612" />
+<texanim uv="0.1875 0.083 0.25 0.166" time="0.646" />
+<texanim uv="0.25 0.083 0.3125 0.166" time="0.68" />
+<texanim uv="0.3125 0.083 0.375 0.166" time="0.714" />
+<texanim uv="0.375 0.083 0.4375 0.166" time="0.748" />
+<texanim uv="0.4375 0.083 0.5 0.166" time="0.782" />
+<texanim uv="0.5 0.083 0.5625 0.166" time="0.816" />
+<texanim uv="0.5625 0.083 0.625 0.166" time="0.85" />
+<texanim uv="0.625 0.083 0.6875 0.166" time="0.884" />
+<texanim uv="0.6875 0.083 0.75 0.166" time="0.918" />
+<texanim uv="0.75 0.083 0.8125 0.166" time="0.952" />
+<texanim uv="0.8125 0.083 0.875 0.166" time="0.986" />
+<texanim uv="0.875 0.083 0.9375 0.166" time="1.02" />
+<texanim uv="0.9375 0.083 1 0.166" time="1.054" />
+<texanim uv="0 0.166 0.0625 0.249" time="1.088" />
+<texanim uv="0.0625 0.166 0.125 0.249" time="1.122" />
+<texanim uv="0.125 0.166 0.1875 0.249" time="1.156" />
+<texanim uv="0.1875 0.166 0.25 0.249" time="1.19" />
+<texanim uv="0.25 0.166 0.3125 0.249" time="1.224" />
+<texanim uv="0.3125 0.166 0.375 0.249" time="1.258" />
+<texanim uv="0.375 0.166 0.4375 0.249" time="1.292" />
+<texanim uv="0.4375 0.166 0.5 0.249" time="1.326" />
+<texanim uv="0.5 0.166 0.5625 0.249" time="1.36" />
+<texanim uv="0.5625 0.166 0.625 0.249" time="1.394" />
+<texanim uv="0.625 0.166 0.6875 0.249" time="1.428" />
+<texanim uv="0.6875 0.166 0.75 0.249" time="1.462" />
+<texanim uv="0.75 0.166 0.8125 0.249" time="1.496" />
+<texanim uv="0.8125 0.166 0.875 0.249" time="1.53" />
+<texanim uv="0.875 0.166 0.9375 0.249" time="1.564" />
+<texanim uv="0.9375 0.166 1 0.249" time="1.598" />
+<texanim uv="0 0.249 0.0625 0.332" time="1.632" />
+<texanim uv="0.0625 0.249 0.125 0.332" time="1.666" />
+<texanim uv="0.125 0.249 0.1875 0.332" time="1.7" />
+<texanim uv="0.1875 0.249 0.25 0.332" time="1.734" />
+<texanim uv="0.25 0.249 0.3125 0.332" time="1.768" />
+<texanim uv="0.3125 0.249 0.375 0.332" time="1.802" />
+<texanim uv="0.375 0.249 0.4375 0.332" time="1.836" />
+<texanim uv="0.4375 0.249 0.5 0.332" time="1.87" />
+<texanim uv="0.5 0.249 0.5625 0.332" time="1.904" />
+<texanim uv="0.5625 0.249 0.625 0.332" time="1.938" />
+<texanim uv="0.625 0.249 0.6875 0.332" time="1.972" />
+<texanim uv="0.6875 0.249 0.75 0.332" time="2.006" />
+<texanim uv="0.75 0.249 0.8125 0.332" time="2.04" />
+<texanim uv="0.8125 0.249 0.875 0.332" time="2.074" />
+<texanim uv="0.875 0.249 0.9375 0.332" time="2.108" />
+<texanim uv="0.9375 0.249 1 0.332" time="2.142" />
+<texanim uv="0 0.332 0.0625 0.415" time="2.176" />
+<texanim uv="0.0625 0.332 0.125 0.415" time="2.21" />
+<texanim uv="0.125 0.332 0.1875 0.415" time="2.244" />
+<texanim uv="0.1875 0.332 0.25 0.415" time="2.278" />
+<texanim uv="0.25 0.332 0.3125 0.415" time="2.312" />
+<texanim uv="0.3125 0.332 0.375 0.415" time="2.346" />
+<texanim uv="0.375 0.332 0.4375 0.415" time="2.38" />
+<texanim uv="0.4375 0.332 0.5 0.415" time="2.414" />
+<texanim uv="0.5 0.332 0.5625 0.415" time="2.448" />
+<texanim uv="0.5625 0.332 0.625 0.415" time="2.482" />
+<texanim uv="0.625 0.332 0.6875 0.415" time="2.516" />
+<texanim uv="0.6875 0.332 0.75 0.415" time="2.55" />
+<texanim uv="0.75 0.332 0.8125 0.415" time="2.584" />
+<texanim uv="0.8125 0.332 0.875 0.415" time="2.618" />
+<texanim uv="0.875 0.332 0.9375 0.415" time="2.652" />
+<texanim uv="0.9375 0.332 1 0.415" time="2.686" />
+<texanim uv="0 0.415 0.0625 0.498" time="2.72" />
+<texanim uv="0.0625 0.415 0.125 0.498" time="2.754" />
+<texanim uv="0.125 0.415 0.1875 0.498" time="2.788" />
+<texanim uv="0.1875 0.415 0.25 0.498" time="2.822" />
+<texanim uv="0.25 0.415 0.3125 0.498" time="2.856" />
+<texanim uv="0.3125 0.415 0.375 0.498" time="2.89" />
+<texanim uv="0.375 0.415 0.4375 0.498" time="2.924" />
+<texanim uv="0.4375 0.415 0.5 0.498" time="2.958" />
+<texanim uv="0.5 0.415 0.5625 0.498" time="2.992" />
+<texanim uv="0.5625 0.415 0.625 0.498" time="3.026" />
+<texanim uv="0.625 0.415 0.6875 0.498" time="3.06" />
+<texanim uv="0.6875 0.415 0.75 0.498" time="3.094" />
+<texanim uv="0.75 0.415 0.8125 0.498" time="3.128" />
+<texanim uv="0.8125 0.415 0.875 0.498" time="3.162" />
+<texanim uv="0.875 0.415 0.9375 0.498" time="3.196" />
+<texanim uv="0.9375 0.415 1 0.498" time="3.23" />
+<texanim uv="0 0.498 0.0625 0.581" time="3.264" />
+<texanim uv="0.0625 0.498 0.125 0.581" time="3.298" />
+<texanim uv="0.125 0.498 0.1875 0.581" time="3.332" />
+<texanim uv="0.1875 0.498 0.25 0.581" time="3.366" />
+<texanim uv="0.25 0.498 0.3125 0.581" time="3.4" />
+<texanim uv="0.3125 0.498 0.375 0.581" time="3.434" />
+<texanim uv="0.375 0.498 0.4375 0.581" time="3.468" />
+<texanim uv="0.4375 0.498 0.5 0.581" time="3.502" />
+<texanim uv="0.5 0.498 0.5625 0.581" time="3.536" />
+<texanim uv="0.5625 0.498 0.625 0.581" time="3.57" />
+<texanim uv="0.625 0.498 0.6875 0.581" time="3.604" />
+<texanim uv="0.6875 0.498 0.75 0.581" time="3.638" />
+<texanim uv="0.75 0.498 0.8125 0.581" time="3.672" />
+<texanim uv="0.8125 0.498 0.875 0.581" time="3.706" />
+<texanim uv="0.875 0.498 0.9375 0.581" time="3.74" />
+<texanim uv="0.9375 0.498 1 0.581" time="3.774" />
+<texanim uv="0 0.581 0.0625 0.664" time="3.808" />
+<texanim uv="0.0625 0.581 0.125 0.664" time="3.842" />
+<texanim uv="0.125 0.581 0.1875 0.664" time="3.876" />
+<texanim uv="0.1875 0.581 0.25 0.664" time="3.91" />
+<texanim uv="0.25 0.581 0.3125 0.664" time="3.944" />
+<texanim uv="0.3125 0.581 0.375 0.664" time="3.978" />
+<texanim uv="0.375 0.581 0.4375 0.664" time="4.012" />
+<texanim uv="0.4375 0.581 0.5 0.664" time="4.046" />
+<texanim uv="0.5 0.581 0.5625 0.664" time="4.08" />
+<texanim uv="0.5625 0.581 0.625 0.664" time="4.114" />
+<texanim uv="0.625 0.581 0.6875 0.664" time="4.148" />
+<texanim uv="0.6875 0.581 0.75 0.664" time="4.182" />
+<texanim uv="0.75 0.581 0.8125 0.664" time="4.216" />
+<texanim uv="0.8125 0.581 0.875 0.664" time="4.25" />
+<texanim uv="0.875 0.581 0.9375 0.664" time="4.284" />
+<texanim uv="0.9375 0.581 1 0.664" time="4.318" />
+<texanim uv="0 0.664 0.0625 0.747" time="4.352" />
+<texanim uv="0.0625 0.664 0.125 0.747" time="4.386" />
+<texanim uv="0.125 0.664 0.1875 0.747" time="4.42" />
+<texanim uv="0.1875 0.664 0.25 0.747" time="4.454" />
+<texanim uv="0.25 0.664 0.3125 0.747" time="4.488" />
+<texanim uv="0.3125 0.664 0.375 0.747" time="4.522" />
+<texanim uv="0.375 0.664 0.4375 0.747" time="4.556" />
+<texanim uv="0.4375 0.664 0.5 0.747" time="4.59" />
+<texanim uv="0.5 0.664 0.5625 0.747" time="4.624" />
+<texanim uv="0.5625 0.664 0.625 0.747" time="4.658" />
+<texanim uv="0.625 0.664 0.6875 0.747" time="4.692" />
+<texanim uv="0.6875 0.664 0.75 0.747" time="4.726" />
+<texanim uv="0.75 0.664 0.8125 0.747" time="4.76" />
+<texanim uv="0.8125 0.664 0.875 0.747" time="4.794" />
+<texanim uv="0.875 0.664 0.9375 0.747" time="4.828" />
+<texanim uv="0.9375 0.664 1 0.747" time="4.862" />
+<texanim uv="0 0.747 0.0625 0.83" time="4.896" />
+<texanim uv="0.0625 0.747 0.125 0.83" time="4.93" />
+<texanim uv="0.125 0.747 0.1875 0.83" time="4.964" />
+<texanim uv="0.1875 0.747 0.25 0.83" time="4.998" />
+<texanim uv="0.25 0.747 0.3125 0.83" time="5.032" />
+<texanim uv="0.3125 0.747 0.375 0.83" time="5.066" />
+<texanim uv="0.375 0.747 0.4375 0.83" time="5.1" />
+<texanim uv="0.4375 0.747 0.5 0.83" time="5.134" />
+<texanim uv="0.5 0.747 0.5625 0.83" time="5.168" />
+<texanim uv="0.5625 0.747 0.625 0.83" time="5.202" />
+<texanim uv="0.625 0.747 0.6875 0.83" time="5.236" />
+<texanim uv="0.6875 0.747 0.75 0.83" time="5.27" />
+<texanim uv="0.75 0.747 0.8125 0.83" time="5.304" />
+<texanim uv="0.8125 0.747 0.875 0.83" time="5.338" />
+<texanim uv="0.875 0.747 0.9375 0.83" time="5.372" />
+<texanim uv="0.9375 0.747 1 0.83" time="5.406" />
+<texanim uv="0 0.83 0.0625 0.913" time="5.44" />
+<texanim uv="0.0625 0.83 0.125 0.913" time="5.474" />
+<texanim uv="0.125 0.83 0.1875 0.913" time="5.508" />
+<texanim uv="0.1875 0.83 0.25 0.913" time="5.542" />
+<texanim uv="0.25 0.83 0.3125 0.913" time="5.576" />
+<texanim uv="0.3125 0.83 0.375 0.913" time="5.61" />
+<texanim uv="0.375 0.83 0.4375 0.913" time="5.644" />
+<texanim uv="0.4375 0.83 0.5 0.913" time="5.678" />
+<texanim uv="0.5 0.83 0.5625 0.913" time="5.712" />
+<texanim uv="0.5625 0.83 0.625 0.913" time="5.746" />
+<texanim uv="0.625 0.83 0.6875 0.913" time="5.78" />
+<texanim uv="0.6875 0.83 0.75 0.913" time="5.814" />
+<texanim uv="0.75 0.83 0.8125 0.913" time="5.848" />
+<texanim uv="0.8125 0.83 0.875 0.913" time="5.882" />
+<texanim uv="0.875 0.83 0.9375 0.913" time="5.916" />
+<texanim uv="0.9375 0.83 1 0.913" time="5.95" />
+<texanim uv="0 0.913 0.0625 0.996" time="5.984" />
+<texanim uv="0.0625 0.913 0.125 0.996" time="6.018" />
+<texanim uv="0.125 0.913 0.1875 0.996" time="6.052" />
+<texanim uv="0.1875 0.913 0.25 0.996" time="6.086" />
+<texanim uv="0.25 0.913 0.3125 0.996" time="6.12" />
+<texanim uv="0.3125 0.913 0.375 0.996" time="6.154" />
+<texanim uv="0.375 0.913 0.4375 0.996" time="6.188" />
+<texanim uv="0.4375 0.913 0.5 0.996" time="6.222" />
+<texanim uv="0.5 0.913 0.5625 0.996" time="6.256" />
+<texanim uv="0.5625 0.913 0.625 0.996" time="6.29" />
+<texanim uv="0.625 0.913 0.6875 0.996" time="6.324" />
+<texanim uv="0.6875 0.913 0.75 0.996" time="6.358" />
+<texanim uv="0.75 0.913 0.8125 0.996" time="6.392" />
+<texanim uv="0.8125 0.913 0.875 0.996" time="6.426" />
+</particleeffect>

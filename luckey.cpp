@@ -23,12 +23,12 @@ unsigned LucKey::IntVector2ToHash(IntVector2 vec) { return (MakeHash(vec.x_) & 0
 float LucKey::Delta(float lhs, float rhs, bool angle)
 {
     if (!angle)
-        return (lhs > rhs) ? Abs(lhs - rhs) : Abs(rhs - lhs);
+        return (lhs > rhs) ? lhs - rhs : rhs - lhs;
     else {
         lhs = Cycle(lhs, 0.0f, 360.0f);
         rhs = Cycle(rhs, 0.0f, 360.0f);
         if (Delta(lhs, rhs) > 180.0f)
-            return Abs(360.0f - Delta(lhs, rhs));
+            return 360.0f - Delta(lhs, rhs);
         else
             return Delta(lhs, rhs);
     }

@@ -19,6 +19,7 @@
 #include "explosion.h"
 #include "player.h"
 #include "spawnmaster.h"
+#include "ogtattcam.h"
 
 #include "vehicle.h"
 
@@ -28,24 +29,24 @@ Vehicle::Vehicle(Context* context):
     steering_{0.0f},
     functional_{true}
 {
-    SetUpdateEventMask( USE_FIXEDUPDATE | USE_POSTUPDATE);
+    SetUpdateEventMask( USE_UPDATE | USE_FIXEDUPDATE | USE_POSTUPDATE);
     engineForce_ = 0.0f;
     brakingForce_ = 0.0f;
 
-    maxEngineForce_ = 350.f;//this should be engine/velocity dependent
-    maxBreakingForce_ = 100.f;
+    maxEngineForce_ = 420.f;//this should be engine/velocity dependent
+    maxBreakingForce_ = 235.f;
 
     vehicleSteering_ = 0.0f;
-    steeringIncrement_ = 0.04f;
-    steeringClamp_ = 0.3f;
-    wheelRadius_ = 0.2f;
-    wheelWidth_ = 0.13f;
-    wheelFriction_ = 2.0f;//BT_LARGE_FLOAT;
-    suspensionStiffness_ = 42.0f;//20.f;
-    suspensionDamping_ = 2.3f;//2.3f;
-    suspensionCompression_ = 0.34f;//4.4f;
-    rollInfluence_ = 0.01f;//1.0f;
-    suspensionRestLength_ = 0.42f;//0.6
+    steeringIncrement_ = 0.042f;
+    steeringClamp_ = 0.34f;
+    wheelRadius_ = 0.16f;
+    wheelWidth_ = 0.14f;
+    wheelFriction_ = 2.3f;//BT_LARGE_FLOAT;
+    suspensionStiffness_ = 17.0f;//20.f;
+    suspensionDamping_ = 4.2f;//2.3f;
+    suspensionCompression_ = 0.20f;//4.4f;
+    rollInfluence_ = 0.13f;//1.0f;
+    suspensionRestLength_ = 0.46f;//0.6
 
 }
 
@@ -56,8 +57,30 @@ void Vehicle::OnNodeSet(Node *node)
 
     particleNode_ = node_->CreateChild("Fire");
     flameEmitter_ = particleNode_->CreateComponent<ParticleEmitter>();
-    flameEmitter_->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/HoodFire.xml"));
+    flameEmitter_->SetEffect(CACHE->GetResource<ParticleEffect>("Particles/Flame2.xml"));
     flameEmitter_->SetEmitting(false);
+
+    flames_ = particleNode_->CreateComponent<AnimatedBillboardSet>();
+    flames_->SetNumBillboards(4);
+    flames_->SetMaterial(CACHE->GetResource<Material>("Materials/Flame2.xml"));
+    flames_->SetSorted(true);
+
+    float x{ -0.5f };
+    for (Billboard& bb : flames_->GetBillboards()) {
+
+        x += Random(0.1f, 0.34f);
+        if (x > 0.5f)
+            x = 0.5f;
+
+        bb.size_ = Vector2(Random(0.42f, 0.55f), 0.5f);
+        bb.position_ = Vector3(x, 0.0f, -(x*x));
+        bb.enabled_ = false;
+
+    }
+
+    flames_->LoadFrames(CACHE->GetResource<XMLFile>("Particles/Flame2.xml"));
+    flames_->Commit();
+
 
     decalMaterial_ = MC->GetMaterial("Decal")->Clone();
 
@@ -68,6 +91,7 @@ void Vehicle::OnNodeSet(Node *node)
     rigidBody_->SetAngularDamping(0.1f);
     rigidBody_->SetLinearRestThreshold(0.01f);
     rigidBody_->SetAngularRestThreshold(0.1f);
+    rigidBody_->SetRestitution(0.05f);
     rigidBody_->SetCollisionLayer(1);
 
     raycastVehicle_ = node_->CreateComponent<RaycastVehicle>();
@@ -78,7 +102,7 @@ void Vehicle::OnNodeSet(Node *node)
 
     for (int w{0}; w < 4; ++w) {
 
-        float x = (w % 2) ? -0.44f : 0.44f;
+        float x = (w % 2) ? -0.23f : 0.23f;
         float y = 0.18f;
         float z = (w / 2) ? -0.66f : 0.6f;
 
@@ -98,10 +122,29 @@ void Vehicle::OnNodeSet(Node *node)
 
         StaticModel* pWheel{ wheelNode->CreateComponent<StaticModel>() };
         pWheel->SetModel(CACHE->GetResource<Model>("Models/Wheel.mdl"));
-        pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/Asphalt.xml"));
-        pWheel->SetCastShadows(true);
+        pWheel->SetMaterial(CACHE->GetResource<Material>("Materials/Tire.xml"));
+//        pWheel->SetCastShadows(true);
     }
     raycastVehicle_->ResetWheels();
+}
+void Vehicle::Update(float timeStep)
+{
+
+    //Update flames with movement
+    for (Billboard& bb : flames_->GetBillboards()) {
+
+        float targetRotation = (rigidBody_->GetLinearVelocity().CrossProduct(Vector3::BACK).ProjectOntoAxis(Vector3::UP) > 0.0f ? -1.0f : 1.0f)
+                              * rigidBody_->GetLinearVelocity().Angle(Vector3::BACK) * Clamp(Sqrt(rigidBody_->GetLinearVelocity().Length() * 0.23f) - 1.0f, 0.0f, 1.0f);
+
+        float difference{ LucKey::Delta(targetRotation, bb.rotation_, true) };
+        if (!IsNaN(difference))
+            bb.rotation_ = 0.1f * (bb.rotation_ * 9.0f + LucKey::Cycle(targetRotation, 0.0f, 360.0f));//Lerp(bb.rotation_, difference < 180.0f ? bb.rotation_ - difference : bb.rotation_ + difference, Clamp(5.0f * timeStep, 0.0f, 1.0f));
+
+
+        bb.size_ = Vector2(bb.size_.x_, 0.5f + rigidBody_->GetLinearVelocity().Length() * 0.023f);
+    }
+
+    flames_->Commit();
 }
 
 void Vehicle::FixedUpdate(float timeStep)
@@ -109,7 +152,7 @@ void Vehicle::FixedUpdate(float timeStep)
     float newSteering{};
     float accelerator{};
 
-    newSteering = move_.x_ * Pow(0.9f, rigidBody_->GetLinearVelocity().Length());
+    newSteering = move_.x_ * Pow(0.99f, rigidBody_->GetLinearVelocity().Length());
     accelerator = move_.z_ > 0.0f ? move_.z_
                                   : move_.z_ * 0.666f;
 
@@ -148,7 +191,7 @@ void Vehicle::FixedUpdate(float timeStep)
                                            : Sign(accelerator) * (rigidBody_->GetRotation().Inverse() * rigidBody_->GetLinearVelocity()).z_ < -0.1f;
     brakingForce_ = brake ? 10.0f
                           : 0.0f;
-    engineForce_ = brakingForce_ == 0.0f ? maxEngineForce_ * accelerator
+    engineForce_ = brakingForce_ == 0.0f ? (maxEngineForce_ - rigidBody_->GetLinearVelocity().Length() * 2.3f) * accelerator
                                          : 0.0f;
 
     for ( int wheelIndex{0}; wheelIndex < raycastVehicle_->GetNumWheels(); ++wheelIndex) {
@@ -167,14 +210,41 @@ void Vehicle::FixedUpdate(float timeStep)
         }
 
 
-        raycastVehicle_->SetBrake(wheelIndex, brakingForce);
+        raycastVehicle_->SetBrake(wheelIndex, brakingForce + 42.0f * !functional_);
+    }
+
+    for (Pair<SharedPtr<Node>, SharedPtr<Light>> nodeLightPair : tailLights_) {
+
+        nodeLightPair.second_->SetBrightness(0.5f + 0.5f * brake);
     }
 }
 
 void Vehicle::SetupLights(int front, int rear, BoundingBox box)
 {
     if (front) {
-        for (int f{0}; f < front; ++f) {
+        if (front == 2) {
+
+            Pair<SharedPtr<Node>, SharedPtr<Light>> nodeLightPair;
+            nodeLightPair.first_ = node_->CreateChild("HeadLight");
+            nodeLightPair.first_->SetRotation(Quaternion(90.0f - 50.0f, Vector3::RIGHT));
+
+            nodeLightPair.first_->SetPosition(Vector3(0.0f,
+                                                      box.max_.y_ * 3.0f,
+                                                      box.max_.z_));
+
+            nodeLightPair.second_ = nodeLightPair.first_->CreateComponent<Light>();
+            nodeLightPair.second_->SetLightType(LIGHT_SPOT);
+            nodeLightPair.second_->SetColor(Color(1.0f, 0.9f, 0.8f));
+            nodeLightPair.second_->SetRange(8.0f);
+            nodeLightPair.second_->SetFov(80.0f);
+            nodeLightPair.second_->SetBrightness(1.0f);
+            nodeLightPair.second_->SetCastShadows(true);
+            nodeLightPair.second_->SetShadowResolution(0.25f);
+            nodeLightPair.second_->SetShapeTexture(static_cast<Texture*>(CACHE->GetResource<Texture2D>("Textures/HeadLightMask.png")));
+
+            headLights_.Push(nodeLightPair);
+
+        } else for (int f{0}; f < front; ++f) {
 
             Pair<SharedPtr<Node>, SharedPtr<Light>> nodeLightPair;
             nodeLightPair.first_ = node_->CreateChild("HeadLight");
@@ -197,7 +267,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
             nodeLightPair.second_->SetColor(Color(1.0f, 0.9f, 0.8f));
             nodeLightPair.second_->SetRange(8.0f);
             nodeLightPair.second_->SetFov(60.0f);
-            nodeLightPair.second_->SetBrightness(5.0f);
+            nodeLightPair.second_->SetBrightness(1.0f);
             nodeLightPair.second_->SetCastShadows(true);
             nodeLightPair.second_->SetShadowResolution(0.25f);
 
@@ -209,7 +279,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
 
             Pair<SharedPtr<Node>, SharedPtr<Light>> light;
             light.first_ = node_->CreateChild("TailLight");
-            light.first_->SetDirection(Vector3(0.0f, -0.6f, -0.5f));
+            light.first_->SetDirection(Vector3(0.0f, -0.6f, -0.23f));
 
             if (front == 1) {
 
@@ -227,9 +297,9 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
             light.second_ = light.first_->CreateComponent<Light>();
             light.second_->SetLightType(LIGHT_SPOT);
             light.second_->SetColor(Color::RED);
-            light.second_->SetRange(3.0f);
-            light.second_->SetFov(120.0f);
-            light.second_->SetBrightness(2.0f);
+            light.second_->SetRange(1.0f);
+            light.second_->SetFov(100.0f);
+            light.second_->SetBrightness(0.5f);
             light.second_->SetCastShadows(true);
             light.second_->SetShadowResolution(0.25f);
 
@@ -256,8 +326,15 @@ void Vehicle::Hit(float damage)
 
     durability_ -= damage;
 
-    if (durability_ < initialDurability_ * 0.25f)
-        flameEmitter_->SetEmitting(true);
+//    if (durability_ < initialDurability_ * 0.25f)
+//        flameEmitter_->SetEmitting(true);
+
+    for (unsigned b{0}; b < flames_->GetNumBillboards(); ++b) {
+
+        flames_->GetBillboard(b)->enabled_ = static_cast<float>(b) > (5.0f * durability_ / initialDurability_ - 0.5f);
+    }
+    flames_->Commit();
+
 
     if (durability_ <= 0.0f) {
         Destroy();
@@ -273,7 +350,7 @@ void Vehicle::Destroy()
     for (unsigned i{0}; i < model_->GetNumGeometries(); ++i){
         model_->SetMaterial(i, MC->GetMaterial("Darkness"));
     }
-    flameEmitter_->SetEmitting(true);
+//    flameEmitter_->SetEmitting(true);
     SetLightsEnabled(false);
 
     durability_ = 0.0f;

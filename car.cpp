@@ -35,9 +35,9 @@ void Car::OnNodeSet(Node *node)
 
 void Car::Update(float timeStep)
 {
-    Controllable::Update(timeStep);
+    Vehicle::Update(timeStep);
 
-//    node_->GetChild("Hood", true)->Rotate(Quaternion(timeStep * 50.0f, Vector3::RIGHT), TS_PARENT);
+//    node_->GetChild("Hood", true)->SetRotation(Quaternion(Clamp(node_->WorldToLocal(rigidBody_->GetLinearVelocity()).z_ * -50.0f + 90.0f, 0.0f, 90.0f), 180.0f, 0.0f));
 }
 
 Substance Car::GetSubstance(Vector3 position)

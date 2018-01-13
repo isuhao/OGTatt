@@ -75,11 +75,18 @@ void MasterControl::Setup()
 
 //    engineParameters_["FullScreen"] = false;
 //    engineParameters_["Headless"] = false;
-//    engineParameters_["WindowWidth"] = 960;
-//    engineParameters_["WindowHeight"] = 540;
+    engineParameters_["WindowWidth"] = 960;
+    engineParameters_["WindowHeight"] = 540;
 }
 void MasterControl::Start()
 {
+
+    for (int i{0}; i < 235; ++i) {
+
+        float x{ Random(-1000.0f, 1000.0f) };
+
+        Log::Write(-1, String(x).Append(' ') + String(LucKey::Cycle(x, 0.0f, 360.0f)) + String('\n'));
+    }
 
     context_->RegisterSubsystem(this);
     context_->RegisterSubsystem(new InputMaster(context_));
@@ -97,6 +104,7 @@ void MasterControl::Start()
     Frop::RegisterObject(context_);
     Explosion::RegisterObject(context_);
 
+    AnimatedBillboardSet::RegisterObject(context_);
 
     // Get default style
     defaultStyle_ = CACHE->GetResource<XMLFile>("UI/DefaultStyle.xml");

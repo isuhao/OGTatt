@@ -1,5 +1,5 @@
-/* OG Tatt
-// Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
+/* HoverAce
+// Copyright (C) 2018 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,29 +16,27 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef BIKE_H
-#define BIKE_H
+
+
+#ifndef ANIMATEDBILLBOARDSET_H
+#define ANIMATEDBILLBOARDSET_H
 
 #include <Urho3D/Urho3D.h>
+#include <Urho3D/Graphics/BillboardSet.h>
+#include "luckey.h"
 
-#include "vehicle.h"
-
-namespace Urho3D {
-class Drawable;
-class Node;
-class Scene;
-class Sprite;
-}
-
-using namespace Urho3D;
-
-class Bike : public Vehicle
+class AnimatedBillboardSet : public BillboardSet
 {
-    URHO3D_OBJECT(Bike, Vehicle);
+    URHO3D_OBJECT(AnimatedBillboardSet, BillboardSet);
 public:
-    Bike(Context *context);
-    void OnNodeSet(Node* node) override;
-    void Update(float timeStep) override;
+    static void RegisterObject(Context* context);
+    AnimatedBillboardSet(Context* context);
+    void UpdateGeometry(const FrameInfo& frame) override;
+    void LoadFrames(XMLFile* file);
+private:
+    Vector<TextureFrame> textureFrames_;
+    HashMap<unsigned, unsigned> texIndices_;
+    HashMap<unsigned, float> animationTimers_;
 };
 
-#endif // BIKE_H
+#endif // ANIMATEDBILLBOARDSET_H
