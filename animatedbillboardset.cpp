@@ -1,4 +1,4 @@
-/* Effects
+/* OG Tatt
 // Copyright (C) 2018 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify

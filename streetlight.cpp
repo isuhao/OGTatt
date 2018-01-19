@@ -29,6 +29,8 @@ StreetLight::StreetLight(Context* context):
 {
 }
 
+
+
 void StreetLight::OnNodeSet(Node *node)
 { if (!node) return;
 

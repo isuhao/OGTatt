@@ -80,14 +80,6 @@ void MasterControl::Setup()
 }
 void MasterControl::Start()
 {
-
-    for (int i{0}; i < 235; ++i) {
-
-        float x{ Random(-1000.0f, 1000.0f) };
-
-        Log::Write(-1, String(x).Append(' ') + String(LucKey::Cycle(x, 0.0f, 360.0f)) + String('\n'));
-    }
-
     context_->RegisterSubsystem(this);
     context_->RegisterSubsystem(new InputMaster(context_));
     context_->RegisterSubsystem(new SpawnMaster(context_));
@@ -120,8 +112,8 @@ void MasterControl::Start()
     Node* musicNode{ world.scene->CreateChild("Music") };
     musicSource_ = musicNode->CreateComponent<SoundSource>();
     musicSource_->SetSoundType(SOUND_MUSIC);
-    musicSource_->SetGain(0.23f);
-//    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
+    musicSource_->SetGain(0.0f);
+    musicSource_->Play(GetMusic("Hans Atom - Waste of TV"));
 
 //    GetSubsystem<Audio>()->Stop(); ///////////////////////////////////////////////////////////////////////
 }
@@ -244,6 +236,10 @@ void MasterControl::CreateScene()
 
 void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
 {
+    //Music only in car
+    if (Controllable* controllable = GetSubsystem<InputMaster>()->GetControllableByPlayer(1))
+        musicSource_->SetGain(0.23f * controllable->IsInstanceOf<Car>());
+
     //Temporary character switching
     if (INPUT->GetKeyPress(KEY_TAB)) {
         PODVector<Node*> characters{};
@@ -251,9 +247,12 @@ void MasterControl::HandleUpdate(StringHash eventType, VariantMap &eventData)
 
         PODVector<Node*> availableCharacters{};
 
-        for (Node* n : characters)
-            if (n->IsEnabled() && !n->GetComponent<Character>()->GetPlayer())
+        for (Node* n : characters) {
+            Character* c{ n->GetComponent<Character>() };
+
+            if (n->IsEnabled() && !c->GetPlayer() && c->IsAlive())
                 availableCharacters.Push(n);
+        }
 
         if (availableCharacters.Size())
         GetSubsystem<InputMaster>()->SetPlayerControl(GetPlayer(1),
@@ -293,7 +292,7 @@ void MasterControl::UpdateCursor(float timeStep)
 
 bool MasterControl::CursorRayCast(double maxDistance, PODVector<RayQueryResult> &hitResults)
 {
-    Ray cameraRay{ world.camera->camera_->GetScreenRay(0.5f,0.5f) };
+    Ray cameraRay{ world.camera->camera_->GetScreenRay(0.5f, 0.5f) };
     RayOctreeQuery query(hitResults, cameraRay, RAY_TRIANGLE, maxDistance, DRAWABLE_GEOMETRY);
 
     world.scene->GetComponent<Octree>()->Raycast(query);
@@ -374,12 +373,14 @@ Texture* MasterControl::GetTexture(String name) const
 {
     return CACHE->GetResource<Texture>("Textures/" + name + ".png");
 }
-Sound* MasterControl::GetMusic(String name) const {
+Sound* MasterControl::GetMusic(String name) const
+{
     Sound* song{ CACHE->GetResource<Sound>("Music/"+name+".ogg") };
     song->SetLooped(true);
     return song;
 }
-Sound* MasterControl::GetSample(String name) const {
+Sound* MasterControl::GetSample(String name) const
+{
     Sound* sample{ CACHE->GetResource<Sound>("Samples/"+name+".ogg") };
     sample->SetLooped(false);
     return sample;

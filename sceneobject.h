@@ -33,7 +33,7 @@ public:
     SceneObject(Context* context);
 
     Vector3 GetWorldPosition() {return node_->GetWorldPosition();}
-    virtual Substance GetSubstance(Vector3 position = Vector3::ZERO){}
+    virtual Substance GetSubstance(Vector3 position = Vector3::ZERO) const {}
     virtual void Set(Vector3 position);
     virtual void OnNodeSet(Node *node);
 protected:

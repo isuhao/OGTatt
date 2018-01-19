@@ -54,6 +54,7 @@ void OGTattCam::OnNodeSet(Node *node)
     zone->SetFogEnd(viewRange);
 
     SoundListener* listener{ node_->CreateComponent<SoundListener>() };
+    AUDIO->SetListener(listener);
 }
 
 void OGTattCam::Set(Vector3 position, int playerId)

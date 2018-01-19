@@ -47,6 +47,7 @@ public:
     virtual void FixedUpdate(float timeStep);
 
     void SetLightsEnabled(bool enabled);
+    Substance GetSubstance(Vector3 position) const { return Substance::Metal; }
 protected:
     HashSet<int> steerWheels_;
     HashSet<int> driveWheels_;

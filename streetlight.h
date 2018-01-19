@@ -43,6 +43,7 @@ public:
     void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
     void SwitchOff();
 
+    Substance GetSubstance(Vector3 position) const { return Substance::Metal; }
 private:
     StaticModel* model_;
     Node* lightNode_;

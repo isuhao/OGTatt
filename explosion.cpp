@@ -60,7 +60,7 @@ void Explosion::OnNodeSet(Node *node)
     particleEffect->SetColorFrames(colorFrames);
     particleEmitter_->SetEffect(particleEffect);
 
-    explode_sfx = CACHE->GetResource<Sound>("Samples/Explode.ogg");
+    explode_sfx = MC->GetSample("Explode_m");
     explode_sfx->SetLooped(false);
 
     SubscribeToEvent(E_POSTUPDATE, URHO3D_HANDLER(Explosion, UpdateExplosion));
@@ -73,7 +73,7 @@ void Explosion::Set(Vector3 position)
     rigidBody_->SetMass(initialMass_);
     light_->SetBrightness(initialBrightness_);
 
-//    PlaySample(explode_sfx);
+    PlaySample(explode_sfx, 1.0f);
 }
 
 void Explosion::UpdateExplosion(StringHash eventType, VariantMap& eventData)

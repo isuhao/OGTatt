@@ -1,4 +1,4 @@
-/* heXon
+/* OG Tatt
 // Copyright (C) 2016 LucKey Productions (luckeyproductions.nl)
 //
 // This program is free software; you can redistribute it and/or modify
@@ -26,9 +26,6 @@ SpawnMaster::SpawnMaster(Context* context):
 
 void SpawnMaster::Activate()
 {
-//    AUDIO->SetMasterGain(SOUND_EFFECT, 0.0f);
-//    AUDIO->SetMasterGain(SOUND_EFFECT, 1.0f);
-
     SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(SpawnMaster, HandleSceneUpdate));
 }
 void SpawnMaster::Deactivate()

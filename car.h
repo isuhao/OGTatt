@@ -37,7 +37,6 @@ class Car : public Vehicle
     URHO3D_OBJECT(Car, Vehicle);
 public:
     Car(Context* context);
-    virtual Substance GetSubstance(Vector3 position = Vector3::ZERO);
     void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
     virtual void OnNodeSet(Node* node);
     virtual void Update(float timeStep);

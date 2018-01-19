@@ -45,26 +45,26 @@ void HitFX::Set(Vector3 position, Substance substance)
         ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/FleshHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = CACHE->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->GetSample("Thud_m");
         hit_sfx->SetLooped(false);
     } break;
     case Substance::Rock: {
         ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/RockHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = CACHE->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->GetSample("Thud_m");
         hit_sfx->SetLooped(false);
     } break;
     case Substance::Metal: {
         ParticleEffect* particleEffect{ CACHE->GetResource<ParticleEffect>("Particles/MetalHit.xml") };
         particleEmitter_->SetEffect(particleEffect);
 
-        hit_sfx = CACHE->GetResource<Sound>("Samples/Thud.ogg");
+        hit_sfx = MC->GetSample("Thud_m");
         hit_sfx->SetLooped(false);
     } break;
     }
 
-    PlaySample(hit_sfx, 0.13f);
+    PlaySample(hit_sfx, 0.1f);
 }
 
 void HitFX::Update(float timeStep)

@@ -102,7 +102,7 @@ void Vehicle::OnNodeSet(Node *node)
 
     for (int w{0}; w < 4; ++w) {
 
-        float x = (w % 2) ? -0.23f : 0.23f;
+        float x = (w % 2) ? -0.42f : 0.42f;
         float y = 0.18f;
         float z = (w / 2) ? -0.66f : 0.6f;
 
@@ -129,7 +129,6 @@ void Vehicle::OnNodeSet(Node *node)
 }
 void Vehicle::Update(float timeStep)
 {
-
     //Update flames with movement
     for (Billboard& bb : flames_->GetBillboards()) {
 

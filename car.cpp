@@ -40,11 +40,6 @@ void Car::Update(float timeStep)
 //    node_->GetChild("Hood", true)->SetRotation(Quaternion(Clamp(node_->WorldToLocal(rigidBody_->GetLinearVelocity()).z_ * -50.0f + 90.0f, 0.0f, 90.0f), 180.0f, 0.0f));
 }
 
-Substance Car::GetSubstance(Vector3 position)
-{
-    return Substance::Metal;
-}
-
 void Car::HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData)
 { (void)eventType;
 

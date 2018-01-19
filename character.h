@@ -52,6 +52,8 @@ public:
 
     virtual void Think(float timeStep);
     void HandleNodeCollisionStart(StringHash eventType, VariantMap& eventData);
+
+    bool IsAlive() const { return health_ > 0.0f; }
 protected:
     AnimatedModel* hairModel_;
 
@@ -60,7 +62,6 @@ protected:
     Hair hairStyle_;
     Vector<Color> colors_;
 
-    bool alive_;
     float health_;
     float maxHealth_;
 

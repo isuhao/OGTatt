@@ -88,17 +88,17 @@ void Bullet::Set(Vector3 position, Vector3 direction, Node* owner)
     SceneObject::Set(position);
 
     node_->SetDirection(direction);
-    rigidBody_->ApplyForce((Vector3(Random(-0.01f, 0.01f),
+    rigidBody_->ApplyImpulse((Vector3(Random(-0.01f, 0.01f),
                                     Random(-0.01f, 0.01f),
                                     Random(-0.01f, 0.01f))
-                            + direction) * 256.0f);
+                            + direction) * 5.0f);
 }
 
 void Bullet::Disable()
 {
     fading_ = true;
 
-    if (node_->GetScale().x_ <= 0.0f) {
+    if (node_->GetScale().z_ <= 0.1f) {
 
         SceneObject::Disable();
     }

@@ -37,7 +37,6 @@ void Character::RegisterObject(Context *context)
 Character::Character(Context* context):
     Controllable(context),
     male_{static_cast<bool>(Random(2))},
-    alive_{true},
     maxHealth_{100.0f},
     hairStyle_{static_cast<Hair>(Random(HAIR_ALL))},
     sinceLastTurn_{},
@@ -63,7 +62,7 @@ void Character::OnNodeSet(Node *node)
     rigidBody_->SetAngularRestThreshold(0.01f);
     rigidBody_->SetAngularDamping(1.0f);
 
-    shot_sfx = MC->GetSample("Shot");
+//    shot_sfx = MC->GetSample("Shot_m");
 
     //Set up graphics components
     CreateBody();
@@ -161,7 +160,7 @@ void Character::Set(Vector3 position)
 
 void Character::Update(float timeStep)
 {
-    if (!alive_) {
+    if (!IsAlive()) {
 
         PODVector<RigidBody*> limbs{};
         node_->GetComponents<RigidBody>(limbs, true);
@@ -241,7 +240,8 @@ void Character::Update(float timeStep)
 
             Muzzle* muzzle{ SPAWN->Create<Muzzle>() };
             muzzle->Set(node_->GetPosition() + Vector3::UP * bulletHeight + 0.1f * aim_, aim_);
-            PlaySample(shot_sfx);
+
+            PlaySample(MC->GetSample("Shot_m"));
         }
     }
 }
@@ -284,13 +284,12 @@ void Character::Hit(float damage)
     health_ -= damage;
 
     //Die
-    if (health_ <= 0.0f){
+    if (health_ <= 0.0f) {
         Die();
     }
 }
 void Character::Die()
 {
-    alive_ = false;
     CreateRagdoll();
 }
 void Character::CreateRagdoll()
