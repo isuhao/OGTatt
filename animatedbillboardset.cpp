@@ -16,8 +16,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-
-
 #include "animatedbillboardset.h"
 
 void AnimatedBillboardSet::RegisterObject(Context* context)
@@ -37,13 +35,16 @@ void AnimatedBillboardSet::LoadFrames(XMLFile* file)
     textureFrames_.Clear();
 
     XMLElement root{ file->GetRoot() };
-    XMLElement anim = root.GetChild("texanim");
-    while (anim = anim.GetNext("texanim")) {
+    XMLElement anim{ root.GetChild("texanim") };
+
+    while (anim) {
 
         TextureFrame frame{};
         frame.uv_ = anim.GetRect("uv");
         frame.time_ = anim.GetFloat("time");
         textureFrames_.Push(frame);
+
+        anim = anim.GetNext("texanim");
     }
 
     if (textureFrames_.Empty())
