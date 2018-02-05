@@ -20,7 +20,6 @@
 
 SceneObject::SceneObject(Context *context):
     LogicComponent(context),
-    destructable_{false},
     randomizer_{Random()}
 {
 }
@@ -28,10 +27,12 @@ SceneObject::SceneObject(Context *context):
 void SceneObject::OnNodeSet(Node *node)
 { if (!node) return;
 
-    for (int i{0}; i < 3; ++i){
+    for (int i{0}; i < 5; ++i) {
+
         sampleSources_.Push(SharedPtr<SoundSource3D>(node_->CreateComponent<SoundSource3D>()));
         sampleSources_[i]->SetGain(0.3f);
         sampleSources_[i]->SetSoundType(SOUND_EFFECT);
+        sampleSources_[i]->SetDistanceAttenuation(23.0f, 88.0f, 0.5f);
     }
 }
 
@@ -48,21 +49,27 @@ void SceneObject::Disable()
 
 void SceneObject::PlaySample(Sound* sample, float gain)
 {
-    for (SoundSource3D* s : sampleSources_){
-        if (!s->IsPlaying()){
+    for (SoundSource3D* s : sampleSources_) {
+
+        if (!s->IsPlaying()) {
+
             s->SetGain(gain);
             s->Play(sample);
-            break;
+
+            return;
         }
     }
 }
 
 bool SceneObject::IsSilent() const
 {
-    for (SoundSource* s : sampleSources_){
-        if (s->IsPlaying()){
+    for (SoundSource* s : sampleSources_) {
+
+        if (s->IsPlaying()) {
+
             return false;
         }
     }
+
     return true;
 }

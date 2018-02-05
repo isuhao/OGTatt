@@ -65,12 +65,12 @@ void Vehicle::OnNodeSet(Node *node)
     flames_->SetMaterial(CACHE->GetResource<Material>("Materials/Flame2.xml"));
     flames_->SetSorted(true);
 
-    float x{ -0.5f };
+    float x{ -0.4f };
     for (Billboard& bb : flames_->GetBillboards()) {
 
-        x += Random(0.1f, 0.34f);
-        if (x > 0.5f)
-            x = 0.5f;
+        x += Random(0.1f, 0.23f);
+        if (x > 0.4f)
+            x = 0.4f;
 
         bb.size_ = Vector2(Random(0.42f, 0.55f), 0.5f);
         bb.position_ = Vector3(x, 0.0f, -(x*x));
@@ -239,6 +239,7 @@ void Vehicle::SetupLights(int front, int rear, BoundingBox box)
             nodeLightPair.second_->SetBrightness(1.0f);
             nodeLightPair.second_->SetCastShadows(true);
             nodeLightPair.second_->SetShadowResolution(0.25f);
+            nodeLightPair.second_->SetRampTexture(static_cast<Texture*>(CACHE->GetResource<Texture2D>("Textures/HeadLightRamp.png")));
             nodeLightPair.second_->SetShapeTexture(static_cast<Texture*>(CACHE->GetResource<Texture2D>("Textures/HeadLightMask.png")));
 
             headLights_.Push(nodeLightPair);

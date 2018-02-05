@@ -47,8 +47,8 @@ Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a v
 
 #### Southern
 
-* **Zombuntu** (Savannah) | Wildlife and witchcraft
-* **Agroban** (Desert) | Oil
+* **Zombuntu** (Savannah) | Wildlife and witchdoctors
+* **Agrobar** (Desert) | Oil
 * **Axllotus** (Jungle) | Natives
 
 #### Eastern

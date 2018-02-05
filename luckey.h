@@ -69,6 +69,7 @@
 #include <Urho3D/Math/Sphere.h>
 #include <Urho3D/Math/Vector2.h>
 #include <Urho3D/Math/Vector3.h>
+#include <Urho3D/Network/Network.h>
 #include <Urho3D/Physics/CollisionShape.h>
 #include <Urho3D/Physics/Constraint.h>
 #include <Urho3D/Physics/PhysicsEvents.h>
@@ -104,6 +105,7 @@ class SpawnMaster;
 #define GRAPHICS GetSubsystem<Graphics>()
 #define RENDERER GetSubsystem<Renderer>()
 #define AUDIO GetSubsystem<Audio>()
+#define NETWORK GetSubsystem<Network>()
 
 #define SPAWN GetSubsystem<SpawnMaster>()
 

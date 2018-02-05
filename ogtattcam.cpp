@@ -29,7 +29,8 @@ OGTattCam::OGTattCam(Context* context):
     LogicComponent(context),
     altitude_{23.0f},
     smoothTargetPosition_{Vector3::ZERO},
-    smoothTargetVelocity_{Vector3::ZERO}
+    smoothTargetVelocity_{Vector3::ZERO},
+    smoothTargetSpeed_{0.0f}
 {
 }
 
@@ -67,7 +68,7 @@ void OGTattCam::Set(Vector3 position, int playerId)
 void OGTattCam::SetupViewport()
 {
     //Set up a viewport to the Renderer subsystem so that the 3D scene can be seen
-    RENDERER->SetNumViewports(2);
+//    RENDERER->SetNumViewports(2);
     SharedPtr<Viewport> viewport(new Viewport(context_, MC->world.scene, camera_));
 //    viewport->SetRect(IntRect((playerId_ == 2) * (GRAPHICS->GetWidth()/2),
 //                              0,
@@ -83,7 +84,7 @@ void OGTattCam::SetupViewport()
     effectRenderPath->SetShaderParameter("BloomHDRMix", Vector2(1.0f, 0.05f));
     effectRenderPath->SetEnabled("BloomHDR", true);
 
-    RENDERER->SetViewport(playerId_ - 1, viewport);
+    RENDERER->SetViewport(0/*playerId_ - 1*/, viewport);
 }
 
 Vector3 OGTattCam::GetWorldPosition()
@@ -105,9 +106,9 @@ void OGTattCam::Update(float timeStep)
     Vector3 targetVelocity = GetSubsystem<InputMaster>()->GetControllableByPlayer(playerId_)->GetLinearVelocity();
 
     //Movement speed as world units per second
-    const float MOVE_SPEED{1024.0f};
+    const float MOVE_SPEED{ 1024.0f };
     //Mouse sensitivity as degrees per pixel
-    const float MOUSE_SENSITIVITY{0.1f};
+    const float MOUSE_SENSITIVITY{ 0.1f };
 
     //Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
     Vector3 camForward{ node_->GetDirection() };
@@ -153,17 +154,18 @@ void OGTattCam::Update(float timeStep)
 //        rigidBody_->SetLinearVelocity(Vector3(rigidBody_->GetLinearVelocity().x_, 0.0f, rigidBody_->GetLinearVelocity().z_));
     }
 
-//    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
+    smoothTargetPosition_ = 0.1f * (9.0f * smoothTargetPosition_ + targetPosition);
     smoothTargetVelocity_ = 0.01f * (99.0f * smoothTargetVelocity_ + targetVelocity);
+    smoothTargetSpeed_ = 0.01f * (99.0f * smoothTargetSpeed_ + targetVelocity.Length());
     node_->SetPosition(Vector3(0.5f * (targetPosition.x_ + node_->GetPosition().x_) + 0.23f * smoothTargetVelocity_.x_,
-                               0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetVelocity_.Length()),
+                               0.5f * (targetPosition.y_ + altitude_ + 5.0f * smoothTargetSpeed_),
                                0.5f * (targetPosition.z_ + node_->GetPosition().z_) + 0.23f * smoothTargetVelocity_.z_ - 0.23f - 0.03f * smoothTargetVelocity_.Length()));
 //    rootNode_->Translate(smoothTargetVelocity_ * timeStep, TS_WORLD);
     /*
-    Quaternion camRot = rootNode_->GetWorldRotation();
-    Quaternion aimRotation = camRot;
-    aimRotation.FromLookRotation(smoothTargetPosition_ - rootNode_->GetWorldPosition());
-    rootNode_->SetRotation(camRot.Slerp(aimRotation, 2.0f*timeStep));
+    Quaternion camRot = node_->GetWorldRotation();
+    Quaternion aimRotation{};
+    aimRotation.FromLookRotation(0.23f * (smoothTargetPosition_ - node_->GetWorldPosition()) + Clamp(0.42f * smoothTargetSpeed_, 0.0f, 2.3f) * (smoothTargetVelocity_ + targetVelocity).Normalized() + Vector3::DOWN * 5.0f, Vector3::FORWARD);
+    node_->SetRotation(camRot.Slerp(aimRotation, 2.0f * timeStep));
     */
 
 }

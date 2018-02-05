@@ -66,6 +66,7 @@ private:
 
     Vector3 smoothTargetPosition_;
     Vector3 smoothTargetVelocity_;
+    float smoothTargetSpeed_;
 
     void SetupViewport();
     void Lock(SharedPtr<Node> node);

@@ -38,7 +38,6 @@ public:
     virtual void OnNodeSet(Node *node);
 protected:
     Vector<SharedPtr<SoundSource3D> > sampleSources_;
-    bool destructable_;
     float randomizer_;
 
     void Disable();

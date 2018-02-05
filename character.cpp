@@ -173,7 +173,7 @@ void Character::Update(float timeStep)
         }
         for (RigidBody* r : limbs) {
 
-            r->SetEnabled(false);
+            r->Remove();
         }
 
         return;
@@ -411,6 +411,7 @@ void Character::Think(float timeStep)
         sinceLastTurn_ = 0.0f;
         turnInterval_ = Random(2.3f, 5.0f);
         int r = Random(5);
+
         switch (r) {
         case 0:
             move_ = Vector3::FORWARD;
@@ -430,7 +431,8 @@ void Character::Think(float timeStep)
         default:
             break;
         }
-        if (r != 4){
+
+        if (r != 4) {
             move_ += Vector3(Random(-0.1f, 0.1f), 0.0f, Random(-0.1f, 0.1f));
         }
 
