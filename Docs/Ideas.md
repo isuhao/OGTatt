@@ -76,6 +76,7 @@ Cities and HQs are loaded from TMX files (Edddy EMP in the future). You need a v
 ##### Light weapons
 
 + Pistol: _Little Elvis_
++ Laser pistol: _Pincher_
 + SMG: _Spitfire_
 + Gyrojet: _Fracker_
 + Molotov cocktail
